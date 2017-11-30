@@ -1,0 +1,6 @@
+#
+#  Configuration file for LCAnalysis
+#
+# Options: 0 - Select events
+#          1 - Look for hadrons
+#          2 - Select hadron pairs

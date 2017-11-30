@@ -1,0 +1,10 @@
+# name          min val     max val
+BestPV	        
+mu1Recons       
+Ebeam           140.0        180.0
+#intInTarget     
+#intInTarg2009     
+#cellsCrossed    
+#Q2                0.8        
+#y                 0.05        0.95
+#xBj               0.004       0.70
