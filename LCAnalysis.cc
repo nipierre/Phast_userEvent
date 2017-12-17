@@ -350,8 +350,8 @@ void LCAnalysis::SelectEvent(PaEvent& ev)
   }
 
   //--- Check Trigger
-  CheckTriggerMask(ev);
-  if( fTrigOk  ) ++fTrigger;
+  // CheckTriggerMask(ev);
+  // if( fTrigOk  ) ++fTrigger;
   // retaining events with all trigger masks for now. This cut should
   // be incorporated into the dynamic cuts.
   //return;
@@ -863,8 +863,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       ++fNXX0;
 
       //--- check trigger
-      CheckTriggerMask(ev);
-      if(fTrigOk) {++fNTrigHad;++fTrigger;}
+      // CheckTriggerMask(ev);
+      // if(fTrigOk) {++fNTrigHad;++fTrigger;}
 
       // cout << "check end cut" << endl;
 
