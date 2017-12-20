@@ -468,6 +468,12 @@ bool LCAnalysis::IsMu1Reconstructed()
   return fimu1 != -1;
   //cout<<"check IsMu1Reconstructed"<<endl;
 }
+bool LCAnalysis::IsMu0Valid()
+{
+  //--- Check if mu is valid from cov matrix
+  cout << (ParamMu0(5,5)<20*10^(-9) ? 1 : 0) << endl;
+  return (ParamMu0(5,5)<20*10^(-9) ? 1 : 0);
+}
 
 bool LCAnalysis::InteractionInTarget()
 {
@@ -539,7 +545,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   //cout<<"First check SetMuKinematics"<<endl;
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
-  const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
+  const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex (TODO : element (5,5) check <20*10^-9)
   const PaTPar& ParamMu1  = Mu1.ParInVtx(iVtx); // fitted mu' parameters in the primary vertex
   fkMu0 = ParamMu0.LzVec(M_mu); // beam      mu Lorentz vector
   fkMu1 = ParamMu1.LzVec(M_mu); // scattered mu Lorentz vector
@@ -654,7 +660,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
     // cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
   }
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && IsMu0Valid();
   if(fReconsEvent)count_mup++;
 
   // cout << ", Recons. : " << fReconsEvent << endl;
