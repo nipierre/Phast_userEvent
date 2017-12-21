@@ -38,22 +38,22 @@ static const double M_K  = G3partMass[11]; // K+ mass
 static const double M_p  = G3partMass[14]; // proton mass
 
 static const char CONFFILENAME[]=
-  "/sps/compass/npierre/PHAST/user/LC_configuration/lc_conf_file.txt";
+  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_conf_file.txt";
 
 static const char CUTFILENAME[]=
-  "/sps/compass/npierre/PHAST/user/LC_configuration/lc_cut_file.txt";
+  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_cut_file.txt";
 
 static const char CONFFILENAMEVAR[]=
-  "/sps/compass/npierre/PHAST/user/LC_configuration/lc_conf_file_%d.txt";
+  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_conf_file_%d.txt";
 
 static const char CUTFILENAMEVAR[]=
-  "/sps/compass/npierre/PHAST/user/LC_configuration/lc_cut_file_%d.txt";
+  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_cut_file_%d.txt";
 
 static const char OUTFILENAME[]=
-  "/sps/compass/npierre/HadronSelection/lc_output.root";
+  "/afs/cern.ch/user/n/nipierre/workspace/HadronSelection/lc_output.root";
 
 static const char LOGFILENAME[]=
-  "/sps/compass/npierre/HadronSelection/lc_analysis.log";
+  "/afs/cern.ch/user/n/nipierre/workspace/HadronSelection/lc_analysis.log";
 
 
 static const float  Zrich= 615.6; //entrance of the RICH 580.0
@@ -376,6 +376,7 @@ void LCAnalysis::ResetEventInfo()
   fiBPV=-1;
   fimu0=fimu1=-1;
   fReconsEvent=false;
+  fValidMu=false;
   //cout<<"check ResetEventInfo"<<endl;
 }
 
@@ -468,11 +469,13 @@ bool LCAnalysis::IsMu1Reconstructed()
   return fimu1 != -1;
   //cout<<"check IsMu1Reconstructed"<<endl;
 }
-bool LCAnalysis::IsMu0Valid()
+bool LCAnalysis::IsMu0Valid(PaTPar par)
 {
   //--- Check if mu is valid from cov matrix
-  cout << (ParamMu0(5,5)<20*10^(-9) ? 1 : 0) << endl;
-  return (ParamMu0(5,5)<20*10^(-9) ? 1 : 0);
+  // cout << par(5,5) << endl;
+  // cout << ((par(5,5)<20e-9) ? par(5,5) : 0) << endl;
+  return ((par(5,5)<2e-9) ? 1 : 0);
+  //cout<<"check IsMu0Valid"<<endl;
 }
 
 bool LCAnalysis::InteractionInTarget()
@@ -658,9 +661,17 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     //imu1 = v.iMuPrim(false,false,true,false);
     imu1 = fimu1 = v.iMuPrim();
 
+    if(imu0)
+    {
+      const PaParticle& Mu0   = ev.vParticle(imu0);
+      const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
+
+      fValidMu=IsMu0Valid(ParamMu0);
+    }
+
     // cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
   }
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && IsMu0Valid();
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
   if(fReconsEvent)count_mup++;
 
   // cout << ", Recons. : " << fReconsEvent << endl;
@@ -954,7 +965,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
-  if(fIsMC || fReconsEvent){
+  if(fIsMC || (fReconsEvent && fValidMu){
   CopyDISEvtData(fReconsEvent);
   fDISEvtTree->Fill();
   // cout<<"check Event saved"<<endl;

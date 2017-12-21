@@ -68,6 +68,7 @@ class LCAnalysis{
   double fzVTX;
   int fimu0,fimu1;
   bool fReconsEvent;
+  bool fValidMu;
   int fTrigMask;
   bool fTrigOk;
   bool fCellsCrossed;
@@ -173,6 +174,7 @@ public:
   //---------------------------------------------- Check methods (for dynamic cuts)
   bool IsThereABestPV();
   bool IsMu1Reconstructed();
+  bool IsMu0Valid(PaTPar par);
   bool InteractionInTarget();
   bool InteractionInTarget2009();
   bool InteractionInTarget2016();
