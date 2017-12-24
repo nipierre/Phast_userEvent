@@ -666,13 +666,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       const PaParticle& Mu0   = ev.vParticle(imu0);
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
 
-      // fValidMu=IsMu0Valid(ParamMu0);
-      fValidMu=0;
+      fValidMu=IsMu0Valid(ParamMu0);
     }
 
     // cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
   }
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   if(fReconsEvent)count_mup++;
 
   // cout << ", Recons. : " << fReconsEvent << endl;
@@ -966,7 +965,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
-  if(fIsMC || (fReconsEvent && fValidMu)){
+  if(fIsMC || fReconsEvent){
   CopyDISEvtData(fReconsEvent);
   fDISEvtTree->Fill();
   // cout<<"check Event saved"<<endl;
