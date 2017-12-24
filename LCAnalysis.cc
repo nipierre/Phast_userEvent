@@ -472,7 +472,8 @@ bool LCAnalysis::IsMu1Reconstructed()
 bool LCAnalysis::IsMu0Valid(PaTPar par)
 {
   //--- Check if mu is valid from cov matrix
-  // cout << par(5,5) << endl;
+
+  cout << par(1) << " " << par(2) << " " << par(3) << " " << par(4) << " " << par(5) << endl;
   // cout << ((par(5,5)<20e-9) ? par(5,5) : 0) << endl;
   return ((par(5,5)<2e-9) ? 1 : 0);
   //cout<<"check IsMu0Valid"<<endl;
