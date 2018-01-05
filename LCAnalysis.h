@@ -69,6 +69,7 @@ class LCAnalysis{
   int fimu0,fimu1;
   bool fReconsEvent;
   bool fValidMu;
+  double fCovMu0;
   int fTrigMask;
   bool fTrigOk;
   bool fCellsCrossed;

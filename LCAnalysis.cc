@@ -451,6 +451,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HO04x = HO04x;
   fDISEvt->HO04y = HO04y;
   fDISEvt->backPropFlag = fChi2CutFlag;
+  fDISEvt->covMu0 = fCovMu0;
   // cout<<"Reconstructed Event : "<<pReconsEvent<<endl;
   // cout<<"check CopyDISEvtData"<<endl;
 }
@@ -666,6 +667,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     {
       const PaParticle& Mu0   = ev.vParticle(imu0);
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
+      fCovMu0 = ParamMu0(5,5);
 
       fValidMu=IsMu0Valid(ParamMu0);
     }

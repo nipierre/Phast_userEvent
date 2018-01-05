@@ -14,14 +14,15 @@ DISEventData::DISEventData():
   XX0(0),  // no. of rad. len. crossed by mu1
   saved(false),
   cellsCrossed(false),
-  backPropFlag(false)
+  backPropFlag(false),
+  covMu0(0)
 
 {}
 
 void DISEventData::Reset()
 {
-  runNo=0; spillNo=0; evtInSpill=0; 
-  trigMask=0; 
+  runNo=0; spillNo=0; evtInSpill=0;
+  trigMask=0;
   evNo=0; timeInSpill=0;
   x=0; y=0; z=0;        // vertex position
   p0x=0; p0y=0; p0z=0;  // beam momentum
@@ -32,21 +33,22 @@ void DISEventData::Reset()
   saved=false;
   cellsCrossed=false;
   backPropFlag=false;
+  covMu0=0;
 }
 
-static const double muMass  = G3partMass[5]; 
+static const double muMass  = G3partMass[5];
 static const double muMass2 = muMass*muMass;
 static const double pMass   = G3partMass[14]; // proton mas
 static const double pMass2  = pMass*pMass;
 
 void DISEventData::CalcKin()
 {
- 
+
   double P0 = sqrt( p0x*p0x + p0y*p0y + p0z*p0z );
   double P1 = sqrt( p1x*p1x + p1y*p1y + p1z*p1z );
   double p0p1 = p0x*p1x + p0y*p1y + p0z*p1z;
   double costh = p0p1 / P0 / P1;
-  
+
   if (costh>-1 && costh<1) theta = acos(costh);
   else theta = (costh>0)? 0 : TMath::Pi();
 
@@ -56,7 +58,7 @@ void DISEventData::CalcKin()
   th1 = acos(p1z/P1);
   nu  = E0 - E1;
   Y   = nu / E0;
-  Q2  = 2.*( E0*E1 - p0p1 - muMass2); 
+  Q2  = 2.*( E0*E1 - p0p1 - muMass2);
   xBj = Q2 / (2. * pMass * nu);
   W2  = pMass2 + 2.*pMass*nu - Q2;
   W   = sqrt( W2 );
@@ -116,7 +118,7 @@ static const double M_pi = G3partMass[8];  // pi+ mass
 
 void HadronData::CalcVariables(const double& Mh)
 {
-  double M = Mh<0 ? M_pi:Mh; 
+  double M = Mh<0 ? M_pi:Mh;
 
   E = sqrt(P*P + M*M);
   z = E/dis->nu;
@@ -167,7 +169,7 @@ void DISEventMCData::CalcKin()
   MC_th1 = acos(MC_p1z/MC_P1);
   MC_nu  = MC_E0 - MC_E1;
   MC_Y   = MC_nu / MC_E0;
-  MC_Q2  = 2.*( MC_E0*MC_E1 - MC_p0p1 - muMass2); 
+  MC_Q2  = 2.*( MC_E0*MC_E1 - MC_p0p1 - muMass2);
   MC_xBj = MC_Q2 / (2. * pMass * MC_nu);
   MC_W2  = pMass2 + 2.*pMass*MC_nu - MC_Q2;
   MC_W   = sqrt( MC_W2 );
@@ -198,7 +200,7 @@ void HadronMCData::Reset()
 {
   P=0; th=0; ph=0; pid=0; recons=false; recHadIdx=-1;
   itrack=-1;
-  E=0.0; z=0.0; 
+  E=0.0; z=0.0;
   dis=0;
   /* XX0=0;*/
   charge=0;
@@ -227,7 +229,7 @@ const double& GetMassJetset(const short& id)
   if(id == 2212 || id == -2212 ) return m_p;
 
   return M_pi;
-} 
+}
 
 const double& GetMassGeant3(const short& id)
 {
@@ -239,13 +241,13 @@ const double& GetMassGeant3(const short& id)
   if(id == 14 || id == 15 ) return m_p;
 
   return M_pi;
-} 
+}
 
 
 
 void HadronMCData::CalcVariables(const double& Mh)
 {
-  double M = Mh<0 ? M_pi:Mh; 
+  double M = Mh<0 ? M_pi:Mh;
 
   E = sqrt(P*P + M*M);
   z = E/dis->MC_nu;

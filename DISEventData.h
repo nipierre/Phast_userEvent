@@ -6,7 +6,7 @@
 #include <vector>
 
 struct DISEventData{
-  
+
   DISEventData();
   virtual ~DISEventData(){};
 
@@ -25,6 +25,7 @@ struct DISEventData{
   Bool_t saved;
   Bool_t cellsCrossed;
   Bool_t backPropFlag;
+  Double_t covMu0;
 
   void Reset();
   void CalcKin();
@@ -40,7 +41,7 @@ struct DISEventData{
   Double_t    xBj; //!
   Double_t     W2; //!
   Double_t      W; //!
-  
+
   ClassDef(DISEventData,5);
 };
 
@@ -119,7 +120,7 @@ struct HadronMCData{
 
   HadronMCData();
   virtual ~HadronMCData(){};
-  
+
   ///////////added by erin/////////////////////////
   Double_t P,th,ph;
   // Double_t XX0;
