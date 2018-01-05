@@ -476,7 +476,7 @@ bool LCAnalysis::IsMu0Valid(PaTPar par)
 
   //if((par(5,5)>2e-9)) cout << par(1,1) << " " << par(2,2) << " " << par(3,3) << " " << par(4,4) << " " << par(5,5) << endl;
   // cout << ((par(5,5)<20e-9) ? par(5,5) : 0) << endl;
-  return ((par(5,5)<20e-9) ? 1 : 0);
+  return (((par(5,5)<20e-9) ? 1 : 0) && ((par(4,4)<20e-9) ? 1 : 0) && ((par(3,3)<20e-9) ? 1 : 0));
   //cout<<"check IsMu0Valid"<<endl;
 }
 
@@ -667,7 +667,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     {
       const PaParticle& Mu0   = ev.vParticle(imu0);
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
-      fCovMu0 = ParamMu0(5,5);
+      fCovMu0 = ParamMu0(4,4);
 
       fValidMu=IsMu0Valid(ParamMu0);
     }
