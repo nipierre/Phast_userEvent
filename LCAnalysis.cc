@@ -669,8 +669,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
       fCovMu0 = ParamMu0(5,5);
 
-      // fValidMu=IsMu0Valid(ParamMu0);
-      fValidMu = 1;
+      fValidMu=IsMu0Valid(ParamMu0);
     }
 
     // cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
