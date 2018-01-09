@@ -654,7 +654,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   int imu0=-1, imu1=-1;
   fValidMu=0;
 
-  cout << fValidMu;
+  // cout << fValidMu;
   // cout << "fiBPV : " << fiBPV;
 
   if( fiBPV >= 0 ){
@@ -676,7 +676,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     // cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
   }
 
-  cout << " " << fValidMu << endl;
+  // cout << " " << fValidMu << endl;
 
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   if(fReconsEvent)count_mup++;
