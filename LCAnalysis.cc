@@ -649,11 +649,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   fDISEvt->Reset();
   fHadrons.clear();
 
-  cout << fValidMu;
-
   //--- get primary vertex and muon kinematics
   fiBPV = ev.iBestPrimaryVertex();
   int imu0=-1, imu1=-1;
+  fValidMu=0;
+
+  cout << fValidMu;
   // cout << "fiBPV : " << fiBPV;
 
   if( fiBPV >= 0 ){
