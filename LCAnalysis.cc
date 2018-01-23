@@ -654,6 +654,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   int imu0=-1, imu1=-1;
   fValidMu=0;
 
+  if(fIsMC) fValidMu=1;
   // cout << fValidMu;
   cout << "fiBPV : " << fiBPV;
 
@@ -771,9 +772,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       const PaMCtrack& hadr = fEvent->vMCtrack(mcVtx.iMCtrack(ih));
 
       if( hadr.Pid() == 5 || hadr.Pid() == 6 ){ // skip muons
-	++Nmuons;
-	continue;
-	}
+      	++Nmuons;
+      	continue;
+    	}
 
       HadronMCData mcHadron;
 
@@ -787,30 +788,30 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       mcHadron.recons = false;
       std::set<int>::iterator it=hadr.sTrkRef().begin();
       for(; it!=hadr.sTrkRef().end(); ++it){
-	if( ev.vTrack(*it).HasMom() ){
-	  if(mcHadron.recons){
-	    //cout<<"LCAnalysis::FindHadrons: More than one reconstructed track associated with MC track!"<<endl;
-	    ++fNMChadrMultAssoc;
-	  }
-	  mcHadron.recons = true;
-	  mcHadron.itrack = *it;
-	}
+	       if( ev.vTrack(*it).HasMom() ){
+	          if(mcHadron.recons){
+	             //cout<<"LCAnalysis::FindHadrons: More than one reconstructed track associated with MC track!"<<endl;
+	             ++fNMChadrMultAssoc;
+	          }
+	          mcHadron.recons = true;
+	          mcHadron.itrack = *it;
+	       }
       }
 
       ++fNMChadr;
       fMCHadrons.push_back(mcHadron);
 
-    }// end loop on secondaries
+      }// end loop on secondaries
 
-    if( Nmuons != 2 ){
-      cout<<"LCAnalysis::FindHadronsMC: not two muons in vertex ("<<Nmuons<<") !"<<endl;
+      if( Nmuons != 2 ){
+        cout<<"LCAnalysis::FindHadronsMC: not two muons in vertex ("<<Nmuons<<") !"<<endl;
       //fEvent->vMCgen()[0].Print(3);
-    }
+      }
 
-  } // end of MC part
+    } // end of MC part
 
-  //cout<<"3rd check FindHadron"<<endl;
-  if( fReconsEvent ){ // continue only if the event is reconstructed
+    //cout<<"3rd check FindHadron"<<endl;
+    if( fReconsEvent ){ // continue only if the event is reconstructed
 
     SetMuKinematics(ev,fiBPV,imu0,imu1);
           const PaVertex& v = ev.vVertex(fiBPV);
