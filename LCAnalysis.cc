@@ -653,8 +653,6 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   //--- Covariance test is only for RD
   if(fIsMC) fValidMu=1;
 
-  cout << "fiBPV : " << fiBPV;
-
   if( fiBPV >= 0 ){
     fBPV = &(ev.vVertex(fiBPV));
     const PaVertex& v = ev.vVertex(fiBPV);
