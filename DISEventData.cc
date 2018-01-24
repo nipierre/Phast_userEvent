@@ -14,9 +14,7 @@ DISEventData::DISEventData():
   XX0(0),  // no. of rad. len. crossed by mu1
   saved(false),
   cellsCrossed(false),
-  backPropFlag(false),
-  covMu0(0)
-
+  backPropFlag(false)
 {}
 
 void DISEventData::Reset()
@@ -33,7 +31,6 @@ void DISEventData::Reset()
   saved=false;
   cellsCrossed=false;
   backPropFlag=false;
-  covMu0=0;
 }
 
 static const double muMass  = G3partMass[5];

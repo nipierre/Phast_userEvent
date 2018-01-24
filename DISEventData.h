@@ -25,7 +25,6 @@ struct DISEventData{
   Bool_t saved;
   Bool_t cellsCrossed;
   Bool_t backPropFlag;
-  Double_t covMu0;
 
   void Reset();
   void CalcKin();

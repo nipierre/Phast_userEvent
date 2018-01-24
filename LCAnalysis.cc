@@ -190,54 +190,35 @@ LCAnalysis::LCAnalysis():
   default: fEvHandler = &LCAnalysis::SelectEvent;
   }
 
-  cout << "test" << endl;
-
   //--- get pointers to hadronic calorimeters
   const PaSetup& setup = PaSetup::Ref();
   fHadrCal1 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC01P1__"));
   fHadrCal2 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC02P1__"));
-
-  cout << "test" << endl;
 
   //--- find MT/OT hodoscope z positions
   int idet = PaSetup::Ref().iDetector("HM04Y1_d");
   const PaDetect& HM04 =  PaSetup::Ref().Detector(idet);
   HM04z = HM04.Z();
 
-  cout << "test" << endl;
-
   idet = PaSetup::Ref().iDetector("HM05Y1_d");
   const PaDetect& HM05 =  PaSetup::Ref().Detector(idet);
   HM05z = HM05.Z();
-
 
   idet = PaSetup::Ref().iDetector("HO03Y1_m");
   const PaDetect& HO03 =  PaSetup::Ref().Detector(idet);
   HO03z = HO03.Z();
 
-
   idet = PaSetup::Ref().iDetector("HO04Y1_m");
   const PaDetect& HO04 =  PaSetup::Ref().Detector(idet);
   HO04z = HO04.Z();
 
-
-  //--- find MMs z positions
-  // values taken from detectors.52959.plus.dat (2006) because not all detectors are present in 2004
-  /*idet = PaSetup::Ref().iDetector("MM01X1__");
-    MM01z =  PaSetup::Ref().Detector(idet).Z();*/
-  //idet = PaSetup::Ref().iDetector("MM02X1__");
-  //MM02z =  PaSetup::Ref().Detector(idet).Z();
-  //idet = PaSetup::Ref().iDetector("MM03X1__");
-  //MM03z =  PaSetup::Ref().Detector(idet).Z();
-
   idet = PaSetup::Ref().iDetector("GM01U1__"); // first detector in zone 2
   Z2Az = PaSetup::Ref().Detector(idet).Z();
 
-  //idet = PaSetup::Ref().iDetector("DR01X1__"); // last detector in zone 2
   // value taken from detectors.52959.plus.dat (2006) because RW is not present in 2004
   Z2Bz = 994.4913; //PaSetup::Ref().Detector(idet).Z();
   //check if MC analysis
-  //use flag -T mc , or -T MC to indicate input files are mc
+  //use flag -T mc , or -T MC to indicate input files are MC
   //if input is data do not use "-T" option
   if(Phast::Ref().TextUserFlag(0)=="mc3"){ fIsMC=true;fMCtargetType=-3;}
   else if(Phast::Ref().TextUserFlag(0)=="MC3"){fIsMC=true;fMCtargetType=-3;}
@@ -249,9 +230,12 @@ LCAnalysis::LCAnalysis():
 
   SetMC(fIsMC);
 
-
-  cout << "LCAnalysis: done!" << endl;
+  cout << ">>> ************************ <<<" << endl;
+  cout << ">>>   LCAnalysis message :   <<<" << endl;
+  cout << ">>> LCAnalysis: Initialized! <<<" << endl;
+  cout << ">>> ************************ <<<" << endl;
 }
+
 LCAnalysis::~LCAnalysis()
 {}
 
@@ -259,16 +243,20 @@ void LCAnalysis::SetMC(bool isMC)
 {
 
   fIsMC=isMC;
-  if(isMC){
-    //cout<< "is mc"<<endl;
-    switch(fAnalysisType){
-    case 1:
-      fDISEvtTree->Branch("DISMCEvt","DISEventMCData",&fDISMCEvt);
-      fDISEvtTree->Branch("MCHadrons","std::vector<HadronMCData>",&fMCHadronsPtr);
+  if(isMC)
+  {
+    switch(fAnalysisType)
+    {
+      case 1:
+        fDISEvtTree->Branch("DISMCEvt","DISEventMCData",&fDISMCEvt);
+        fDISEvtTree->Branch("MCHadrons","std::vector<HadronMCData>",&fMCHadronsPtr);
     }
 
     //cout<<"LCAnalysis::SetMC: MC job! Tree branches created. "<<endl
-    cout<<"     target type: "<<fMCtargetType<<endl;//" (good for "<<(fMCtargetType>-3 ? "2004":"2006")<<")"<<endl;
+    cout << ">>> ************************ <<<" << endl;
+    cout << ">>>   LCAnalysis message :   <<<" << endl;
+    cout << ">>>   Target type: "<<fMCtargetType<< << "  <<<"endl;
+    cout << ">>> ************************ <<<" << endl;
   }
   //cout<<"check SetMC"<<endl;
 }
@@ -303,7 +291,11 @@ void LCAnalysis::ReadCutFile()
       fCutVector.push_back(new LCEventSelectionRangeCut(name,this,minVal,maxVal));
     }
   }
-  cout<<"check ReadCutFile"<<endl;
+
+  cout << ">>> ****************************** <<<" << endl;
+  cout << ">>>      LCAnalysis message :      <<<" << endl;
+  cout << ">>> LCAnalysis: Check ReadCutFile! <<<" << endl;
+  cout << ">>> ****************************** <<<" << endl;
 }
 
 
@@ -343,26 +335,32 @@ void LCAnalysis::SelectEvent(PaEvent& ev)
 
   //--- loop over cuts. If one check fails, it exits without saving
   vector<LCEventSelectionCut*>::iterator it;
-  for(it=fCutVector.begin(); it!=fCutVector.end(); ++it){
-    if( !(*it)->Check()
-	//&& (*it)->GetName() != "intInTarget"
-	) return;
+  for(it=fCutVector.begin(); it!=fCutVector.end(); ++it)
+  {
+    if(!(*it)->Check()) return;
   }
 
+  // ---------------------------------------------------------------------------
   //--- Check Trigger
+  // ---------------------------------------------------------------------------
+  // N. PIERRE : For the moment removed and transferred to analysis outside fast.
+  // ---------------------------------------------------------------------------
   // CheckTriggerMask(ev);
   // if( fTrigOk  ) ++fTrigger;
   // retaining events with all trigger masks for now. This cut should
   // be incorporated into the dynamic cuts.
   //return;
+  // ---------------------------------------------------------------------------
 
   //--- Save Event
   fEventAccepted = true;
   fDISEvtList->Enter(Phast::Ref().iev_en);
   if(fSaveEvents) ev.TagToSave();
-  //--- Discard some raw info (taken from Yann, hopefully he is right)
-  //ev.Discard(0x4);
-  //cout<<"check Select Event"<<endl;
+
+  // cout << ">>> ******************************* <<<" << endl;
+  // cout << ">>>       LCAnalysis message :      <<<" << endl;
+  // cout << ">>> LCAnalysis: Check Select Event! <<<" << endl;
+  // cout << ">>> ******************************* <<<" << endl;
 }
 
 
@@ -377,7 +375,11 @@ void LCAnalysis::ResetEventInfo()
   fimu0=fimu1=-1;
   fReconsEvent=false;
   fValidMu=false;
-  //cout<<"check ResetEventInfo"<<endl;
+
+  // cout << ">>> *************************** <<<" << endl;
+  // cout << ">>>     LCAnalysis message :    <<<" << endl;
+  // cout << ">>> LCAnalysis: ResetEventInfo! <<<" << endl;
+  // cout << ">>> *************************** <<<" << endl;
 }
 
 void LCAnalysis::ReadMinimumEventInfo()
@@ -392,8 +394,8 @@ void LCAnalysis::ReadMinimumEventInfo()
     printf("Warning! Best primary vertex is not primary!\n");
     return;
   }
+
   fimu0 = fBPV->InParticle();
-  //fimu1 = fBPV->iMuPrim(false,false,true,false);
   fimu1 = fBPV->iMuPrim();
   if(fimu0 == -1) return;
   if(fimu1 == -1) return;
@@ -408,14 +410,19 @@ void LCAnalysis::ReadMinimumEventInfo()
 
 
   //--- store info of DISevent
-  if(fDISEvtTree &&( fIsMC || fReconsEvent)){
+  if(fDISEvtTree &&( fIsMC || fReconsEvent))
+  {
     CopyDISEvtData(fReconsEvent);
     fDISEvtTree->Fill();
   }
 
   //--- Fill hist. info
   if(fHistInfo) fHistInfo->Fill(fQ2,fXX0mu1,fBPV->Z(),fTrigMask);
-  //cout<<"check ReadMinimumEventInfo"<<endl;
+
+  // cout << ">>> ********************************* <<<" << endl;
+  // cout << ">>>        LCAnalysis message :       <<<" << endl;
+  // cout << ">>> LCAnalysis: ReadMinimumEventInfo! <<<" << endl;
+  // cout << ">>> ********************************* <<<" << endl;
 }
 
 
@@ -451,9 +458,12 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HO04x = HO04x;
   fDISEvt->HO04y = HO04y;
   fDISEvt->backPropFlag = fChi2CutFlag;
-  fDISEvt->covMu0 = fCovMu0;
-  // cout<<"Reconstructed Event : "<<pReconsEvent<<endl;
-  // cout<<"check CopyDISEvtData"<<endl;
+
+
+  // cout << ">>> *************************** <<<" << endl;
+  // cout << ">>>     LCAnalysis message :    <<<" << endl;
+  // cout << ">>> LCAnalysis: CopyDISEvtData! <<<" << endl;
+  // cout << ">>> *************************** <<<" << endl;
 }
 
 
@@ -473,9 +483,6 @@ bool LCAnalysis::IsMu1Reconstructed()
 bool LCAnalysis::IsMu0Valid(PaTPar par)
 {
   //--- Check if mu is valid from cov matrix
-
-  //if((par(5,5)>2e-9)) cout << par(1,1) << " " << par(2,2) << " " << par(3,3) << " " << par(4,4) << " " << par(5,5) << endl;
-  // cout << ((par(5,5)<20e-9) ? par(5,5) : 0) << endl;
   return (((par(5,5)<20e-9) ? 1 : 0));
   //cout<<"check IsMu0Valid"<<endl;
 }
@@ -534,7 +541,7 @@ bool LCAnalysis::CellsCrossed2016()
 }
 
 
-void LCAnalysis::CheckTriggerMask(const PaEvent& ev)
+void LCAnalysis::CheckTriggerMask(const PaEvent& ev) // TODO : should add year for specific triggers cut
 {
   int trigMask = ev.TrigMask();
   //cout << trigMask << endl;
@@ -550,7 +557,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   //cout<<"First check SetMuKinematics"<<endl;
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
-  const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex (TODO : element (5,5) check <20*10^-9)
+  const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
   const PaTPar& ParamMu1  = Mu1.ParInVtx(iVtx); // fitted mu' parameters in the primary vertex
   fkMu0 = ParamMu0.LzVec(M_mu); // beam      mu Lorentz vector
   fkMu1 = ParamMu1.LzVec(M_mu); // scattered mu Lorentz vector
@@ -586,7 +593,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HO04y = parHM(2);
 
   // check if all cells crossed
-  //fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fIsMC? fMCtargetType : ev.RunNum());
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
     fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fMCtargetType);
     if(fCellsCrossed)fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fdatatargetType);
@@ -654,8 +660,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   int imu0=-1, imu1=-1;
   fValidMu=0;
 
+  //--- Covariance test is only for RD
   if(fIsMC) fValidMu=1;
-  // cout << fValidMu;
+
   cout << "fiBPV : " << fiBPV;
 
   if( fiBPV >= 0 ){
@@ -663,31 +670,26 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    //imu1 = v.iMuPrim(false,false,true,false);
     imu1 = fimu1 = v.iMuPrim();
 
     if(imu0)
     {
       const PaParticle& Mu0   = ev.vParticle(imu0);
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
-      fCovMu0 = ParamMu0(5,5);
 
+      //--- Covariance test for RD
       if(fIsMC) fValidMu=1;
       else fValidMu=IsMu0Valid(ParamMu0);
     }
-    cout << ", Vx : " << v.X() << ", Vy : " << v.Y() << ", Vz : " << v.Z() << ", mu' rec. :" << v.iMuPrim();
   }
-
-  cout << " " << fValidMu << endl;
 
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   if(fReconsEvent)count_mup++;
 
-  cout << ", Recons. : " << fReconsEvent << endl;
-
   if( fIsMC ){ // read MC event info
 
     fDISMCEvt->Reset();
+
     ///LUND block data
     NLUDATA ld;                       // create NLUDATA structure
     double mcWeight = 1.00;
@@ -695,10 +697,13 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     int nparticles;               // number of particles
     ev.MCgen(ld);                // get LUDATA
     ev.MCgen(nparticles,lujets);
+
      ///get mc weight
     if (ld.uservar[2] != 0)mcWeight = ld.uservar[2]; //HEPPGEN Weights
     fDISMCEvt->mcWeight = mcWeight;
-    ///find dd events
+
+    // find dd events
+    // N. PIERRE : Is it still relevant here ? TODO Suppress it.
     int difType=0;
     for(int i=0;i<nparticles;i++){ //newwww
       if(lujets[i].k[1]==2210 || lujets[i].k[1]==2110){  difType= 1; break;} } fDISMCEvt->difType = difType;
@@ -731,8 +736,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
     const PaMCtrack& mu0 = fEvent->vMCtrack(mcVtx.iBeam());
     const PaMCtrack& mu1 = fEvent->vMCtrack(1);
-    //if( mu1.Pid() != mu0.Pid() )
-    // cout<<"LCAnalysis::FindHadronsMC: mu1 is not a muon!"<< mu1.Pid()<<" and "<< mu0.Pid()<<endl;
+
     if( mu1.Pid() == 5 )count_mupp++;
     if( mu1.Pid() == 6 )count_munp++;
     if( mu0.Pid() == 5 )count_mup0++;
@@ -740,19 +744,6 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_vx = mcVtx.Pos(0); fDISMCEvt->MC_vy = mcVtx.Pos(1); fDISMCEvt->MC_vz = mcVtx.Pos(2);
     TLorentzVector kmu0 = mu0.LzVec();
     TLorentzVector kmu1 = mu1.LzVec();
-    ////////addition for different radgen/lepto
-    //TLorentzVector gamm = kmu0; gamm -= kmu1;
-    //const vector<PaMCgen> &vMCgen = ev.vMCgen();
-    //static TLorentzVector gammTr; if (!vMCgen.empty()) {
-    //  if (!parseMCgen(vMCgen,gammTr)) {
-//	printf("** LCA:\a Evt #%f Missing LUDATA or LUJET\n",
-//	     fDISEvt->evNo); exit(1);
-//      }
-//    }
-    //if (fDISMCEvt->irad && mcVtx.NMCtrack()==4) {// Elastic
-    //  fDISMCEvt->irad = 2;
-    // }
-    ////////////end addition
 
     fDISMCEvt->MC_p0x = -kmu0.X();
     fDISMCEvt->MC_p0y = -kmu0.Y();
@@ -816,38 +807,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     SetMuKinematics(ev,fiBPV,imu0,imu1);
           const PaVertex& v = ev.vVertex(fiBPV);
 
-
-	  /*
-    //--- loop on events photons added by erin
-	  int NoutPhot = ev.NCaloClus();
-	for(int i=0; i<NoutPhot; ++i){
-	const PaCaloClus& outPhot = ev.vCaloClus(i);
-	const string& nam = outPhot.CalorimName();
-	if(nam.find("EC02P1") != 0) continue; //reject ecal2 photons
-	TVector3 p_vec;
-	p_vec.SetXYZ(0.,0.,0.);
-	p_vec.SetXYZ(outPhot.X()-v.X(),outPhot.Y()-v.Y(),outPhot.Z()-v.Z());
-      HadronData hadron;
-      hadron.P  = outPhot.E();
-      hadron.th = p_vec.Theta();
-      hadron.ph = p_vec.Phi();
-      hadron.charge = 0;
-
-      //--- fill hadron vector
-      if(hadron.P>0){
-	fHadrons.push_back(hadron);
-      }
-	}//end photon loop
-
-
-	  */
-
-
     //--- loop on primary vertex outgoing particles
     int NoutPart = v.NOutParticles();
     fTotNHadr += NoutPart;
     int ip=0,itr=0,Nh=0;
-    for(int i=0; i<NoutPart; ++i){
+    for(int i=0; i<NoutPart; ++i)
+    {
       ip = v.iOutParticle(i);
 
       //--- check if it is mu'
@@ -856,11 +821,11 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       const PaParticle& outPart = ev.vParticle(ip);
       if(outPart.IsBeam()) // this check should be always negative at this stage!
-	printf("LCAnalysis::FindHadrons: outgoing beam particle!\n");
+	      printf("LCAnalysis::FindHadrons: outgoing beam particle!\n");
 
       itr = outPart.iTrack();
       if(itr == -1)
-	printf("LCAnalysis::FindHadrons: outgoing particle without track!\n");
+	      printf("LCAnalysis::FindHadrons: outgoing particle without track!\n");
 
       HadronData hadron;
       const PaTPar& param = outPart.ParInVtx(fiBPV);
@@ -889,20 +854,14 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       ++fNXX0;
 
       //--- check trigger
+      // N. PIERRE : Should move to post-PHAST analysis TODO Suppress it.
       // CheckTriggerMask(ev);
       // if(fTrigOk) {++fNTrigHad;++fTrigger;}
 
       // cout << "check end cut" << endl;
 
-      //Inelasticity variable
-      //if
-      //TLorentzVector p(0,0,0,M_p)                // proton's 4-vector (in rest)
-      //TLorentzVector q = fkMu0-fkMu1;            // virtual photon's 4-vector
-      //TLorentzVector LzVc_h =param.LzVec(M_pi);  //rho vector (CM vector)
-
       //--- polar angle at RICH entrance
       PaTPar tParRich;
-      //track.vTPar(0).Extrapolate(Zrich, tParRich);
       track.Extrapolate(Zrich, tParRich);
       fthRICH = hadron.thRICH = tParRich.Theta(false);
       hadron.RICHx=tParRich.Pos(0);                   //extrapolation RICH added by Quiela
@@ -918,24 +877,24 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       hadron.inHCALacc = fHadrCal1->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
 
       if( !hadron.inHCALacc ){
-	track.vTPar(0).Extrapolate(ZHCAL2, tParHCAL, false);  // HCAL2
-	hadron.inHCALacc = fHadrCal2->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
+	      track.vTPar(0).Extrapolate(ZHCAL2, tParHCAL, false);  // HCAL2
+	      hadron.inHCALacc = fHadrCal2->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
       }
 
       //--- get hadronic calorimeter signals
       int iC;
-      for(int i=0; i<outPart.NCalorim(); ++i){
-	iC = outPart.iCalorim(i);
-	const PaCaloClus & clus = ev.vCaloClus(iC);
-	if( clus.CalorimName()[0] == 'H' ) // only HCALs
-	  hadron.HCAL += clus.E();
+      for(int i=0; i<outPart.NCalorim(); ++i)
+      {
+      	iC = outPart.iCalorim(i);
+      	const PaCaloClus & clus = ev.vCaloClus(iC);
+
+        if( clus.CalorimName()[0] == 'H' ) // only HCALs
+      	 hadron.HCAL += clus.E();
       }
 
 
       //--- calculate track extrapolations
       PaTPar tParH;
-      /*track.vTPar(0).Extrapolate(MM01z,tParH,false);
-	hadron.MM01x = tParH(1); hadron.MM01y = tParH(2);*/
       track.vTPar(0).Extrapolate(MM02z,tParH,false);
       hadron.MM02x = tParH(1); hadron.MM02y = tParH(2);
       track.vTPar(0).Extrapolate(MM03z,tParH,false);
@@ -948,20 +907,23 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
 
 
-      if( fIsMC ){// special treatment for MC
+      if( fIsMC )
+      {// special treatment for MC
 
-	//--- set vector position of this hadron to MC branch
-	vector<HadronMCData>::iterator mch = fMCHadrons.begin();
-	for( ; mch != fMCHadrons.end(); ++mch){
-	  if( mch->itrack == itr ) mch->recHadIdx = Nh;
-	}
+	      //--- set vector position of this hadron to MC branch
+	      vector<HadronMCData>::iterator mch = fMCHadrons.begin();
+	      for( ; mch != fMCHadrons.end(); ++mch)
+        {
+	        if( mch->itrack == itr ) mch->recHadIdx = Nh;
+	      }
 
-	//--- find the true pid of this track if any
-	int imctr = track.iMCtrack();
-	if( imctr >= 0 ){
-	  const PaMCtrack& mcTrack = ev.vMCtrack(imctr);
-	  hadron.MCpid = mcTrack.Pid();
-	}
+	      //--- find the true pid of this track if any
+      	int imctr = track.iMCtrack();
+      	if( imctr >= 0 )
+        {
+      	  const PaMCtrack& mcTrack = ev.vMCtrack(imctr);
+      	  hadron.MCpid = mcTrack.Pid();
+      	}
       } //end special treatment for MC
 
       //--- fill hadron vector
@@ -974,13 +936,18 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
-  if(fIsMC || fReconsEvent){
-  CopyDISEvtData(fReconsEvent);
-  fDISEvtTree->Fill();
-  // cout<<"check Event saved"<<endl;
+
+  if(fIsMC || fReconsEvent)
+  {
+    CopyDISEvtData(fReconsEvent);
+    fDISEvtTree->Fill();
+    // cout<<"check Event saved"<<endl;
   }
   // cout<<"check FindHadrons"<<endl;
 } //end FindHadrons
+
+
+// N. PIERRE : Is this thing still relevant ? TODO Suppress it.
 // ***************************************************************************
 // ******************************   parseMCgen  ******************************
 // ***************************************************************************
@@ -1041,6 +1008,7 @@ bool LCAnalysis::parseMCgen(const vector<PaMCgen> &vMCgen,
 #endif
   return match==0x3;
 }
+
 // ***************************************************************************
 // ****************************** FindHadronsMC ******************************
 // ***************************************************************************
@@ -1394,19 +1362,7 @@ void LCAnalysis::PrintEventStats()
 
 void LCAnalysis::SaveHadronTree()
 {
-//   printf("\nLCAnalysis: saving hadron tree ... \n\n");
-//   fEvtTree->AutoSave();
-//   fHadrTree->AutoSave();
-//   if(fIsMC){
-//     fEvtTreeMC->AutoSave();
-//     fHadrTreeMC->AutoSave();
-//   }
-//   fOutFile->Close();
-
   fDISEvtTree->AutoSave();
-  //cout<<"First check SaveHadronTree"<<endl;
-  //fDISEvtTree->GetCurrentFile()->Close(); //remove because segmentation falut
-  //cout<<"Second check SaveHadronTree"<<endl;
 
   //----- Hadron selection stats
   int t=fTotNHadr,o=fTotNHadr,n;
@@ -1418,7 +1374,6 @@ void LCAnalysis::SaveHadronTree()
   n=fNZfirst ; printf("%-15s%10d%9.3f%%%9.3f%%\n","Zfirst",       n, 100.0*n/t,100.*(o-n)/o); o=n;
   n=fNZlast  ; printf("%-15s%10d%9.3f%%%9.3f%%\n","Zlast",        n, 100.0*n/t,100.*(o-n)/o); o=n;
   n=fNXX0    ; printf("%-15s%10d%9.3f%%%9.3f%%\n","X/X0",         n, 100.0*n/t,100.*(o-n)/o); o=n;
-  n=fNTrigHad;    printf("%-15s%10d%9.3f%%%9.3f%%\n","OT || inclMT", n, 100.0*n/t,100.*(o-n)/o);
   n=count_bestpv; printf("%-15s%10d%9.3f%%%9.3f%%\n","BPV",           n, 100.0*n/t,100.*(o-n)/o);;
   n=count_mup;    printf("%-15s%10d%9.3f%%%9.3f%%\n","mu'",       n, 100.0*n/t,100.*(o-n)/o);
   n=count_mupp;  printf("%-15s%10d%9.3f%%%9.3f%%\n","MC mu'is m+",   n, 100.0*n/t,100.*(o-n)/o);
@@ -1429,7 +1384,6 @@ void LCAnalysis::SaveHadronTree()
   for(int i=0; i<50; ++i)printf("-"); printf("\n");
   printf("No. of DIS events (without trigger cut): %10d\n",fTotNEvts);
   printf("                  (with    trigger cut): %10d\n",fTrigger);
-  //cout<<"3rd check SaveHadronTree"<<endl;
 
   if( fIsMC ){
     cout<<"End of MC job: MC hadrons: "<<fNMChadr<<endl\
