@@ -37,23 +37,20 @@ static const double M_pi = G3partMass[8];  // pi+ mass
 static const double M_K  = G3partMass[11]; // K+ mass
 static const double M_p  = G3partMass[14]; // proton mass
 
+static const char PREFIX[]=
+  "/afs/cern.ch/user/n/nipierre/workspace";
+
 static const char CONFFILENAME[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_conf_file.txt";
+  Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
 
 static const char CUTFILENAME[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_cut_file.txt";
-
-static const char CONFFILENAMEVAR[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_conf_file_%d.txt";
-
-static const char CUTFILENAMEVAR[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/PHAST/user/LC_configuration/lc_cut_file_%d.txt";
+  Form("%s/PHAST/user/LC_configuration/lc_cut_file.txt",PREFIX);
 
 static const char OUTFILENAME[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/HadronSelection/lc_output.root";
+  Form("%s/HadronSelection/lc_output.root",PREFIX);
 
 static const char LOGFILENAME[]=
-  "/afs/cern.ch/user/n/nipierre/workspace/HadronSelection/lc_analysis.log";
+  Form("%s/HadronSelection/lc_analysis.log",PREFIX);
 
 
 static const float  Zrich= 615.6; //entrance of the RICH 580.0
@@ -118,11 +115,8 @@ LCAnalysis::LCAnalysis():
 
   //--- read config file
   char conffilename[1024];
-  if(Phast::Ref().NUserFlag()>1){
-    sprintf(conffilename,CONFFILENAMEVAR,Phast::Ref().UserFlag(1));
-  }else{
-    sprintf(conffilename,CONFFILENAME);
-  }
+  sprintf(conffilename,CONFFILENAME);
+  
   printf("\n\nLCAnalysis: reading conf. file %s ...\n",conffilename);
   FILE *conffile=fopen(conffilename,"r");
   char line[500];
