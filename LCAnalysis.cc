@@ -116,7 +116,7 @@ LCAnalysis::LCAnalysis():
   //--- read config file
   char conffilename[1024];
   sprintf(conffilename,CONFFILENAME);
-  
+
   printf("\n\nLCAnalysis: reading conf. file %s ...\n",conffilename);
   FILE *conffile=fopen(conffilename,"r");
   char line[500];
@@ -249,7 +249,7 @@ void LCAnalysis::SetMC(bool isMC)
     //cout<<"LCAnalysis::SetMC: MC job! Tree branches created. "<<endl
     cout << ">>> ************************ <<<" << endl;
     cout << ">>>   LCAnalysis message :   <<<" << endl;
-    cout << ">>>   Target type: "<<fMCtargetType<< << "  <<<"endl;
+    cout << ">>>   Target type: "<<fMCtargetType<< "  <<<" <<endl;
     cout << ">>> ************************ <<<" << endl;
   }
   //cout<<"check SetMC"<<endl;
@@ -260,11 +260,7 @@ void LCAnalysis::SetMC(bool isMC)
 void LCAnalysis::ReadCutFile()
 {
   char cutfilename[1024];
-  if(Phast::Ref().NUserFlag()>1){
-    sprintf(cutfilename,CUTFILENAMEVAR,Phast::Ref().UserFlag(1));
-  }else{
-    sprintf(cutfilename,CUTFILENAME);
-  }
+  sprintf(cutfilename,CUTFILENAME);
 
   cout<<"LCAnalysis::ReadCutFile: reading cut file "<<cutfilename<<" ..."<<endl;
 
