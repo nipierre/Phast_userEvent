@@ -37,19 +37,19 @@ static const double M_pi = G3partMass[8];  // pi+ mass
 static const double M_K  = G3partMass[11]; // K+ mass
 static const double M_p  = G3partMass[14]; // proton mass
 
-static const char PREFIX[]=
+static const char* PREFIX=
   "/afs/cern.ch/user/n/nipierre/workspace";
 
-static const char CONFFILENAME[]=
+static const char* CONFFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
 
-static const char CUTFILENAME[]=
+static const char* CUTFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_cut_file.txt",PREFIX);
 
-static const char OUTFILENAME[]=
+static const char* OUTFILENAME=
   Form("%s/HadronSelection/lc_output.root",PREFIX);
 
-static const char LOGFILENAME[]=
+static const char* LOGFILENAME=
   Form("%s/HadronSelection/lc_analysis.log",PREFIX);
 
 
