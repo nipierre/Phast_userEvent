@@ -822,13 +822,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       TLorentzVector LzPhoton = fkMu0 - fkMu1;
       TVector3 v3q = LzPhoton.Vect();
 
-      const PaTPar& Paramtr = p.ParInVtx(e.iBestPrimaryVertex());
-      TVector3 v3h = Paramtr.Mom3();
+      const PaTPar& param = outPart.ParInVtx(fiBPV);
+      TVector3 v3h = param.Mom3();
 
       TVector3 had_pl = v3q.Cross(v3h);
 
       HadronData hadron;
-      const PaTPar& param = outPart.ParInVtx(fiBPV);
       hadron.P  = param.Mom();
       hadron.th = param.Theta();
       hadron.ph = param.Phi();
