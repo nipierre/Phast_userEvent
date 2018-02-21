@@ -51,7 +51,7 @@ struct HadronData{
   HadronData();
   virtual ~HadronData();
 
-  Double_t P,th,ph,ph_pl;
+  Double_t P,pt,th,ph,ph_pl;
   Double_t XX0;
   Bool_t  inHCALacc;
   Float_t HCAL;

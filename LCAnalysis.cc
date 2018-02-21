@@ -829,6 +829,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       HadronData hadron;
       hadron.P  = param.Mom();
+      hadron.pt  = param.Pt();
       hadron.th = param.Theta();
       hadron.ph = param.Phi();
       hadron.ph_pl = had_pl.Angle(v3plane);

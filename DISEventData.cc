@@ -66,7 +66,7 @@ void DISEventData::CalcKin()
 //--------------- HadronData
 
 HadronData::HadronData():
-  P(0),th(0),ph(0),ph_pl(0),
+  P(0),pt(0),th(0),ph(0),ph_pl(0),
   XX0(0),
   inHCALacc(false),
   HCAL(0),
@@ -92,7 +92,7 @@ HadronData::~HadronData()
 
 void HadronData::Reset()
 {
-  P=0; th=0; ph=0; ph_pl=0;
+  P=0; pt=0; th=0; ph=0; ph_pl=0;
   XX0=0;
   inHCALacc=false;
   HCAL=0;
