@@ -815,12 +815,24 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       if(itr == -1)
 	      printf("LCAnalysis::FindHadrons: outgoing particle without track!\n");
 
+      TVector3 v3mu = fkMu0.Vect();
+      TVector3 v3mup = fkMu1.Vect();
+      TVector3 v3plane = v3mu.Cross(v3mup);
+
+      TLorentzVector LzPhoton = fkMu0 - fkMu1;
+      TVector3 v3q = LzPhoton.Vect();
+
+      const PaTPar& Paramtr = p.ParInVtx(e.iBestPrimaryVertex());
+      TVector3 v3h = Paramtr.Mom3();
+
+      TVector3 had_pl = v3q.Cross(v3h);
+
       HadronData hadron;
       const PaTPar& param = outPart.ParInVtx(fiBPV);
       hadron.P  = param.Mom();
       hadron.th = param.Theta();
       hadron.ph = param.Phi();
-
+      hadron.ph_pl = had_pl.Angle(v3plane);
 
       //--- check z > 1
       const PaTrack& track = ev.vTrack(itr);
