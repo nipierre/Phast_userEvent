@@ -20,7 +20,9 @@ struct DISEventData{
   Double_t E_mu_prim; // mu1 energie
   Double_t XX0; // no. of rad. len. crossed by mu1
   Double_t HM04x,HM04y,HM05x,HM05y;
+  Double_t HL04x,HL04y,HL05x,HL05y;
   Double_t HO03x,HO03y,HO04x,HO04y;
+  Double_t HG01x,HG01y,HG021x,HG021y,HG022x,HG022y;
 
   Bool_t saved;
   Bool_t cellsCrossed;

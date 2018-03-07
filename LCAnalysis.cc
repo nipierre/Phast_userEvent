@@ -189,7 +189,8 @@ LCAnalysis::LCAnalysis():
   fHadrCal1 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC01P1__"));
   fHadrCal2 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC02P1__"));
 
-  //--- find MT/OT hodoscope z positions
+  //--- find MT/LT/OT/LAST hodoscope z positions
+  //-- MT
   int idet = PaSetup::Ref().iDetector("HM04Y1_d");
   const PaDetect& HM04 =  PaSetup::Ref().Detector(idet);
   HM04z = HM04.Z();
@@ -198,6 +199,16 @@ LCAnalysis::LCAnalysis():
   const PaDetect& HM05 =  PaSetup::Ref().Detector(idet);
   HM05z = HM05.Z();
 
+  //-- LT
+  int idet = PaSetup::Ref().iDetector("HL04X1_m");
+  const PaDetect& HL04 =  PaSetup::Ref().Detector(idet);
+  HL04z = HL04.Z();
+
+  idet = PaSetup::Ref().iDetector("HL05X1_m");
+  const PaDetect& HL05 =  PaSetup::Ref().Detector(idet);
+  HL05z = HL05.Z();
+
+  //-- OT
   idet = PaSetup::Ref().iDetector("HO03Y1_m");
   const PaDetect& HO03 =  PaSetup::Ref().Detector(idet);
   HO03z = HO03.Z();
@@ -205,6 +216,19 @@ LCAnalysis::LCAnalysis():
   idet = PaSetup::Ref().iDetector("HO04Y1_m");
   const PaDetect& HO04 =  PaSetup::Ref().Detector(idet);
   HO04z = HO04.Z();
+
+  //-- LAST
+  idet = PaSetup::Ref().iDetector("HG01Y1__");
+  const PaDetect& HG01 =  PaSetup::Ref().Detector(idet);
+  HG01z = HG01.Z();
+
+  idet = PaSetup::Ref().iDetector("HG02Y1__");
+  const PaDetect& HG021 =  PaSetup::Ref().Detector(idet);
+  HG021z = HG021.Z();
+
+  idet = PaSetup::Ref().iDetector("HG02Y2__");
+  const PaDetect& HG022 =  PaSetup::Ref().Detector(idet);
+  HG022z = HG022.Z();
 
   idet = PaSetup::Ref().iDetector("GM01U1__"); // first detector in zone 2
   Z2Az = PaSetup::Ref().Detector(idet).Z();
@@ -443,10 +467,20 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HM04y = HM04y;
   fDISEvt->HM05x = HM05x;
   fDISEvt->HM05y = HM05y;
+  fDISEvt->HL04x = HL04x;
+  fDISEvt->HL04y = HL04y;
+  fDISEvt->HL05x = HL05x;
+  fDISEvt->HL05y = HL05y;
   fDISEvt->HO03x = HO03x;
   fDISEvt->HO03y = HO03y;
   fDISEvt->HO04x = HO04x;
   fDISEvt->HO04y = HO04y;
+  fDISEvt->HG01x = HG01x;
+  fDISEvt->HG01y = HG01y;
+  fDISEvt->HG021x = HG021x;
+  fDISEvt->HG021y = HG021y;
+  fDISEvt->HG022x = HG022x;
+  fDISEvt->HG022y = HG022y;
   fDISEvt->backPropFlag = fChi2CutFlag;
 
 
@@ -537,7 +571,7 @@ void LCAnalysis::CheckTriggerMask(const PaEvent& ev) // TODO : should add year f
   //cout << trigMask << endl;
   fTrigMask = trigMask;
   //fTrigOk = trigMask&8 || trigMask&256 ;  // true if OT || incl. MT
-  fTrigOk = trigMask&1 || trigMask&2 || trigMask&3 || trigMask&9; // 2016 triggers
+  fTrigOk = trigMask&2 || trigMask&4 || trigMask&8 || trigMask&512; // 2016 triggers
   // cout<<"check CheckTriggerMask"<<endl;
 }
 
@@ -565,22 +599,41 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
   fzVTX = fBPV->Z();
 
-  // save mu1 pos at MT hodos
+  // save mu1 pos at hodos
   int Npars = track.NTPar();
-  PaTPar partr = track.vTPar(Npars-1); //
-  PaTPar parHM;
-  partr.Extrapolate(HM04z, parHM, false);
-  HM04x = parHM(1);
-  HM04y = parHM(2);
-  partr.Extrapolate(HM05z, parHM, false);
-  HM05x = parHM(1);
-  HM05y = parHM(2);
-  partr.Extrapolate(HO03z, parHM, false);
-  HO03x = parHM(1);
-  HO03y = parHM(2);
-  partr.Extrapolate(HO04z, parHM, false);
-  HO04x = parHM(1);
-  HO04y = parHM(2);
+  PaTPar partr = track.vTPar(Npars-1);
+  PaTPar parH;
+  //-- MT
+  partr.Extrapolate(HM04z, parH, false);
+  HM04x = parH(1);
+  HM04y = parH(2);
+  partr.Extrapolate(HM05z, parH, false);
+  HM05x = parH(1);
+  HM05y = parH(2);
+  //-- LT
+  partr.Extrapolate(HL04z, parH, false);
+  HL04x = parH(1);
+  HL04y = parH(2);
+  partr.Extrapolate(HL05z, parH, false);
+  HL05x = parH(1);
+  HL05y = parH(2);
+  //-- OT
+  partr.Extrapolate(HO03z, parH, false);
+  HO03x = parH(1);
+  HO03y = parH(2);
+  partr.Extrapolate(HO04z, parH, false);
+  HO04x = parH(1);
+  HO04y = parH(2);
+  //-- LAST
+  partr.Extrapolate(HG01z, parH, false);
+  HG01x = parH(1);
+  HG01y = parH(2);
+  partr.Extrapolate(HG021z, parH, false);
+  HG021x = parH(1);
+  HG021y = parH(2);
+  partr.Extrapolate(HG022z, parH, false);
+  HG021x = parH(1);
+  HG021y = parH(2);
 
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
@@ -826,13 +879,15 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       TVector3 v3h = param.Mom3();
 
       TVector3 had_pl = v3q.Cross(v3h);
+      TVector3 lep_pl = v3q.Cross(v3plane);
 
       HadronData hadron;
       hadron.P  = param.Mom();
       hadron.pt  = param.Pt();
       hadron.th = param.Theta();
       hadron.ph = param.Phi();
-      hadron.ph_pl = had_pl.Angle(v3plane);
+      // hadron.ph_pl = had_pl.Angle(v3plane); // [0,Pi] definition
+      hadron.ph_pl = lep_pl.Angle(v3h)*arccos(lep_pl.Angle(had_pl)); // [0,2*Pi] definition
 
       //--- check z > 1
       const PaTrack& track = ev.vTrack(itr);
@@ -1100,13 +1155,23 @@ void LCAnalysis::InitHadronTree()
   fEvtTree->Branch("HM04y",&HM04y);
   fEvtTree->Branch("HM05x",&HM05x);
   fEvtTree->Branch("HM05y",&HM05y);
-  int idet = PaSetup::Ref().iDetector("HM04X1_d");
-  const PaDetect& HM04 =  PaSetup::Ref().Detector(idet);
-  HM04z = HM04.Z();
-  idet = PaSetup::Ref().iDetector("HM05X1_d");
-  const PaDetect& HM05 =  PaSetup::Ref().Detector(idet);
-  HM05z = HM05.Z();
-
+  //-- mu1 pos at LT hodos
+  fEvtTree->Branch("HL04x",&HL04x);
+  fEvtTree->Branch("HL04y",&HL04y);
+  fEvtTree->Branch("HL05x",&HL05x);
+  fEvtTree->Branch("HL05y",&HL05y);
+  //-- mu1 pos at OT hodos
+  fEvtTree->Branch("HO03x",&HO03x);
+  fEvtTree->Branch("HO03y",&HO03y);
+  fEvtTree->Branch("HO04x",&HO04x);
+  fEvtTree->Branch("HO04y",&HO04y);
+  //-- mu1 pos at LAST hodos
+  fEvtTree->Branch("HG01x",&HG01x);
+  fEvtTree->Branch("HG01y",&HG01y);
+  fEvtTree->Branch("HG021x",&HG021x);
+  fEvtTree->Branch("HG021y",&HG021y);
+  fEvtTree->Branch("HG022x",&HG022x);
+  fEvtTree->Branch("HG022y",&HG022y);
 
   fHadrTree = new TTree("HadrTree","analysisTree");
   fHadrTree->Branch("TrigMask",&fTrigMask);
@@ -1120,6 +1185,23 @@ void LCAnalysis::InitHadronTree()
   fHadrTree->Branch("HM04y",&HM04y);
   fHadrTree->Branch("HM05x",&HM05x);
   fHadrTree->Branch("HM05y",&HM05y);
+  //-- mu1 pos at LT hodos
+  fEvtTree->Branch("HL04x",&HL04x);
+  fEvtTree->Branch("HL04y",&HL04y);
+  fEvtTree->Branch("HL05x",&HL05x);
+  fEvtTree->Branch("HL05y",&HL05y);
+  //-- mu1 pos at OT hodos
+  fEvtTree->Branch("HO03x",&HO03x);
+  fEvtTree->Branch("HO03y",&HO03y);
+  fEvtTree->Branch("HO04x",&HO04x);
+  fEvtTree->Branch("HO04y",&HO04y);
+  //-- mu1 pos at LAST hodos
+  fEvtTree->Branch("HG01x",&HG01x);
+  fEvtTree->Branch("HG01y",&HG01y);
+  fEvtTree->Branch("HG021x",&HG021x);
+  fEvtTree->Branch("HG021y",&HG021y);
+  fEvtTree->Branch("HG022x",&HG022x);
+  fEvtTree->Branch("HG022y",&HG022y);
   //-----------------------------
   fHadrTree->Branch("z",&fz);
   fHadrTree->Branch("Q",&fCharge);
