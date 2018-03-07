@@ -83,7 +83,7 @@ class LCAnalysis{
   double HM04x,HM04y,HM04z,HM05x,HM05y,HM05z;
   double HL04x,HL04y,HL04z,HL05x,HL05y,HL05z;
   double HO03x,HO03y,HO03z,HO04x,HO04y,HO04z;
-  double HG01x,HG01y,HG01z,HG02x,HG02y,HG02z;
+  double HG01x,HG01y,HG01z,HG021x,HG021y,HG021z,HG022x,HG022y,HG022z;
   double MM01x,MM01y,MM01z,MM02x,MM02y,MM02z,MM03x,MM03y,MM03z;
   double Z2Ax,Z2Ay,Z2Az,Z2Bx,Z2By,Z2Bz;
   double RICHx,RICHy; //added by Quiela

@@ -46,9 +46,6 @@ static const char* CONFFILENAME=
 static const char* CUTFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_cut_file.txt",PREFIX);
 
-static const char* OUTFILENAME=
-  Form("%s/HadronSelection/lc_output.root",PREFIX);
-
 static const char* LOGFILENAME=
   Form("%s/HadronSelection/lc_analysis.log",PREFIX);
 
@@ -200,7 +197,7 @@ LCAnalysis::LCAnalysis():
   HM05z = HM05.Z();
 
   //-- LT
-  int idet = PaSetup::Ref().iDetector("HL04X1_m");
+  idet = PaSetup::Ref().iDetector("HL04X1_m");
   const PaDetect& HL04 =  PaSetup::Ref().Detector(idet);
   HL04z = HL04.Z();
 
