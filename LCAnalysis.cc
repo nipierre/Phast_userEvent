@@ -629,8 +629,8 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG021x = parH(1);
   HG021y = parH(2);
   partr.Extrapolate(HG022z, parH, false);
-  HG021x = parH(1);
-  HG021y = parH(2);
+  HG022x = parH(1);
+  HG022y = parH(2);
 
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
