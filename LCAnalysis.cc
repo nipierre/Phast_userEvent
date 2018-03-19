@@ -883,8 +883,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       hadron.pt  = param.Pt();
       hadron.th = param.Theta();
       hadron.ph = param.Phi();
-      // hadron.ph_pl = had_pl.Angle(v3plane); // [0,Pi] definition
-      hadron.ph_pl = lep_pl.Angle(v3h)*acos(lep_pl.Angle(had_pl)); // [0,2*Pi] definition
+      hadron.ph_pl = had_pl.Angle(v3plane); // [0,Pi] definition
+      // hadron.ph_pl = lep_pl.Angle(v3h)*acos(lep_pl.Angle(had_pl)); // [0,2*Pi] definition
 
       //--- check z > 1
       const PaTrack& track = ev.vTrack(itr);
