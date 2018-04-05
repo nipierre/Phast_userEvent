@@ -80,6 +80,7 @@ class LCAnalysis{
   std::vector<HadronMCData> fMCHadrons;
   std::vector<HadronMCData>* fMCHadronsPtr;
   //-- utility variables
+  int HM04h,HM05h,HL04h,HL05h,HO03h,HO04h,HG01h,HG02h;
   double HM04x,HM04y,HM04z,HM05x,HM05y,HM05z;
   double HL04x,HL04y,HL04z,HL05x,HL05y,HL05z;
   double HO03x,HO03y,HO03z,HO04x,HO04y,HO04z;

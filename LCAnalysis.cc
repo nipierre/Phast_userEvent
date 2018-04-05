@@ -658,6 +658,15 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   if((269918<ev.RunNum())){
   const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
   fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);}
+
+  HM04h = track.NHitsFoundInDetect("HM04Y1");
+  HM05h = track.NHitsFoundInDetect("HM05Y1");
+  HL04h = track.NHitsFoundInDetect("HL04");
+  HL05h = track.NHitsFoundInDetect("HL05");
+  HO03h = track.NHitsFoundInDetect("HO03");
+  HO04h = track.NHitsFoundInDetect("HO04");
+  HG01h = track.NHitsFoundInDetect("HG01");
+  HG02h = track.NHitsFoundInDetect("HG02");
 }
 
 double LCAnalysis::GetMassPid(int pid) const
