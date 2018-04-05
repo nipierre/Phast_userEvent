@@ -667,6 +667,8 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HO04h = track.NHitsFoundInDetect("HO04");
   HG01h = track.NHitsFoundInDetect("HG01");
   HG02h = track.NHitsFoundInDetect("HG02");
+
+  cout << "Hodos hits : " << HM04h << " " << HM05h << " " << HL04h << " " << HL05h << " " << HO03h << " " << HO04h << " " << HG01h << " " << HG02h << endl;
 }
 
 double LCAnalysis::GetMassPid(int pid) const
