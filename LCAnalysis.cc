@@ -632,7 +632,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG022x = parH(1);
   HG022y = parH(2);
 
-  if( fIsMc )
+  if( fIsMC )
   {
     const vector<PaMChit>& mcHits = ev.MChits();
 
