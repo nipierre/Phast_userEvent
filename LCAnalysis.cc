@@ -38,7 +38,7 @@ static const double M_K  = G3partMass[11]; // K+ mass
 static const double M_p  = G3partMass[14]; // proton mass
 
 static const char* PREFIX=
-  "/afs/cern.ch/user/n/nipierre/workspace";
+  "/sps/compass/npierre/workspace";
 
 static const char* CONFFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
@@ -776,47 +776,47 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
     for(int i=0; i<int(mcHits.size()); i++)
     {
-      if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HM04Y1_d"))
+      if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
         HM04MCx=mcHits[i].X();
         HM04MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HM05Y1_d"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
       {
         HM05MCx=mcHits[i].X();
         HM05MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HL04X1_m"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL04X1_m"))
       {
         HL04MCx=mcHits[i].X();
         HL04MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HL05X1_m"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL05X1_m"))
       {
         HL05MCx=mcHits[i].X();
         HL05MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HO03Y1_m"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
       {
         HO03MCx=mcHits[i].X();
         HO03MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HO04Y1_m"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
       {
         HO04MCx=mcHits[i].X();
         HO04MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG01Y1__"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG01Y1__"))
       {
         HG01MCx=mcHits[i].X();
         HG01MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG02Y1__"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y1__"))
       {
         HG021MCx=mcHits[i].X();
         HG021MCy=mcHits[i].Y();
       }
-      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG02Y2__"))
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y2__"))
       {
         HG022MCx=mcHits[i].X();
         HG022MCy=mcHits[i].Y();
