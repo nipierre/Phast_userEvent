@@ -113,11 +113,11 @@ struct DISEventMCData{
   Double_t    MC_xBj; //!
   Double_t     MC_W2; //!
   Double_t      MC_W; //!
-  Double_t HM04MCx,HM04MCy,HM05MCx,HM05MCy;
-  Double_t HL04MCx,HL04MCy,HL05MCx,HL05MCy;
-  Double_t HO03MCx,HO03MCy,HO04MCx,HO04MCy;
-  Double_t HG01MCx,HG01MCy,HG021MCx,HG021MCy,HG022MCx,HG022MCy;
-  
+  Double_t HM04x,HM04y,HM05x,HM05y;
+  Double_t HL04x,HL04y,HL05x,HL05y;
+  Double_t HO03x,HO03y,HO04x,HO04y;
+  Double_t HG01x,HG01y,HG021x,HG021y,HG022x,HG022y;
+
   ClassDef(DISEventMCData,2);
 };
 
