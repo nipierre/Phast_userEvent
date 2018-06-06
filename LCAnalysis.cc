@@ -632,6 +632,60 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG022x = parH(1);
   HG022y = parH(2);
 
+  if( fIsMc )
+  {
+    const vector<PaMChit>& mcHits = ev.MChits();
+
+    for(int i=0; i<int(mcHits.size()); i++)
+    {
+      if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
+      {
+        HM04MCx=mcHits[i].X();
+        HM04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
+      {
+        HM05MCx=mcHits[i].X();
+        HM05MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL04X1_m"))
+      {
+        HL04MCx=mcHits[i].X();
+        HL04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL05X1_m"))
+      {
+        HL05MCx=mcHits[i].X();
+        HL05MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
+      {
+        HO03MCx=mcHits[i].X();
+        HO03MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
+      {
+        HO04MCx=mcHits[i].X();
+        HO04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG01Y1__"))
+      {
+        HG01MCx=mcHits[i].X();
+        HG01MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y1__"))
+      {
+        HG021MCx=mcHits[i].X();
+        HG021MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y2__"))
+      {
+        HG022MCx=mcHits[i].X();
+        HG022MCy=mcHits[i].Y();
+      }
+    }
+  }
+
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
     fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fMCtargetType);
@@ -771,57 +825,6 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     // }
     //...else we not dealing w/ a RADGEN event: weight left =1
     //end LUND block data
-
-    const vector<PaMChit>& mcHits = ev.MChits();
-
-    for(int i=0; i<int(mcHits.size()); i++)
-    {
-      if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
-      {
-        HM04MCx=mcHits[i].X();
-        HM04MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
-      {
-        HM05MCx=mcHits[i].X();
-        HM05MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL04X1_m"))
-      {
-        HL04MCx=mcHits[i].X();
-        HL04MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HL05X1_m"))
-      {
-        HL05MCx=mcHits[i].X();
-        HL05MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
-      {
-        HO03MCx=mcHits[i].X();
-        HO03MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
-      {
-        HO04MCx=mcHits[i].X();
-        HO04MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG01Y1__"))
-      {
-        HG01MCx=mcHits[i].X();
-        HG01MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y1__"))
-      {
-        HG021MCx=mcHits[i].X();
-        HG021MCy=mcHits[i].Y();
-      }
-      else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HG02Y2__"))
-      {
-        HG022MCx=mcHits[i].X();
-        HG022MCy=mcHits[i].Y();
-      }
-    }
 
     const PaMCvertex& mcVtx = ev.vMCvertex(0);
     if( !mcVtx.IsPrimary() ){
