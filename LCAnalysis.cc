@@ -640,11 +640,13 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
     {
       if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
+        cout << mcHits[i].DetRef().IDet() << " : HM04" << endl;
         HM04MCx=mcHits[i].X();
         HM04MCy=mcHits[i].Y();
       }
       else if(mcHits[i].DetRef().IDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
       {
+        cout << mcHits[i].DetRef().IDet() << " : HM05" << endl;
         HM05MCx=mcHits[i].X();
         HM05MCy=mcHits[i].Y();
       }
