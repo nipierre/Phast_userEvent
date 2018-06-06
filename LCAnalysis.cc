@@ -38,7 +38,7 @@ static const double M_K  = G3partMass[11]; // K+ mass
 static const double M_p  = G3partMass[14]; // proton mass
 
 static const char* PREFIX=
-  "/sps/compass/npierre/workspace";
+  "/sps/compass/npierre";
 
 static const char* CONFFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
