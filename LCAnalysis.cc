@@ -772,7 +772,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     //...else we not dealing w/ a RADGEN event: weight left =1
     //end LUND block data
 
-    const vector<PaMChit>& mcHits = ev.MCHits();
+    const vector<PaMChit>& mcHits = ev.MChits();
 
     for(int i=0; i<int(mcHits.size()); i++)
     {
