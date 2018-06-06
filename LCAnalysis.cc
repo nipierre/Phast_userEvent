@@ -752,25 +752,76 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->mcWeight = mcWeight;
 
     // find dd events
-    // N. PIERRE : Is it still relevant here ? TODO Suppress it.
-    int difType=0;
-    for(int i=0;i<nparticles;i++){ //newwww
-      if(lujets[i].k[1]==2210 || lujets[i].k[1]==2110){  difType= 1; break;} } fDISMCEvt->difType = difType;
+    // // N. PIERRE : Is it still relevant here ? TODO Suppress it.
+    // int difType=0;
+    // for(int i=0;i<nparticles;i++){ //newwww
+    //   if(lujets[i].k[1]==2210 || lujets[i].k[1]==2110){  difType= 1; break;} } fDISMCEvt->difType = difType;
     //get type of event from RADGEN
     // irad=0 - no radiation
     // irad=1 - inelastic (1<x<0)
     // irad=2 - quasi-elastic on p or on nucleon (x=1)
     // irad=3 - elastic (x=M_A/M)
     // irad=4 is irad=1 but W^2<4 (i.e. not useful to call jetset for hadronization, SET BY Yann)
-    int irad = int(ld.uservar[19]+.5); fDISMCEvt->irad = irad;
-      fDISMCEvt->MC_nuTr = ld.u; fDISMCEvt->MC_Q2Tr = ld.q2;
-      fDISMCEvt->MC_xTr = ld.x; fDISMCEvt->MC_yTr = ld.y;
-    float w1 = ld.uservar[18], w2 =  ld.uservar[17];
-    if (w1!=0 || w2!=0) {
-      fDISMCEvt->w1 = w1; fDISMCEvt->w2 = w2;
-    }
+    // int irad = int(ld.uservar[19]+.5); fDISMCEvt->irad = irad;
+    //   fDISMCEvt->MC_nuTr = ld.u; fDISMCEvt->MC_Q2Tr = ld.q2;
+    //   fDISMCEvt->MC_xTr = ld.x; fDISMCEvt->MC_yTr = ld.y;
+    // float w1 = ld.uservar[18], w2 =  ld.uservar[17];
+    // if (w1!=0 || w2!=0) {
+    //   fDISMCEvt->w1 = w1; fDISMCEvt->w2 = w2;
+    // }
     //...else we not dealing w/ a RADGEN event: weight left =1
     //end LUND block data
+
+    const vector<PaMChit>& mcHits = ev.MCHits();
+
+    for(int i=0; i<int(mcHits.size()); i++)
+    {
+      if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HM04Y1_d"))
+      {
+        HM04MCx=mcHits[i].X();
+        HM04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HM05Y1_d"))
+      {
+        HM05MCx=mcHits[i].X();
+        HM05MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HL04X1_m")
+      {
+        HL04MCx=mcHits[i].X();
+        HL04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HL05X1_m"))
+      {
+        HL05MCx=mcHits[i].X();
+        HL05MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HO03Y1_m")
+      {
+        HO03MCx=mcHits[i].X();
+        HO03MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HO04Y1_m"))
+      {
+        HO04MCx=mcHits[i].X();
+        HO04MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG01Y1__")
+      {
+        HG01MCx=mcHits[i].X();
+        HG01MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG02Y1__"))
+      {
+        HG021MCx=mcHits[i].X();
+        HG021MCy=mcHits[i].Y();
+      }
+      else if(mcHits[i].DetRef()==PaSetup::Ref().iDetector("HG02Y2__"))
+      {
+        HG022MCx=mcHits[i].X();
+        HG022MCy=mcHits[i].Y();
+      }
+    }
 
     const PaMCvertex& mcVtx = ev.vMCvertex(0);
     if( !mcVtx.IsPrimary() ){
@@ -803,6 +854,25 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1z =  kmu1.Z();
 
     fDISMCEvt->recons = fReconsEvent;
+
+    fDISMCEvt->HM04x = HM04MCx;
+    fDISMCEvt->HM04y = HM04MCy;
+    fDISMCEvt->HM05x = HM05MCx;
+    fDISMCEvt->HM05y = HM05MCy;
+    fDISMCEvt->HL04x = HL04MCx;
+    fDISMCEvt->HL04y = HL04MCy;
+    fDISMCEvt->HL05x = HL05MCx;
+    fDISMCEvt->HL05y = HL05MCy;
+    fDISMCEvt->HO03x = HO03MCx;
+    fDISMCEvt->HO03y = HO03MCy;
+    fDISMCEvt->HO04x = HO04MCx;
+    fDISMCEvt->HO04y = HO04MCy;
+    fDISMCEvt->HG01x = HG01MCx;
+    fDISMCEvt->HG01y = HG01MCy;
+    fDISMCEvt->HG021x = HG021MCx;
+    fDISMCEvt->HG021y = HG021MCy;
+    fDISMCEvt->HG022x = HG022MCx;
+    fDISMCEvt->HG022y = HG022MCy;
 
     int Ntr = mcVtx.NMCtrack();
     int Nmuons=0;
