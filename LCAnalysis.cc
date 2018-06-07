@@ -638,6 +638,15 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
     for(int i=0; i<int(mcHits.size()); i++)
     {
+      cout << PaSetup::Ref().iDetector("HM04Y1_d") << endl;
+      cout << PaSetup::Ref().iDetector("HM05Y1_d") << endl;
+      cout << PaSetup::Ref().iDetector("HL04X1_m") << endl;
+      cout << PaSetup::Ref().iDetector("HL05X1_m") << endl;
+      cout << PaSetup::Ref().iDetector("HO03Y1_m") << endl;
+      cout << PaSetup::Ref().iDetector("HO04Y1_m") << endl;
+      cout << PaSetup::Ref().iDetector("HG01Y1__") << endl;
+      cout << PaSetup::Ref().iDetector("HG02Y1__") << endl;
+      cout << PaSetup::Ref().iDetector("HG02Y2__") << endl;
       if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
         cout << "HM04" << endl;
