@@ -649,55 +649,55 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
       // cout << PaSetup::Ref().iDetector("HG02Y2__") << endl;
       if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
-        cout << "HM04" << endl;
+        // cout << "HM04" << endl;
         HM04MCx=mcHits[i].X();
         HM04MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
       {
-        cout << "HM05" << endl;
+        // cout << "HM05" << endl;
         HM05MCx=mcHits[i].X();
         HM05MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
       {
-        cout << "HL04" << endl;
+        // cout << "HL04" << endl;
         HL04MCx=mcHits[i].X();
         HL04MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
       {
-        cout << "HL05" << endl;
+        // cout << "HL05" << endl;
         HL05MCx=mcHits[i].X();
         HL05MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
       {
-        cout << "HO03" << endl;
+        // cout << "HO03" << endl;
         HO03MCx=mcHits[i].X();
         HO03MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
       {
-        cout << "HO04" << endl;
+        // cout << "HO04" << endl;
         HO04MCx=mcHits[i].X();
         HO04MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
       {
-        cout << "HG01" << endl;
+        // cout << "HG01" << endl;
         HG01MCx=mcHits[i].X();
         HG01MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
       {
-        cout << "HG02" << endl;
+        // cout << "HG02" << endl;
         HG021MCx=mcHits[i].X();
         HG021MCy=mcHits[i].Y();
       }
       else if(mcHits[i].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
       {
-        cout << "HG02" << endl;
+        // cout << "HG02" << endl;
         HG022MCx=mcHits[i].X();
         HG022MCy=mcHits[i].Y();
       }
