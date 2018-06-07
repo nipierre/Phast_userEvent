@@ -1091,8 +1091,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
 
-  // if(fIsMC || fReconsEvent)
-  if(fReconsEvent)
+  if(fIsMC || fReconsEvent)
+  // if(fReconsEvent)
   {
     CopyDISEvtData(fReconsEvent);
     fDISEvtTree->Fill();
@@ -1333,27 +1333,27 @@ void LCAnalysis::InitHadronTree()
     fEvtTreeMC->Branch("zVTX",&fzVTX);
     fEvtTreeMC->Branch("TrigMask",&fTrigMask);
     //-- mu1 pos at MT hodos
-    fEvtTreeMC->Branch("HM04x",&HM04MCx);
-    fEvtTreeMC->Branch("HM04y",&HM04MCy);
-    fEvtTreeMC->Branch("HM05x",&HM05MCx);
-    fEvtTreeMC->Branch("HM05y",&HM05MCy);
+    fEvtTreeMC->Branch("HM04MCx",&HM04MCx);
+    fEvtTreeMC->Branch("HM04MCy",&HM04MCy);
+    fEvtTreeMC->Branch("HM05MCx",&HM05MCx);
+    fEvtTreeMC->Branch("HM05MCy",&HM05MCy);
     //-- mu1 pos at LT hodos
-    fEvtTreeMC->Branch("HL04x",&HL04MCx);
-    fEvtTreeMC->Branch("HL04y",&HL04MCy);
-    fEvtTreeMC->Branch("HL05x",&HL05MCx);
-    fEvtTreeMC->Branch("HL05y",&HL05MCy);
+    fEvtTreeMC->Branch("HL04MCx",&HL04MCx);
+    fEvtTreeMC->Branch("HL04MCy",&HL04MCy);
+    fEvtTreeMC->Branch("HL05MCx",&HL05MCx);
+    fEvtTreeMC->Branch("HL05MCy",&HL05MCy);
     //-- mu1 pos at OT hodos
-    fEvtTreeMC->Branch("HO03x",&HO03MCx);
-    fEvtTreeMC->Branch("HO03y",&HO03MCy);
-    fEvtTreeMC->Branch("HO04x",&HO04MCx);
-    fEvtTreeMC->Branch("HO04y",&HO04MCy);
+    fEvtTreeMC->Branch("HO03MCx",&HO03MCx);
+    fEvtTreeMC->Branch("HO03MCy",&HO03MCy);
+    fEvtTreeMC->Branch("HO04MCx",&HO04MCx);
+    fEvtTreeMC->Branch("HO04MCy",&HO04MCy);
     //-- mu1 pos at LAST hodos
-    fEvtTreeMC->Branch("HG01x",&HG01MCx);
-    fEvtTreeMC->Branch("HG01y",&HG01MCy);
-    fEvtTreeMC->Branch("HG021x",&HG021MCx);
-    fEvtTreeMC->Branch("HG021y",&HG021MCy);
-    fEvtTreeMC->Branch("HG022x",&HG022MCx);
-    fEvtTreeMC->Branch("HG022y",&HG022MCy);
+    fEvtTreeMC->Branch("HG01MCx",&HG01MCx);
+    fEvtTreeMC->Branch("HG01MCy",&HG01MCy);
+    fEvtTreeMC->Branch("HG021MCx",&HG021MCx);
+    fEvtTreeMC->Branch("HG021MCy",&HG021MCy);
+    fEvtTreeMC->Branch("HG022MCx",&HG022MCx);
+    fEvtTreeMC->Branch("HG022MCy",&HG022MCy);
     fEvtTreeMC->Branch("recon",&fReconsEvent);
 
     fHadrTreeMC = new TTree("HadrTreeMC","analysisTreeMC");
@@ -1363,27 +1363,27 @@ void LCAnalysis::InitHadronTree()
     fHadrTreeMC->Branch("y",&fy);
     fHadrTreeMC->Branch("W2",&fW2);
     //-- mu1 pos at MT hodos
-    fHadrTreeMC->Branch("HM04x",&HM04MCx);
-    fHadrTreeMC->Branch("HM04y",&HM04MCy);
-    fHadrTreeMC->Branch("HM05x",&HM05MCx);
-    fHadrTreeMC->Branch("HM05y",&HM05MCy);
+    fHadrTreeMC->Branch("HM04MCx",&HM04MCx);
+    fHadrTreeMC->Branch("HM04MCy",&HM04MCy);
+    fHadrTreeMC->Branch("HM05MCx",&HM05MCx);
+    fHadrTreeMC->Branch("HM05MCy",&HM05MCy);
     //-- mu1 pos at LT hodos
-    fHadrTreeMC->Branch("HL04x",&HL04MCx);
-    fHadrTreeMC->Branch("HL04y",&HL04MCy);
-    fHadrTreeMC->Branch("HL05x",&HL05MCx);
-    fHadrTreeMC->Branch("HL05y",&HL05MCy);
+    fHadrTreeMC->Branch("HL04MCx",&HL04MCx);
+    fHadrTreeMC->Branch("HL04MCy",&HL04MCy);
+    fHadrTreeMC->Branch("HL05MCx",&HL05MCx);
+    fHadrTreeMC->Branch("HL05MCy",&HL05MCy);
     //-- mu1 pos at OT hodos
-    fHadrTreeMC->Branch("HO03x",&HO03MCx);
-    fHadrTreeMC->Branch("HO03y",&HO03MCy);
-    fHadrTreeMC->Branch("HO04x",&HO04MCx);
-    fHadrTreeMC->Branch("HO04y",&HO04MCy);
+    fHadrTreeMC->Branch("HO03MCx",&HO03MCx);
+    fHadrTreeMC->Branch("HO03MCy",&HO03MCy);
+    fHadrTreeMC->Branch("HO04MCx",&HO04MCx);
+    fHadrTreeMC->Branch("HO04MCy",&HO04MCy);
     //-- mu1 pos at LAST hodos
-    fHadrTreeMC->Branch("HG01x",&HG01MCx);
-    fHadrTreeMC->Branch("HG01y",&HG01MCy);
-    fHadrTreeMC->Branch("HG021x",&HG021MCx);
-    fHadrTreeMC->Branch("HG021y",&HG021MCy);
-    fHadrTreeMC->Branch("HG022x",&HG022MCx);
-    fHadrTreeMC->Branch("HG022y",&HG022MCy);
+    fHadrTreeMC->Branch("HG01MCx",&HG01MCx);
+    fHadrTreeMC->Branch("HG01MCy",&HG01MCy);
+    fHadrTreeMC->Branch("HG021MCx",&HG021MCx);
+    fHadrTreeMC->Branch("HG021MCy",&HG021MCy);
+    fHadrTreeMC->Branch("HG022MCx",&HG022MCx);
+    fHadrTreeMC->Branch("HG022MCy",&HG022MCy);
     fHadrTreeMC->Branch("recon",&fReconsEvent);
     fHadrTreeMC->Branch("z",&fz);
     fHadrTreeMC->Branch("Q",&fCharge);
