@@ -644,58 +644,58 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
       if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
         // cout << "HM04" << endl;
-        HM04MCx=mcHits[*it].X();
-        HM04MCy=mcHits[*it].Y();
+        MC_HM04x=mcHits[*it].X();
+        MC_HM04y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
       {
         // cout << "HM05" << endl;
-        HM05MCx=mcHits[*it].X();
-        HM05MCy=mcHits[*it].Y();
+        MC_HM05x=mcHits[*it].X();
+        MC_HM05y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
       {
         // cout << "HL04" << endl;
-        HL04MCx=mcHits[*it].X();
-        HL04MCy=mcHits[*it].Y();
+        MC_HL04x=mcHits[*it].X();
+        MC_HL04y=mcHits[*it].Y();
         cout << "HL04MC : " << HL04MCx << " " << HL04MCy << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
       {
         // cout << "HL05" << endl;
-        HL05MCx=mcHits[*it].X();
-        HL05MCy=mcHits[*it].Y();
+        MC_HL05x=mcHits[*it].X();
+        MC_HL05y=mcHits[*it].Y();
         cout << "HL05MC : " << HL05MCx << " " << HL05MCy << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
       {
         // cout << "HO03" << endl;
-        HO03MCx=mcHits[*it].X();
-        HO03MCy=mcHits[*it].Y();
+        MC_HO03x=mcHits[*it].X();
+        MC_HO03y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
       {
         // cout << "HO04" << endl;
-        HO04MCx=mcHits[*it].X();
-        HO04MCy=mcHits[*it].Y();
+        MC_HO04x=mcHits[*it].X();
+        MC_HO04y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
       {
         // cout << "HG01" << endl;
-        HG01MCx=mcHits[*it].X();
-        HG01MCy=mcHits[*it].Y();
+        MC_HG01x=mcHits[*it].X();
+        MC_HG01y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
       {
         // cout << "HG02" << endl;
-        HG021MCx=mcHits[*it].X();
-        HG021MCy=mcHits[*it].Y();
+        MC_HG021x=mcHits[*it].X();
+        MC_HG021y=mcHits[*it].Y();
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
       {
         // cout << "HG02" << endl;
-        HG022MCx=mcHits[*it].X();
-        HG022MCy=mcHits[*it].Y();
+        MC_HG022x=mcHits[*it].X();
+        MC_HG022y=mcHits[*it].Y();
       }
     }
   }
