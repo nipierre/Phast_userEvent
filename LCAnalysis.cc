@@ -611,9 +611,11 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   partr.Extrapolate(HL04z, parH, false);
   HL04x = parH(1);
   HL04y = parH(2);
+  cout << "HL04 : " << HL04x << " " << HL04y << endl;
   partr.Extrapolate(HL05z, parH, false);
   HL05x = parH(1);
   HL05y = parH(2);
+  cout << "HL05 : " << HL05x << " " << HL05y << endl;
   //-- OT
   partr.Extrapolate(HO03z, parH, false);
   HO03x = parH(1);
@@ -656,12 +658,14 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
         // cout << "HL04" << endl;
         HL04MCx=mcHits[*it].X();
         HL04MCy=mcHits[*it].Y();
+        cout << "HL04MC : " << HL04MCx << " " << HL04MCy << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
       {
         // cout << "HL05" << endl;
         HL05MCx=mcHits[*it].X();
         HL05MCy=mcHits[*it].Y();
+        cout << "HL05MC : " << HL05MCx << " " << HL05MCy << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
       {
