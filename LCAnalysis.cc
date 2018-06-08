@@ -872,24 +872,24 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
     fDISMCEvt->recons = fReconsEvent;
 
-    fDISMCEvt->HM04MCx = HM04MCx;
-    fDISMCEvt->HM04MCy = HM04MCy;
-    fDISMCEvt->HM05MCx = HM05MCx;
-    fDISMCEvt->HM05MCy = HM05MCy;
-    fDISMCEvt->HL04MCx = HL04MCx;
-    fDISMCEvt->HL04MCy = HL04MCy;
-    fDISMCEvt->HL05MCx = HL05MCx;
-    fDISMCEvt->HL05MCy = HL05MCy;
-    fDISMCEvt->HO03MCx = HO03MCx;
-    fDISMCEvt->HO03MCy = HO03MCy;
-    fDISMCEvt->HO04MCx = HO04MCx;
-    fDISMCEvt->HO04MCy = HO04MCy;
-    fDISMCEvt->HG01MCx = HG01MCx;
-    fDISMCEvt->HG01MCy = HG01MCy;
-    fDISMCEvt->HG021MCx = HG021MCx;
-    fDISMCEvt->HG021MCy = HG021MCy;
-    fDISMCEvt->HG022MCx = HG022MCx;
-    fDISMCEvt->HG022MCy = HG022MCy;
+    fDISMCEvt->MC_HM04x = MC_HM04x;
+    fDISMCEvt->MC_HM04y = MC_HM04y;
+    fDISMCEvt->MC_HM05x = MC_HM05x;
+    fDISMCEvt->MC_HM05y = MC_HM05y;
+    fDISMCEvt->MC_HL04x = MC_HL04x;
+    fDISMCEvt->MC_HL04y = MC_HL04y;
+    fDISMCEvt->MC_HL05x = MC_HL05x;
+    fDISMCEvt->MC_HL05y = MC_HL05y;
+    fDISMCEvt->MC_HO03x = MC_HO03x;
+    fDISMCEvt->MC_HO03y = MC_HO03y;
+    fDISMCEvt->MC_HO04x = MC_HO04x;
+    fDISMCEvt->MC_HO04y = MC_HO04y;
+    fDISMCEvt->MC_HG01x = MC_HG01x;
+    fDISMCEvt->MC_HG01y = MC_HG01y;
+    fDISMCEvt->MC_HG021x = MC_HG021x;
+    fDISMCEvt->MC_HG021y = MC_HG021y;
+    fDISMCEvt->MC_HG022x = MC_HG022x;
+    fDISMCEvt->MC_HG022y = MC_HG022y;
 
     int Ntr = mcVtx.NMCtrack();
     int Nmuons=0;
@@ -1329,27 +1329,27 @@ void LCAnalysis::InitHadronTree()
     fEvtTreeMC->Branch("zVTX",&fzVTX);
     fEvtTreeMC->Branch("TrigMask",&fTrigMask);
     //-- mu1 pos at MT hodos
-    fEvtTreeMC->Branch("HM04MCx",&HM04MCx);
-    fEvtTreeMC->Branch("HM04MCy",&HM04MCy);
-    fEvtTreeMC->Branch("HM05MCx",&HM05MCx);
-    fEvtTreeMC->Branch("HM05MCy",&HM05MCy);
+    fEvtTreeMC->Branch("MC_HM04x",&MC_HM04x);
+    fEvtTreeMC->Branch("MC_HM04y",&MC_HM04y);
+    fEvtTreeMC->Branch("MC_HM05x",&MC_HM05x);
+    fEvtTreeMC->Branch("MC_HM05y",&MC_HM05y);
     //-- mu1 pos at LT hodos
-    fEvtTreeMC->Branch("HL04MCx",&HL04MCx);
-    fEvtTreeMC->Branch("HL04MCy",&HL04MCy);
-    fEvtTreeMC->Branch("HL05MCx",&HL05MCx);
-    fEvtTreeMC->Branch("HL05MCy",&HL05MCy);
+    fEvtTreeMC->Branch("MC_HL04x",&MC_HL04x);
+    fEvtTreeMC->Branch("MC_HL04y",&MC_HL04y);
+    fEvtTreeMC->Branch("MC_HL05x",&MC_HL05x);
+    fEvtTreeMC->Branch("MC_HL05y",&MC_HL05y);
     //-- mu1 pos at OT hodos
-    fEvtTreeMC->Branch("HO03MCx",&HO03MCx);
-    fEvtTreeMC->Branch("HO03MCy",&HO03MCy);
-    fEvtTreeMC->Branch("HO04MCx",&HO04MCx);
-    fEvtTreeMC->Branch("HO04MCy",&HO04MCy);
+    fEvtTreeMC->Branch("MC_HO03x",&MC_HO03x);
+    fEvtTreeMC->Branch("MC_HO03y",&MC_HO03y);
+    fEvtTreeMC->Branch("MC_HO04x",&MC_HO04x);
+    fEvtTreeMC->Branch("MC_HO04y",&MC_HO04y);
     //-- mu1 pos at LAST hodos
-    fEvtTreeMC->Branch("HG01MCx",&HG01MCx);
-    fEvtTreeMC->Branch("HG01MCy",&HG01MCy);
-    fEvtTreeMC->Branch("HG021MCx",&HG021MCx);
-    fEvtTreeMC->Branch("HG021MCy",&HG021MCy);
-    fEvtTreeMC->Branch("HG022MCx",&HG022MCx);
-    fEvtTreeMC->Branch("HG022MCy",&HG022MCy);
+    fEvtTreeMC->Branch("MC_HG01x",&MC_HG01x);
+    fEvtTreeMC->Branch("MC_HG01y",&MC_HG01y);
+    fEvtTreeMC->Branch("MC_HG021x",&MC_HG021MCx);
+    fEvtTreeMC->Branch("MC_HG021y",&MC_HG021MCy);
+    fEvtTreeMC->Branch("MC_HG022x",&MC_HG022MCx);
+    fEvtTreeMC->Branch("MC_HG022y",&MC_HG022MCy);
     fEvtTreeMC->Branch("recon",&fReconsEvent);
 
     fHadrTreeMC = new TTree("HadrTreeMC","analysisTreeMC");
@@ -1359,27 +1359,27 @@ void LCAnalysis::InitHadronTree()
     fHadrTreeMC->Branch("y",&fy);
     fHadrTreeMC->Branch("W2",&fW2);
     //-- mu1 pos at MT hodos
-    fHadrTreeMC->Branch("HM04MCx",&HM04MCx);
-    fHadrTreeMC->Branch("HM04MCy",&HM04MCy);
-    fHadrTreeMC->Branch("HM05MCx",&HM05MCx);
-    fHadrTreeMC->Branch("HM05MCy",&HM05MCy);
+    fHadrTreeMC->Branch("MC_HM04x",&MC_HM04x);
+    fHadrTreeMC->Branch("MC_HM04y",&MC_HM04y);
+    fHadrTreeMC->Branch("MC_HM05x",&MC_HM05x);
+    fHadrTreeMC->Branch("MC_HM05y",&MC_HM05y);
     //-- mu1 pos at LT hodos
-    fHadrTreeMC->Branch("HL04MCx",&HL04MCx);
-    fHadrTreeMC->Branch("HL04MCy",&HL04MCy);
-    fHadrTreeMC->Branch("HL05MCx",&HL05MCx);
-    fHadrTreeMC->Branch("HL05MCy",&HL05MCy);
+    fHadrTreeMC->Branch("MC_HL04x",&MC_HL04x);
+    fHadrTreeMC->Branch("MC_HL04y",&MC_HL04y);
+    fHadrTreeMC->Branch("MC_HL05x",&MC_HL05x);
+    fHadrTreeMC->Branch("MC_HL05y",&MC_HL05y);
     //-- mu1 pos at OT hodos
-    fHadrTreeMC->Branch("HO03MCx",&HO03MCx);
-    fHadrTreeMC->Branch("HO03MCy",&HO03MCy);
-    fHadrTreeMC->Branch("HO04MCx",&HO04MCx);
-    fHadrTreeMC->Branch("HO04MCy",&HO04MCy);
+    fHadrTreeMC->Branch("MC_HO03x",&MC_HO03x);
+    fHadrTreeMC->Branch("MC_HO03y",&MC_HO03y);
+    fHadrTreeMC->Branch("MC_HO04x",&MC_HO04x);
+    fHadrTreeMC->Branch("MC_HO04y",&MC_HO04y);
     //-- mu1 pos at LAST hodos
-    fHadrTreeMC->Branch("HG01MCx",&HG01MCx);
-    fHadrTreeMC->Branch("HG01MCy",&HG01MCy);
-    fHadrTreeMC->Branch("HG021MCx",&HG021MCx);
-    fHadrTreeMC->Branch("HG021MCy",&HG021MCy);
-    fHadrTreeMC->Branch("HG022MCx",&HG022MCx);
-    fHadrTreeMC->Branch("HG022MCy",&HG022MCy);
+    fHadrTreeMC->Branch("MC_HG01x",&MC_HG01x);
+    fHadrTreeMC->Branch("MC_HG01y",&MC_HG01y);
+    fHadrTreeMC->Branch("MC_HG021x",&MC_HG021MCx);
+    fHadrTreeMC->Branch("MC_HG021y",&MC_HG021MCy);
+    fHadrTreeMC->Branch("MC_HG022x",&MC_HG022MCx);
+    fHadrTreeMC->Branch("MC_HG022y",&MC_HG022MCy);
     fHadrTreeMC->Branch("recon",&fReconsEvent);
     fHadrTreeMC->Branch("z",&fz);
     fHadrTreeMC->Branch("Q",&fCharge);
