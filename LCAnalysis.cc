@@ -1376,10 +1376,10 @@ void LCAnalysis::InitHadronTree()
     //-- mu1 pos at LAST hodos
     fHadrTreeMC->Branch("MC_HG01x",&MC_HG01x);
     fHadrTreeMC->Branch("MC_HG01y",&MC_HG01y);
-    fHadrTreeMC->Branch("MC_HG021x",&MC_HG021MCx);
-    fHadrTreeMC->Branch("MC_HG021y",&MC_HG021MCy);
-    fHadrTreeMC->Branch("MC_HG022x",&MC_HG022MCx);
-    fHadrTreeMC->Branch("MC_HG022y",&MC_HG022MCy);
+    fHadrTreeMC->Branch("MC_HG021x",&MC_HG021x);
+    fHadrTreeMC->Branch("MC_HG021y",&MC_HG021y);
+    fHadrTreeMC->Branch("MC_HG022x",&MC_HG022x);
+    fHadrTreeMC->Branch("MC_HG022y",&MC_HG022y);
     fHadrTreeMC->Branch("recon",&fReconsEvent);
     fHadrTreeMC->Branch("z",&fz);
     fHadrTreeMC->Branch("Q",&fCharge);
