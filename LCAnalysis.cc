@@ -636,7 +636,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   {
     const PaMCtrack& MCtrack = ev.vMCtrack(1);
     const set<int>& MCHitset = MCtrack.sMChitRef();
-    for (auto it = set.begin(); it != set.end(); ++it)
+    for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
       cout << *it << "\t";
     cout << endl;
     const vector<PaMChit>& mcHits = ev.MChits();
