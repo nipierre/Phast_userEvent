@@ -1087,8 +1087,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
 
-  if(fIsMC || fReconsEvent)
-  // if(fReconsEvent)
+  // if(fIsMC || fReconsEvent)
+  if(fReconsEvent)
   {
     CopyDISEvtData(fReconsEvent);
     fDISEvtTree->Fill();
