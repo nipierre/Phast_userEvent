@@ -633,11 +633,11 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   partr.Extrapolate(HL04z, parH, false);
   HL04x = parH(1);
   HL04y = parH(2);
-  cout << "HL04 : " << HL04x << " " << HL04y << endl;
+  // cout << "HL04 : " << HL04x << " " << HL04y << endl;
   partr.Extrapolate(HL05z, parH, false);
   HL05x = parH(1);
   HL05y = parH(2);
-  cout << "HL05 : " << HL05x << " " << HL05y << endl;
+  // cout << "HL05 : " << HL05x << " " << HL05y << endl;
   //-- OT
   partr.Extrapolate(HO03z, parH, false);
   HO03x = parH(1);
@@ -680,7 +680,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
         // cout << "HL04" << endl;
         MC_HL04x=mcHits[*it].X();
         MC_HL04y=mcHits[*it].Y();
-        cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
+        // cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
       {
@@ -823,7 +823,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }
 
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
-  cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
+  // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
   if( fIsMC ){ // read MC event info
