@@ -239,7 +239,6 @@ bool PaTrack::PointsHodoscopes() const
 		fatal = h1 = h2 = 0;
 		if(e.Year() == 2016 || e.Year() == 2017 || e.Year() == 1900)
 		{
-			cout << "pouet" << endl;
 			name = "HM04Y1_d";
 			it = Hodos.find(name);
 			if(it == Hodos.end()) {fatal = 1;}

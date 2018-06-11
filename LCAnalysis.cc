@@ -822,8 +822,6 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
-  cout << ev.Year() << endl;
-
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
