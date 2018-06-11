@@ -236,9 +236,10 @@ bool PaTrack::PointsHodoscopes() const
 	// MT
 	if((TriggerMask&0x102)!=0)
 	{
+		fatal = h1 = h2 = 0;
 		if(e.Year() == 2016 || e.Year() == 2017)
 		{
-			fatal = h1 = h2 = 0;
+			cout << "pouet" << endl;
 			name = "HM04Y1_d";
 			it = Hodos.find(name);
 			if(it == Hodos.end()) {fatal = 1;}
@@ -278,7 +279,6 @@ bool PaTrack::PointsHodoscopes() const
 		}
 		else
 		{
-			fatal = h1 = h2 = 0;
 			name = "HM04X1_u";
 			it = Hodos.find(name);
 			if(it == Hodos.end()) {fatal = 1;}
