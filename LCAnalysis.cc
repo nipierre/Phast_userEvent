@@ -823,6 +823,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }
 
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
   if( fIsMC ){ // read MC event info
