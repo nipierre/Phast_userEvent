@@ -72,7 +72,7 @@ bool PaTrack::PointsHodoscopes() const
 			  outer_trigger_bits = 0x8;
 			  calo_trigger_bits  = 0x10;
 			}
-			// DVCS 2016
+			// DVCS 2016/2017
 			if (e.Year() == 2016 || e.Year() == 2017) {
 				known_trigger_bits = 0x20e;
 				outer_trigger_bits = 0x8;
@@ -442,11 +442,14 @@ bool PaTrack::PointsHodoscopes() const
 		if(!fatal && h1 && partr_between_magnets.Extrapolate(it->second.Z(), partr, MaterialMaps)) {
 			h2 = it->second.InActive(partr(1), partr(2));
 		}
-		name = "HG02Y2__";
-		it = Hodos.find(name);
-		if(it == Hodos.end()) {fatal = 1;}
-		if(!fatal && h1 && !h2 && partr_between_magnets.Extrapolate(it->second.Z(), partr, MaterialMaps)) {
-			h2 = it->second.InActive(partr(1), partr(2));
+		if(!h2)
+		{
+			name = "HG02Y2__";
+			it = Hodos.find(name);
+			if(it == Hodos.end()) {fatal = 1;}
+			if(!fatal && h1 && partr_between_magnets.Extrapolate(it->second.Z(), partr, MaterialMaps)) {
+				h2 = it->second.InActive(partr(1), partr(2));
+			}
 		}
 		if(h1 && h2) return 1;
 	}
