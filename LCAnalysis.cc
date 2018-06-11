@@ -687,7 +687,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
         // cout << "HL05" << endl;
         MC_HL05x=mcHits[*it].X();
         MC_HL05y=mcHits[*it].Y();
-        cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
+        // cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
       }
       else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
       {
@@ -821,6 +821,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       else fValidMu=IsMu0Valid(ParamMu0);
     }
   }
+
+  cout << ev.Year() << endl;
 
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
