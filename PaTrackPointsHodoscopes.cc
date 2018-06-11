@@ -73,7 +73,7 @@ bool PaTrack::PointsHodoscopes() const
 			  calo_trigger_bits  = 0x10;
 			}
 			// DVCS 2016/2017
-			if (e.Year() == 2016 || e.Year() == 2017) {
+			if (e.Year() == 2016 || e.Year() == 2017 || e.Year() == 1900) {
 				known_trigger_bits = 0x20e;
 				outer_trigger_bits = 0x8;
 				calo_trigger_bits  = 0x10;
@@ -237,7 +237,7 @@ bool PaTrack::PointsHodoscopes() const
 	if((TriggerMask&0x102)!=0)
 	{
 		fatal = h1 = h2 = 0;
-		if(e.Year() == 2016 || e.Year() == 2017)
+		if(e.Year() == 2016 || e.Year() == 2017 || e.Year() == 1900)
 		{
 			cout << "pouet" << endl;
 			name = "HM04Y1_d";
