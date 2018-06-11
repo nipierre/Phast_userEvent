@@ -72,7 +72,6 @@ bool PaTrack::PointsHodoscopes() const
 			  outer_trigger_bits = 0x8;
 			  calo_trigger_bits  = 0x10;
 			}
-			}
 			// DVCS 2016
 			if (e.Year() == 2016 || e.Year() == 2017) {
 				known_trigger_bits = 0x20e;
