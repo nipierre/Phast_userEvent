@@ -73,7 +73,7 @@ bool PaTrack::PointsHodoscopes() const
 			  calo_trigger_bits  = 0x10;
 			}
 			// DVCS 2016/2017
-			if (e.Year() == 2016 || e.Year() == 2017 || e.Year() == 1900) {
+			if (e.Year() == 2016 || e.Year() == 2017 || (e.RunNum() >= 269874 && e.RunNum() <= 281722)) {
 				known_trigger_bits = 0x20e;
 				outer_trigger_bits = 0x8;
 				calo_trigger_bits  = 0x10;
@@ -175,7 +175,7 @@ bool PaTrack::PointsHodoscopes() const
 	HodosIter it; // Position in the Hodo detectors map.
 	// In the trigger logic usually two planes have to give a hit for a trigger to fire.
 	// h1 - did the first plane from a "trigger pair" fire
-	// h1 - did the second plane from a "trigger pair" fire
+	// h2 - did the second plane from a "trigger pair" fire
 	// fatal - set to true if a detector is missing
 	bool h1, h2, fatal;
 
@@ -237,7 +237,7 @@ bool PaTrack::PointsHodoscopes() const
 	if((TriggerMask&0x102)!=0)
 	{
 		fatal = h1 = h2 = 0;
-		if(e.Year() == 2016 || e.Year() == 2017 || e.Year() == 1900)
+		if(e.Year() == 2016 || e.Year() == 2017 || (e.RunNum() >= 269874 && e.RunNum() <= 281722))
 		{
 			name = "HM04Y1_d";
 			it = Hodos.find(name);
