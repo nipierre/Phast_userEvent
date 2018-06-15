@@ -445,6 +445,29 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->trigMask   = fEvent->TrigMask();
   fDISEvt->evNo       = fEvent->UniqueEvNum();
   fDISEvt->timeInSpill= fEvent->TimeInSpill();
+
+  if(fIsMC)
+  {
+    fDISMCEvt->MC_HM04x = MC_HM04x;
+    fDISMCEvt->MC_HM04y = MC_HM04y;
+    fDISMCEvt->MC_HM05x = MC_HM05x;
+    fDISMCEvt->MC_HM05y = MC_HM05y;
+    fDISMCEvt->MC_HL04x = MC_HL04x;
+    fDISMCEvt->MC_HL04y = MC_HL04y;
+    fDISMCEvt->MC_HL05x = MC_HL05x;
+    fDISMCEvt->MC_HL05y = MC_HL05y;
+    fDISMCEvt->MC_HO03x = MC_HO03x;
+    fDISMCEvt->MC_HO03y = MC_HO03y;
+    fDISMCEvt->MC_HO04x = MC_HO04x;
+    fDISMCEvt->MC_HO04y = MC_HO04y;
+    fDISMCEvt->MC_HG01x = MC_HG01x;
+    fDISMCEvt->MC_HG01y = MC_HG01y;
+    fDISMCEvt->MC_HG021x = MC_HG021x;
+    fDISMCEvt->MC_HG021y = MC_HG021y;
+    fDISMCEvt->MC_HG022x = MC_HG022x;
+    fDISMCEvt->MC_HG022y = MC_HG022y;
+  }
+  
   if(!pReconsEvent) return;
 
   fDISEvt->x = fBPV->X();
@@ -479,29 +502,6 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HG022x = HG022x;
   fDISEvt->HG022y = HG022y;
   fDISEvt->backPropFlag = fChi2CutFlag;
-
-  if(fIsMC)
-  {
-    fDISMCEvt->MC_HM04x = MC_HM04x;
-    fDISMCEvt->MC_HM04y = MC_HM04y;
-    fDISMCEvt->MC_HM05x = MC_HM05x;
-    fDISMCEvt->MC_HM05y = MC_HM05y;
-    fDISMCEvt->MC_HL04x = MC_HL04x;
-    fDISMCEvt->MC_HL04y = MC_HL04y;
-    fDISMCEvt->MC_HL05x = MC_HL05x;
-    fDISMCEvt->MC_HL05y = MC_HL05y;
-    fDISMCEvt->MC_HO03x = MC_HO03x;
-    fDISMCEvt->MC_HO03y = MC_HO03y;
-    fDISMCEvt->MC_HO04x = MC_HO04x;
-    fDISMCEvt->MC_HO04y = MC_HO04y;
-    fDISMCEvt->MC_HG01x = MC_HG01x;
-    fDISMCEvt->MC_HG01y = MC_HG01y;
-    fDISMCEvt->MC_HG021x = MC_HG021x;
-    fDISMCEvt->MC_HG021y = MC_HG021y;
-    fDISMCEvt->MC_HG022x = MC_HG022x;
-    fDISMCEvt->MC_HG022y = MC_HG022y;
-  }
-
 
   // cout << ">>> *************************** <<<" << endl;
   // cout << ">>>     LCAnalysis message :    <<<" << endl;
