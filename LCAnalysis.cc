@@ -830,9 +830,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->recons = fReconsEvent;
 
 
-    const PaMCtrack& MCtrack = ev.vMCtrack(1);
+    const PaMCtrack& MCtrack = fEvent->vMCtrack(1);
     const set<int>& MCHitset = MCtrack.sMChitRef();
-    const vector<PaMChit>& mcHits = ev.MChits();
+    const vector<PaMChit>& mcHits = fEvent->MChits();
     for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
     {
       if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
