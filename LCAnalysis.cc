@@ -837,7 +837,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     {
       if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
       {
-        // cout << "HM04" << endl;
+        cout << "HM04" << endl;
         MC_HM04x=mcHits[*it].X();
         MC_HM04y=mcHits[*it].Y();
       }
