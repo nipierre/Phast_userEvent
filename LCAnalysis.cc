@@ -656,72 +656,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG022x = parH(1);
   HG022y = parH(2);
 
-  if( fIsMC )
-  {
-    const PaMCtrack& MCtrack = ev.vMCtrack(1);
-    const set<int>& MCHitset = MCtrack.sMChitRef();
-    const vector<PaMChit>& mcHits = ev.MChits();
-    for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
-    {
-      if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
-      {
-        cout << "HM04" << endl;
-        MC_HM04x=mcHits[*it].X();
-        MC_HM04y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
-      {
-        // cout << "HM05" << endl;
-        MC_HM05x=mcHits[*it].X();
-        MC_HM05y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
-      {
-        // cout << "HL04" << endl;
-        MC_HL04x=mcHits[*it].X();
-        MC_HL04y=mcHits[*it].Y();
-        // cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
-      {
-        // cout << "HL05" << endl;
-        MC_HL05x=mcHits[*it].X();
-        MC_HL05y=mcHits[*it].Y();
-        // cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
-      {
-        // cout << "HO03" << endl;
-        MC_HO03x=mcHits[*it].X();
-        MC_HO03y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
-      {
-        // cout << "HO04" << endl;
-        MC_HO04x=mcHits[*it].X();
-        MC_HO04y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
-      {
-        // cout << "HG01" << endl;
-        MC_HG01x=mcHits[*it].X();
-        MC_HG01y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
-      {
-        // cout << "HG02" << endl;
-        MC_HG021x=mcHits[*it].X();
-        MC_HG021y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
-      {
-        // cout << "HG02" << endl;
-        MC_HG022x=mcHits[*it].X();
-        MC_HG022y=mcHits[*it].Y();
-      }
-    }
-  }
-
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
     fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fMCtargetType);
@@ -759,6 +693,72 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG02h = track.NHitsFoundInDetect("HG02");
 
   // cout << "Hodos hits : " << HM04h << " " << HM05h << " " << HL04h << " " << HL05h << " " << HO03h << " " << HO04h << " " << HG01h << " " << HG02h << endl;
+}
+
+void LCAnalysis::GetMChits(const PaEvent& ev)
+{
+  const PaMCtrack& MCtrack = ev.vMCtrack(1);
+  const set<int>& MCHitset = MCtrack.sMChitRef();
+  const vector<PaMChit>& mcHits = ev.MChits();
+  for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
+  {
+    if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
+    {
+      cout << "HM04" << endl;
+      MC_HM04x=mcHits[*it].X();
+      MC_HM04y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
+    {
+      // cout << "HM05" << endl;
+      MC_HM05x=mcHits[*it].X();
+      MC_HM05y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
+    {
+      // cout << "HL04" << endl;
+      MC_HL04x=mcHits[*it].X();
+      MC_HL04y=mcHits[*it].Y();
+      // cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
+    {
+      // cout << "HL05" << endl;
+      MC_HL05x=mcHits[*it].X();
+      MC_HL05y=mcHits[*it].Y();
+      // cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
+    {
+      // cout << "HO03" << endl;
+      MC_HO03x=mcHits[*it].X();
+      MC_HO03y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
+    {
+      // cout << "HO04" << endl;
+      MC_HO04x=mcHits[*it].X();
+      MC_HO04y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
+    {
+      // cout << "HG01" << endl;
+      MC_HG01x=mcHits[*it].X();
+      MC_HG01y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
+    {
+      // cout << "HG02" << endl;
+      MC_HG021x=mcHits[*it].X();
+      MC_HG021y=mcHits[*it].Y();
+    }
+    else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
+    {
+      // cout << "HG02" << endl;
+      MC_HG022x=mcHits[*it].X();
+      MC_HG022y=mcHits[*it].Y();
+    }
+  }
 }
 
 double LCAnalysis::GetMassPid(int pid) const
@@ -941,7 +941,6 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     } // end of MC part
 
     //cout<<"3rd check FindHadron"<<endl;
-    fReconsEvent=1;
     if( fReconsEvent ){ // continue only if the event is reconstructed
 
     SetMuKinematics(ev,fiBPV,imu0,imu1);
@@ -1090,6 +1089,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
+
+  if( fIsMC )
+    GetMChits();
 
   if(fIsMC || fReconsEvent)
   // if(fReconsEvent)

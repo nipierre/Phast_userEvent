@@ -163,6 +163,7 @@ protected:
   void CheckTriggerMask(const PaEvent& ev);
   void SetMuKinematics(const PaEvent& ev,const int& iVtx,
 		       const int& imu0,const int& imu1);
+  void GetMChits(const PaEvent& ev);
   void Calcz(const PaTrack& tr);
   void CopyDISEvtData(int pReconsEvent);
   void InitHadronTree();
