@@ -1091,7 +1091,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }// end if event reconstructed
 
   if( fIsMC )
-    GetMChits(fEvent);
+    GetMChits(ev);
 
   if(fIsMC || fReconsEvent)
   // if(fReconsEvent)
