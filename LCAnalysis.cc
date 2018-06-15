@@ -482,24 +482,24 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
 
   if(fIsMC)
   {
-    // fDISMCEvt->MC_HM04x = MC_HM04x;
-    // fDISMCEvt->MC_HM04y = MC_HM04y;
-    // fDISMCEvt->MC_HM05x = MC_HM05x;
-    // fDISMCEvt->MC_HM05y = MC_HM05y;
-    // fDISMCEvt->MC_HL04x = MC_HL04x;
-    // fDISMCEvt->MC_HL04y = MC_HL04y;
-    // fDISMCEvt->MC_HL05x = MC_HL05x;
-    // fDISMCEvt->MC_HL05y = MC_HL05y;
-    // fDISMCEvt->MC_HO03x = MC_HO03x;
-    // fDISMCEvt->MC_HO03y = MC_HO03y;
-    // fDISMCEvt->MC_HO04x = MC_HO04x;
-    // fDISMCEvt->MC_HO04y = MC_HO04y;
-    // fDISMCEvt->MC_HG01x = MC_HG01x;
-    // fDISMCEvt->MC_HG01y = MC_HG01y;
-    // fDISMCEvt->MC_HG021x = MC_HG021x;
-    // fDISMCEvt->MC_HG021y = MC_HG021y;
-    // fDISMCEvt->MC_HG022x = MC_HG022x;
-    // fDISMCEvt->MC_HG022y = MC_HG022y;
+    fDISMCEvt->MC_HM04x = MC_HM04x;
+    fDISMCEvt->MC_HM04y = MC_HM04y;
+    fDISMCEvt->MC_HM05x = MC_HM05x;
+    fDISMCEvt->MC_HM05y = MC_HM05y;
+    fDISMCEvt->MC_HL04x = MC_HL04x;
+    fDISMCEvt->MC_HL04y = MC_HL04y;
+    fDISMCEvt->MC_HL05x = MC_HL05x;
+    fDISMCEvt->MC_HL05y = MC_HL05y;
+    fDISMCEvt->MC_HO03x = MC_HO03x;
+    fDISMCEvt->MC_HO03y = MC_HO03y;
+    fDISMCEvt->MC_HO04x = MC_HO04x;
+    fDISMCEvt->MC_HO04y = MC_HO04y;
+    fDISMCEvt->MC_HG01x = MC_HG01x;
+    fDISMCEvt->MC_HG01y = MC_HG01y;
+    fDISMCEvt->MC_HG021x = MC_HG021x;
+    fDISMCEvt->MC_HG021y = MC_HG021y;
+    fDISMCEvt->MC_HG022x = MC_HG022x;
+    fDISMCEvt->MC_HG022y = MC_HG022y;
   }
 
 
@@ -655,72 +655,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   partr.Extrapolate(HG022z, parH, false);
   HG022x = parH(1);
   HG022y = parH(2);
-
-  if( fIsMC )
-  {
-    const PaMCtrack& MCtrack = ev.vMCtrack(1);
-    const set<int>& MCHitset = MCtrack.sMChitRef();
-    const vector<PaMChit>& mcHits = ev.MChits();
-    for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
-    {
-      if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
-      {
-        // cout << "HM04" << endl;
-        MC_HM04x=mcHits[*it].X();
-        MC_HM04y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
-      {
-        // cout << "HM05" << endl;
-        MC_HM05x=mcHits[*it].X();
-        MC_HM05y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
-      {
-        // cout << "HL04" << endl;
-        MC_HL04x=mcHits[*it].X();
-        MC_HL04y=mcHits[*it].Y();
-        // cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
-      {
-        // cout << "HL05" << endl;
-        MC_HL05x=mcHits[*it].X();
-        MC_HL05y=mcHits[*it].Y();
-        // cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
-      {
-        // cout << "HO03" << endl;
-        MC_HO03x=mcHits[*it].X();
-        MC_HO03y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
-      {
-        // cout << "HO04" << endl;
-        MC_HO04x=mcHits[*it].X();
-        MC_HO04y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
-      {
-        // cout << "HG01" << endl;
-        MC_HG01x=mcHits[*it].X();
-        MC_HG01y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
-      {
-        // cout << "HG02" << endl;
-        MC_HG021x=mcHits[*it].X();
-        MC_HG021y=mcHits[*it].Y();
-      }
-      else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
-      {
-        // cout << "HG02" << endl;
-        MC_HG022x=mcHits[*it].X();
-        MC_HG022y=mcHits[*it].Y();
-      }
-    }
-  }
 
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
@@ -939,27 +873,69 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       //fEvent->vMCgen()[0].Print(3);
       }
 
+      const PaMCtrack& MCtrack = ev.vMCtrack(1);
+      const set<int>& MCHitset = MCtrack.sMChitRef();
+      const vector<PaMChit>& mcHits = ev.MChits();
+      for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
+      {
+        if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
+        {
+          // cout << "HM04" << endl;
+          MC_HM04x=mcHits[*it].X();
+          MC_HM04y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM05Y1_d"))
+        {
+          // cout << "HM05" << endl;
+          MC_HM05x=mcHits[*it].X();
+          MC_HM05y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL04X1_m"))
+        {
+          // cout << "HL04" << endl;
+          MC_HL04x=mcHits[*it].X();
+          MC_HL04y=mcHits[*it].Y();
+          // cout << "HL04MC : " << MC_HL04x << " " << MC_HL04y << endl;
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HL05X1_m"))
+        {
+          // cout << "HL05" << endl;
+          MC_HL05x=mcHits[*it].X();
+          MC_HL05y=mcHits[*it].Y();
+          // cout << "HL05MC : " << MC_HL05x << " " << MC_HL05y << endl;
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO03Y1_m"))
+        {
+          // cout << "HO03" << endl;
+          MC_HO03x=mcHits[*it].X();
+          MC_HO03y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HO04Y1_m"))
+        {
+          // cout << "HO04" << endl;
+          MC_HO04x=mcHits[*it].X();
+          MC_HO04y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG01Y1__"))
+        {
+          // cout << "HG01" << endl;
+          MC_HG01x=mcHits[*it].X();
+          MC_HG01y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y1__"))
+        {
+          // cout << "HG02" << endl;
+          MC_HG021x=mcHits[*it].X();
+          MC_HG021y=mcHits[*it].Y();
+        }
+        else if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HG02Y2__"))
+        {
+          // cout << "HG02" << endl;
+          MC_HG022x=mcHits[*it].X();
+          MC_HG022y=mcHits[*it].Y();
+        }
+      }
     } // end of MC part
-
-    SetMuKinematics(ev,fiBPV,imu0,imu1);
-    fDISMCEvt->MC_HM04x = MC_HM04x;
-    fDISMCEvt->MC_HM04y = MC_HM04y;
-    fDISMCEvt->MC_HM05x = MC_HM05x;
-    fDISMCEvt->MC_HM05y = MC_HM05y;
-    fDISMCEvt->MC_HL04x = MC_HL04x;
-    fDISMCEvt->MC_HL04y = MC_HL04y;
-    fDISMCEvt->MC_HL05x = MC_HL05x;
-    fDISMCEvt->MC_HL05y = MC_HL05y;
-    fDISMCEvt->MC_HO03x = MC_HO03x;
-    fDISMCEvt->MC_HO03y = MC_HO03y;
-    fDISMCEvt->MC_HO04x = MC_HO04x;
-    fDISMCEvt->MC_HO04y = MC_HO04y;
-    fDISMCEvt->MC_HG01x = MC_HG01x;
-    fDISMCEvt->MC_HG01y = MC_HG01y;
-    fDISMCEvt->MC_HG021x = MC_HG021x;
-    fDISMCEvt->MC_HG021y = MC_HG021y;
-    fDISMCEvt->MC_HG022x = MC_HG022x;
-    fDISMCEvt->MC_HG022y = MC_HG022y;
 
     //cout<<"3rd check FindHadron"<<endl;
     if( fReconsEvent ){ // continue only if the event is reconstructed
@@ -1111,8 +1087,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed
 
-  // if(fIsMC || fReconsEvent)
-  if(fReconsEvent)
+  if(fIsMC || fReconsEvent)
+  // if(fReconsEvent)
   {
     CopyDISEvtData(fReconsEvent);
     fDISEvtTree->Fill();
