@@ -809,7 +809,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    imu1 = fimu1 = v.iMuPrim();
+    // imu1 = fimu1 = v.iMuPrim();
+    imu1 = fimu1 = 1;
 
     if(imu0)
     {
