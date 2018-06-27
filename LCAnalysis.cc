@@ -809,8 +809,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    // imu1 = fimu1 = v.iMuPrim();
-    imu1 = fimu1 = 1;
+    imu1 = fimu1 = v.iMuPrim();
 
     if(imu0)
     {
@@ -823,7 +822,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  fReconsEvent = 1;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
