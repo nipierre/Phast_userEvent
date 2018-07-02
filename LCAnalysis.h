@@ -91,6 +91,7 @@ class LCAnalysis{
   double MC_HG01x,MC_HG01y,MC_HG021x,MC_HG021y,MC_HG022x,MC_HG022y;
   double MM01x,MM01y,MM01z,MM02x,MM02y,MM02z,MM03x,MM03y,MM03z;
   double Z2Ax,Z2Ay,Z2Az,Z2Bx,Z2By,Z2Bz;
+  double TCx,TCy;
   double RICHx,RICHy; //added by Quiela
 
   //--- kinematical quantities

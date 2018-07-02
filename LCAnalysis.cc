@@ -470,6 +470,9 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
 
   if(!pReconsEvent) return;
 
+  fDISMCEvt->MC_TCx = TCx;
+  fDISMCEvt->MC_TCy = TCy;
+
   fDISEvt->x = fBPV->X();
   fDISEvt->y = fBPV->Y();
   fDISEvt->z = fBPV->Z();
@@ -655,6 +658,13 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   partr.Extrapolate(HG022z, parH, false);
   HG022x = parH(1);
   HG022y = parH(2);
+
+  if( fIsMC )
+  {
+    partr.Extrapolate(40, parH, false);
+    TCx = parH(1);
+    TCy = parH(2);
+  }
 
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
