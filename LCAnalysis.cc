@@ -661,7 +661,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
   if( fIsMC )
   {
-    partr.Extrapolate(40, parH, false);
+    partr.Extrapolate(4000, parH, false);
     TCx = parH(1);
     TCy = parH(2);
   }
