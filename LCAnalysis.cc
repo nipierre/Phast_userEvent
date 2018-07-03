@@ -703,7 +703,7 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   const set<int>& MCHitset = MCtrack.sMChitRef();
   const vector<PaMChit>& mcHits = ev.MChits();
   const set< int >& trackset = MCtrack.sTrkRef();
-  int tracknb;
+  int tracknb=0;
   for (auto it = trackset.begin(); it != trackset.end(); ++it)
   {
     tracknb = *it;
