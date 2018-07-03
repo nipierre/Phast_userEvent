@@ -466,12 +466,11 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
     fDISMCEvt->MC_HG021y = MC_HG021y;
     fDISMCEvt->MC_HG022x = MC_HG022x;
     fDISMCEvt->MC_HG022y = MC_HG022y;
+    fDISMCEvt->MC_TCx = TCx;
+    fDISMCEvt->MC_TCy = TCy;
   }
 
   if(!pReconsEvent) return;
-
-  fDISMCEvt->MC_TCx = TCx;
-  fDISMCEvt->MC_TCy = TCy;
 
   fDISEvt->x = fBPV->X();
   fDISEvt->y = fBPV->Y();
@@ -659,13 +658,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   HG022x = parH(1);
   HG022y = parH(2);
 
-  if( fIsMC )
-  {
-    partr.Extrapolate(4000, parH, false);
-    TCx = parH(1);
-    TCy = parH(2);
-  }
-
   // check if all cells crossed
   if((ev.RunNum() >52564 && ev.RunNum() <54639)||fMCtargetType==-5){ //2006 data and MC
     fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fMCtargetType);
@@ -710,6 +702,13 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   const PaMCtrack& MCtrack = ev.vMCtrack(1);
   const set<int>& MCHitset = MCtrack.sMChitRef();
   const vector<PaMChit>& mcHits = ev.MChits();
+  const PaTrack& track = ev.vTrack(MCtrack.iTrack());
+  int Npars = track.NTPar();
+  PaTPar partr = track.vTPar(Npars-1);
+  PaTPar parH;
+  partr.Extrapolate(4000, parH, false);
+  TCx = parH(1);
+  TCy = parH(2);
   for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
   {
     if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
@@ -812,7 +811,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   fValidMu=0;
 
   //--- Covariance test is only for RD
-  if(fIsMC) fValidMu=1;
+  if( fIsMC ) fValidMu=1;
 
   if( fiBPV >= 0 ){
     fBPV = &(ev.vVertex(fiBPV));
