@@ -702,15 +702,7 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   const PaMCtrack& MCtrack = ev.vMCtrack(1);
   const set<int>& MCHitset = MCtrack.sMChitRef();
   const vector<PaMChit>& mcHits = ev.MChits();
-  const set< int >& trackset = MCtrack.sTrkRef();
-  int tracknb=0;
-  for (auto it = trackset.begin(); it != trackset.end(); ++it)
-  {
-    tracknb = *it;
-  }
-  const PaTrack& track = ev.vTrack(tracknb);
-  int Npars = track.NTPar();
-  PaTPar partr = track.vTPar(Npars-1);
+  PaTPar partr = MCtrack.ParInVtx();
   PaTPar parH;
   partr.Extrapolate(4000, parH, false);
   TCx = parH(1);
