@@ -708,7 +708,7 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   {
     tracknb = *it;
   }
-  const PaTrack& track = ev.vTrack();
+  const PaTrack& track = ev.vTrack(tracknb);
   int Npars = track.NTPar();
   PaTPar partr = track.vTPar(Npars-1);
   PaTPar parH;
