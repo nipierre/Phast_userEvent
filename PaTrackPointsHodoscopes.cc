@@ -33,6 +33,7 @@ bool PaTrack::PointsHodoscopes() const
 	static int run_number = 0;
 	static int known_trigger_bits = 0; // Bits of known triggers
 	static int outer_trigger_bits = 0; // Bits for OT and cOT if exists
+	static int middle_trigger_bits = 0; // Bits for MT
 	static int calo_trigger_bits = 0;  // Bits for CT, RPD and other hodoscope less triggers
 	typedef map<string, PaDetect> HodosMap;
 	typedef HodosMap::iterator HodosIter;
@@ -238,7 +239,7 @@ bool PaTrack::PointsHodoscopes() const
 	}
 
 	// MT
-	if((TriggerMask&0x102)!=0)
+	if((TriggerMask&middle_trigger_bits)!=0)
 	{
 		fatal = h1 = h2 = 0;
 		// MiddleX removed from the trigger on 3. August 2016
