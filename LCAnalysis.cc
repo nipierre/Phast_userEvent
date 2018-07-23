@@ -1024,7 +1024,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       PaTPar tParRich;
       track.Extrapolate(Zrich, tParRich);
       fthRICH = hadron.thRICH = tParRich.Theta(false);
-      hadron.thC = fPid->Theta_Ch(track);
+      fthC = hadron.thC = fPid->Theta_Ch(track);
       hadron.RICHx=tParRich.Pos(0);                   //extrapolation RICH added by Quiela
       hadron.RICHy=tParRich.Pos(1);                   //extrapolation RICH added by Quiel
 

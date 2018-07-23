@@ -103,7 +103,7 @@ class LCAnalysis{
   double fXX0mu1;
   double fZfirst,fZlast,fXX0;
   short fCharge;
-  double fMom,fthP,fphP,fthRICH;
+  double fMom,fthP,fphP,fthRICH,fthC;
   //double fMom,fthP,fphP,fthRICH;
   //---Target 2012
   TargetCell* fTcell;
