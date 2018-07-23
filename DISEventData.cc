@@ -72,6 +72,7 @@ HadronData::HadronData():
   HCAL(0),
   charge(0),
   thRICH(0),
+  thC(0),
   MCpid(-1),
   MM01x(0),MM01y(0),
   MM02x(0),MM02y(0),
@@ -98,6 +99,7 @@ void HadronData::Reset()
   HCAL=0;
   charge=0;
   thRICH=0;
+  thC=0;
   MCpid=-1;
   dis=0;
   E=0; z=0;

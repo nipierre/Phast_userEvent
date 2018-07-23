@@ -59,6 +59,7 @@ struct HadronData{
   Float_t HCAL;
   Short_t charge;
   Double_t thRICH;
+  Double_t thC;
   Float_t LH[6];
 
   Short_t MCpid;
