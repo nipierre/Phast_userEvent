@@ -829,7 +829,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
@@ -951,7 +952,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     if( fReconsEvent ){ // continue only if the event is reconstructed
 
     SetMuKinematics(ev,fiBPV,imu0,imu1);
-          const PaVertex& v = ev.vVertex(fiBPV);
+    const PaVertex& v = ev.vVertex(fiBPV);
 
     //--- loop on primary vertex outgoing particles
     int NoutPart = v.NOutParticles();

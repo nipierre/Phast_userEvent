@@ -395,7 +395,7 @@ bool PaTrack::PointsHodoscopes() const
 			// Pictures in documentation are correct only for 2002.
 			if(partr(2) < it->second.Y() + 6.5 && partr(2) > it->second.Y() - 6.5)
 				h1 = false;
-		  if(e.Year()>2012) h1=true;
+		  if(e.RunNum()>274946) h1=true;
 		}
 		// For HO04 InActive properly describes larger rectangles.
 		// Take into account two horizontal missing strips. (See pictures ...)
@@ -407,16 +407,18 @@ bool PaTrack::PointsHodoscopes() const
 			if(partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14 &&
 					partr(1) < it->second.X() + 190)
 				h2 = false;
-			if(e.Year()>2012) h2=true;
+			if(e.RunNum()>274946) h2=true;
 		}
 		name = "HO04Y2_m";
 		it = Hodos.find(name);
 		if(it == Hodos.end()) {fatal = 1;}
 		if(!fatal && h1 && !h2 && partr_last.Extrapolate(it->second.Z(), partr, MaterialMaps)) {
 			h2 = it->second.InActive(partr(1), partr(2));
-			if(partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14)
+			if(e.Year()<2016 && partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14)
 				h2 = false;
-			if(e.Year()>2012) h2=true;
+			else if(e.Year()<2016 && partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 28)
+				h2 = false;
+			if(e.RunNum()>274946) h2=true;
 		}
 		if(h1 && h2) return 1;
 	}
