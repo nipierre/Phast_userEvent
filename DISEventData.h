@@ -59,6 +59,7 @@ struct HadronData{
   Float_t HCAL;
   Short_t charge;
   Double_t thRICH;
+  Double_t thC;
   Float_t LH[6];
 
   Short_t MCpid;
@@ -117,6 +118,7 @@ struct DISEventMCData{
   Double_t MC_HL04x,MC_HL04y,MC_HL05x,MC_HL05y;
   Double_t MC_HO03x,MC_HO03y,MC_HO04x,MC_HO04y;
   Double_t MC_HG01x,MC_HG01y,MC_HG021x,MC_HG021y,MC_HG022x,MC_HG022y;
+  Double_t MC_TCx,MC_TCy;
 
   ClassDef(DISEventMCData,2);
 };

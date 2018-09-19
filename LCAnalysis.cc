@@ -466,6 +466,8 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
     fDISMCEvt->MC_HG021y = MC_HG021y;
     fDISMCEvt->MC_HG022x = MC_HG022x;
     fDISMCEvt->MC_HG022y = MC_HG022y;
+    fDISMCEvt->MC_TCx = TCx;
+    fDISMCEvt->MC_TCy = TCy;
   }
 
   if(!pReconsEvent) return;
@@ -704,11 +706,16 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   const PaMCtrack& MCtrack = ev.vMCtrack(1);
   const set<int>& MCHitset = MCtrack.sMChitRef();
   const vector<PaMChit>& mcHits = ev.MChits();
+  PaTPar partr = MCtrack.ParInVtx();
+  PaTPar parH;
+  partr.Extrapolate(4000, parH, false);
+  TCx = parH(1);
+  TCy = parH(2);
   for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
   {
     if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
     {
-      cout << "HM04" << endl;
+      // cout << "HM04" << endl;
       MC_HM04x=mcHits[*it].X();
       MC_HM04y=mcHits[*it].Y();
     }
@@ -806,7 +813,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   fValidMu=0;
 
   //--- Covariance test is only for RD
-  if(fIsMC) fValidMu=1;
+  if( fIsMC ) fValidMu=1;
 
   if( fiBPV >= 0 ){
     fBPV = &(ev.vVertex(fiBPV));
@@ -834,7 +841,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
@@ -956,7 +964,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     if( fReconsEvent ){ // continue only if the event is reconstructed
 
     SetMuKinematics(ev,fiBPV,imu0,imu1);
-          const PaVertex& v = ev.vVertex(fiBPV);
+    const PaVertex& v = ev.vVertex(fiBPV);
 
     //--- loop on primary vertex outgoing particles
     int NoutPart = v.NOutParticles();
@@ -1029,6 +1037,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       PaTPar tParRich;
       track.Extrapolate(Zrich, tParRich);
       fthRICH = hadron.thRICH = tParRich.Theta(false);
+      fthC = hadron.thC = fPid->Theta_Ch(track);
       hadron.RICHx=tParRich.Pos(0);                   //extrapolation RICH added by Quiela
       hadron.RICHy=tParRich.Pos(1);                   //extrapolation RICH added by Quiel
 
@@ -1103,7 +1112,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }// end if event reconstructed
 
   if( fIsMC )
-    GetMChits(fEvent);
+    GetMChits(ev);
 
   if(fIsMC || fReconsEvent)
   // if(fReconsEvent)
@@ -1323,6 +1332,7 @@ void LCAnalysis::InitHadronTree()
   fHadrTree->Branch("thP",&fthP);
   fHadrTree->Branch("phP",&fphP);
   fHadrTree->Branch("thRICH",&fthRICH);
+  fHadrTree->Branch("thC",&fthC);
   fHadrTree->Branch("RICHx",&RICHx);
   fHadrTree->Branch("RICHy",&RICHy);
   fHadrTree->Branch("PID",&fLikePid);

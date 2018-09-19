@@ -33,6 +33,7 @@ bool PaTrack::PointsHodoscopes() const
 	static int run_number = 0;
 	static int known_trigger_bits = 0; // Bits of known triggers
 	static int outer_trigger_bits = 0; // Bits for OT and cOT if exists
+	static int middle_trigger_bits = 0; // Bits for MT
 	static int calo_trigger_bits = 0;  // Bits for CT, RPD and other hodoscope less triggers
 	typedef map<string, PaDetect> HodosMap;
 	typedef HodosMap::iterator HodosIter;
@@ -45,6 +46,7 @@ bool PaTrack::PointsHodoscopes() const
 		// Most common bit masks
 		known_trigger_bits = 0x31f;
 		outer_trigger_bits = 0x8;
+		middle_trigger_bits = 0x102;
 		calo_trigger_bits = 0x10;
 
 		// Per year variations
@@ -57,12 +59,14 @@ bool PaTrack::PointsHodoscopes() const
 			if (e.Year() == 2008 || e.Year() == 2009) {
 				known_trigger_bits = 0x21f;
 				outer_trigger_bits = 0;
+				middle_trigger_bits = 0;
 				calo_trigger_bits = 0x21f;
 			}
 			// DVCS 2009
 			if (e.Year() == 2009 && e.RunNum() >= 79584 && e.RunNum() <= 79964) {
 				known_trigger_bits = 0x21f;
 				outer_trigger_bits = 0x8;
+				middle_trigger_bits = 0x2;
 				calo_trigger_bits = 0x201;
 			}
 			// Primakoff and DVCS 2012
@@ -76,6 +80,7 @@ bool PaTrack::PointsHodoscopes() const
 			if (e.Year() == 2016 || e.Year() == 2017 || (e.RunNum() >= 269874 && e.RunNum() <= 281722)) {
 				known_trigger_bits = 0x20e;
 				outer_trigger_bits = 0x8;
+				middle_trigger_bits = 0x2;
 				calo_trigger_bits  = 0x10;
 			}
 		} else {
@@ -109,7 +114,7 @@ bool PaTrack::PointsHodoscopes() const
 		int idet;
 
 		for(int i=0; i<21; i++) {
-		  if (HodoNames[i].find("HI") != string::npos && e.Year()>=2008 && e.Year()<=2009 && e.Year() == 2012) continue;
+		  if (HodoNames[i].find("HI") != string::npos && ( (e.Year()>=2008 && e.Year()<=2009) || e.Year() == 2012 || e.Year() == 2016 || e.Year() == 2017 || (e.RunNum() >= 269874 && e.RunNum() <= 281722)) ) continue;
 			else if (HodoNames[i].find("HQ") != string::npos && e.Year() != 2007) continue;
 			else if (HodoNames[i].find("HG") != string::npos && e.RunNum() < 86202 && !e.IsMC()) continue;
 
@@ -234,10 +239,11 @@ bool PaTrack::PointsHodoscopes() const
 	}
 
 	// MT
-	if((TriggerMask&0x102)!=0)
+	if((TriggerMask&middle_trigger_bits)!=0)
 	{
 		fatal = h1 = h2 = 0;
-		if(e.Year() == 2016 || e.Year() == 2017 || (e.RunNum() >= 269874 && e.RunNum() <= 281722))
+		// MiddleX removed from the trigger on 3. August 2016
+		if(e.RunNum()>272339)
 		{
 			name = "HM04Y1_d";
 			it = Hodos.find(name);
@@ -389,6 +395,7 @@ bool PaTrack::PointsHodoscopes() const
 			// Pictures in documentation are correct only for 2002.
 			if(partr(2) < it->second.Y() + 6.5 && partr(2) > it->second.Y() - 6.5)
 				h1 = false;
+		  if(e.RunNum()>274946) h1=true;
 		}
 		// For HO04 InActive properly describes larger rectangles.
 		// Take into account two horizontal missing strips. (See pictures ...)
@@ -400,14 +407,18 @@ bool PaTrack::PointsHodoscopes() const
 			if(partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14 &&
 					partr(1) < it->second.X() + 190)
 				h2 = false;
+			if(e.RunNum()>274946) h2=true;
 		}
 		name = "HO04Y2_m";
 		it = Hodos.find(name);
 		if(it == Hodos.end()) {fatal = 1;}
 		if(!fatal && h1 && !h2 && partr_last.Extrapolate(it->second.Z(), partr, MaterialMaps)) {
 			h2 = it->second.InActive(partr(1), partr(2));
-			if(partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14)
+			if(e.Year()<2016 && partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 14)
 				h2 = false;
+			else if(e.Year()<2016 && partr(2) < it->second.Y() + 14 && partr(2) > it->second.Y() - 28)
+				h2 = false;
+			if(e.RunNum()>274946) h2=true;
 		}
 		if(h1 && h2) return 1;
 	}
