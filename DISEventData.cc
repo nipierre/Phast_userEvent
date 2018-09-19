@@ -11,6 +11,7 @@ DISEventData::DISEventData():
   p1x(0),p1y(0),p1z(0), // mu1 momentum
   E_beam(0), // beam energie
   E_mu_prim(0), // mu1 energie
+  Charge(0),
   XX0(0),  // no. of rad. len. crossed by mu1
   saved(false),
   BPV(0),
@@ -32,6 +33,7 @@ void DISEventData::Reset()
   p1x=0; p1y=0; p1z=0;  // mu1 momentum
   E_beam=0; // beam energie
   E_mu_prim=0; // mu1 energie
+  Charge=0;
   XX0=0;   // no. of rad. len. crossed by mu1
   saved=false;
   BPV=0;

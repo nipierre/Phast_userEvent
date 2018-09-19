@@ -484,6 +484,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->p1z = fkMu1.Z();
   fDISEvt->E_beam = fkMu0.E();
   fDISEvt->E_mu_prim = fkMu1.E();
+  fDISEvt->Charge = fCharge;
   fDISEvt->XX0 = fXX0mu1;
   fDISEvt->cellsCrossed = fCellsCrossed;
   fDISEvt->HM04x = HM04x;
@@ -619,6 +620,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fy     = fnu/fEbeam;
   fxBj   = PaAlgo::xbj(fkMu0,fkMu1);
   fW2    = PaAlgo::W2(fkMu0,fkMu1);
+  fCharge = Mu0.Q();
 
   int itr0 = Mu0.iTrack();
   int itr1 = Mu1.iTrack();

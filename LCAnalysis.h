@@ -68,6 +68,7 @@ class LCAnalysis{
   double fzVTX;
   float fMZfirst;
   int fimu0,fimu1;
+  int fCharge;
   bool fReconsEvent;
   bool fValidMu;
   int fTrigMask;
