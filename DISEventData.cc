@@ -13,6 +13,11 @@ DISEventData::DISEventData():
   E_mu_prim(0), // mu1 energie
   XX0(0),  // no. of rad. len. crossed by mu1
   saved(false),
+  BPV(0),
+  isMuPrim(false),
+  MZfirst(0),
+  beam_chi2(0),
+  mu_prim_chi2(0),
   cellsCrossed(false),
   backPropFlag(false)
 {}
@@ -29,6 +34,11 @@ void DISEventData::Reset()
   E_mu_prim=0; // mu1 energie
   XX0=0;   // no. of rad. len. crossed by mu1
   saved=false;
+  BPV=0;
+  isMuPrim=false;
+  MZfirst=0;
+  beam_chi2=0;
+  mu_prim_chi2=0;
   cellsCrossed=false;
   backPropFlag=false;
 }

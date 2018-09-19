@@ -4,7 +4,7 @@
 #include "Rtypes.h"
 
 struct HadronPairData{
-  
+
   HadronPairData();
   virtual ~HadronPairData(){};
 
@@ -30,7 +30,7 @@ struct HadronPairData{
   float Mmiss;
   double index_UV;
   double index_vis;
-    
+
   float p1[3];
   float p2[3];
   float P1,P2;
@@ -45,10 +45,13 @@ struct HadronPairData{
   float Phi1,Phi2;
   float Phi1_vtx,Phi2_vtx;
   bool excl_phi;
-  bool richInfo1,richInfo2;  
+  bool richInfo1,richInfo2;
   float LHs1[6];
   float LHs2[6];
   int tracks,tracks_up,tracks_down;
+  float chi2_hadron;
+  float HZfirst;
+  float HZlast;
   void Reset();
 
   float InvMass(const float& mass1) const;

@@ -503,6 +503,11 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HG021y = HG021y;
   fDISEvt->HG022x = HG022x;
   fDISEvt->HG022y = HG022y;
+  fDISEvt->BPV = fiBPV;
+  fDISEvt->isMuPrim = fimu1;
+  fDISEvt->mu_prim_Zfirst = fMZfirst;
+  fDISEvt->beam_chi2 = fChi2beam;
+  fDISEvt->mu_prim_chi2 = fChi2muprim;
   fDISEvt->backPropFlag = fChi2CutFlag;
 
   // cout << ">>> *************************** <<<" << endl;
@@ -686,7 +691,10 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   if((269918<ev.RunNum())){
     // const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
     // fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
-    fChi2CutFlag = ((track0.Chi2tot()/float(track0.Ndf()))<10)?(true):(false);
+    fChi2CutFlag = (track0.NHitsFoundInDetect("BM")>3)?(true):(false);
+    fChi2beam = track0.Chi2tot()/float(track0.Ndf());
+    fChi2muprim = track1.Chi2tot()/float(track1.Ndf());
+    fMZfirst = track1.ZFirst();
   }
 
   HM04h = track.NHitsFoundInDetect("HM04Y1");
@@ -841,7 +849,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  fReconsEvent = IsThereABestPV();
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
   // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
@@ -1014,17 +1023,22 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       //--- check Zfirst
       fZfirst = track.ZFirst();
-      if(fZfirst > fZref) continue;
+      hadron.HZfirst = fZfirst;
+      // if(fZfirst > fZref) continue;
       ++fNZfirst;
 
       //--- check Zlast
       fZlast = track.ZLast();
-      if(fZlast < fZref) continue;
+      hadron.HZlast = fZlast;
+      // if(fZlast < fZref) continue;
       ++fNZlast;
 
       //--- check X/X0
       hadron.XX0 = track.XX0();
       ++fNXX0;
+
+      //--- check chi2/ndf
+      hadron.chi2_hadron = track.Chi2tot()/float(track.Ndf());
 
       //--- check trigger
       // N. PIERRE : Should move to post-PHAST analysis TODO Suppress it.

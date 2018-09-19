@@ -12,6 +12,7 @@ struct DISEventData{
 
   Int_t runNo,spillNo,evtInSpill;
   Int_t trigMask;
+  Int_t iMuPrim;
   Double_t  evNo,timeInSpill;
   Float_t x,y,z; // vertex position
   Double_t p0x,p0y,p0z; // beam momentum
@@ -25,6 +26,11 @@ struct DISEventData{
   Double_t HG01x,HG01y,HG021x,HG021y,HG022x,HG022y;
 
   Bool_t saved;
+  Int_t BPV;
+  Bool_t isMuPrim;
+  Float_t MZfirst;
+  Float_t beam_chi2;
+  Float_t mu_prim_chi2;
   Bool_t cellsCrossed;
   Bool_t backPropFlag;
 
@@ -61,6 +67,7 @@ struct HadronData{
   Double_t thRICH;
   Double_t thC;
   Float_t LH[6];
+
 
   Short_t MCpid;
 

@@ -31,10 +31,12 @@ void HadronPairData::Reset()
   beta1_pi  = beta1_k  = beta1_p=0.0;
   beta2_pi  = beta2_k  = beta2_p=0.0;
   theta_CM1 = theta_CM2 =0.0;
-  Phi1_vtx = Phi2_vtx =0.0; 
-  Phi1 = Phi2 =0.0; 
+  Phi1_vtx = Phi2_vtx =0.0;
+  Phi1 = Phi2 =0.0;
   index_UV = index_vis =0.0;
   richInfo1 = richInfo2 = excl_phi= false;
+  chi2_hadron = 0;
+  HZfirst = HZlast = 0;
   for(int i=0; i<6; ++i){
     LHs1[i] = LHs2[i] = -10.0;
   }
@@ -49,12 +51,12 @@ float HadronPairData::InvMass(const float& m) const
 
   float Etot = E1 + E2;
   float s = Etot*Etot;
-  float ptot[3]; 
+  float ptot[3];
   for(int i=0; i<3; ++i){
     ptot[i] = p1[i] + p2[i];
     s -= ptot[i]*ptot[i];
   }
-  
+
   return sqrt(s);
 }
 
@@ -111,5 +113,5 @@ bool HadronPairData::MaxLHHypo(const int& part,const int& hypo) const
   case 1: max = MaxLHMassHypo1(); break;
   case 2: max = MaxLHMassHypo2(); break;
   }
-  return ( max == hypo ); 
+  return ( max == hypo );
 }
