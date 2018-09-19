@@ -74,6 +74,8 @@ struct HadronData{
   Double_t MM01x,MM01y,MM02x,MM02y,MM03x,MM03y;
   Double_t Z2Ax,Z2Ay,Z2Bx,Z2By;
   Double_t RICHx,RICHy;                       //Extrapolation at RICH by Quiela
+  Float_t chi2_hadron;
+  Float_t HZfirst, HZlast;
 
   void Reset();
   void CalcVariables(const double& M=-1);
