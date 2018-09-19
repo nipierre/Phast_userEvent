@@ -39,6 +39,7 @@ static const double M_p  = G3partMass[14]; // proton mass
 
 static const char* PREFIX=
   "/sps/compass/npierre";
+  // "/afs/cern.ch/user/n/nipierre/workspace";
 
 static const char* CONFFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
@@ -694,7 +695,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
     fChi2CutFlag = (track0.NHitsFoundInDetect("BM")>3)?(true):(false);
     fChi2beam = track0.Chi2tot()/float(track0.Ndf());
     fChi2muprim = track.Chi2tot()/float(track.Ndf());
-    fMZfirst = track1.ZFirst();
+    fMZfirst = track.ZFirst();
   }
 
   HM04h = track.NHitsFoundInDetect("HM04Y1");
