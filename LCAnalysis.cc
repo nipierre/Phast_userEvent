@@ -505,7 +505,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HG022y = HG022y;
   fDISEvt->BPV = fiBPV;
   fDISEvt->isMuPrim = fimu1;
-  fDISEvt->mu_prim_Zfirst = fMZfirst;
+  fDISEvt->MZfirst = fMZfirst;
   fDISEvt->beam_chi2 = fChi2beam;
   fDISEvt->mu_prim_chi2 = fChi2muprim;
   fDISEvt->backPropFlag = fChi2CutFlag;
@@ -693,7 +693,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
     // fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
     fChi2CutFlag = (track0.NHitsFoundInDetect("BM")>3)?(true):(false);
     fChi2beam = track0.Chi2tot()/float(track0.Ndf());
-    fChi2muprim = track1.Chi2tot()/float(track1.Ndf());
+    fChi2muprim = track.Chi2tot()/float(track.Ndf());
     fMZfirst = track1.ZFirst();
   }
 
