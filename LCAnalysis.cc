@@ -612,8 +612,10 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fxBj   = PaAlgo::xbj(fkMu0,fkMu1);
   fW2    = PaAlgo::W2(fkMu0,fkMu1);
 
-  int itr = Mu1.iTrack();
-  const PaTrack& track = ev.vTrack(itr);
+  int itr0 = Mu0.iTrack();
+  int itr1 = Mu1.iTrack();
+  const PaTrack& track0 = ev.vTrack(itr0);
+  const PaTrack& track = ev.vTrack(itr1);
   fXX0mu1 = track.XX0();
 
   fzVTX = fBPV->Z();
@@ -680,8 +682,10 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
   //save 2016 "back prop flag"
   if((269918<ev.RunNum())){
-  const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
-  fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);}
+    const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
+    // fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
+    fChi2CutFlag = ((track0.Chi2tot()/float(track0.Ndf()))<10)?(true):(false);
+  }
 
   HM04h = track.NHitsFoundInDetect("HM04Y1");
   HM05h = track.NHitsFoundInDetect("HM05Y1");
@@ -809,7 +813,15 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    imu1 = fimu1 = v.iMuPrim();
+    imu1 = fimu1 = v.iMuPrim(0,1,1,0,30);
+    /*
+    iMuPrim(
+    checkYokeSM2, should mu' candidates crossing SM2 yoke be rejected
+    reject2MuEvents, should events with >=2 outgoing muon tracks
+    checkCanBeMuon, should events with tracks pointing to the absorbers hole be rejected
+    checkHodos, should mu' candidates be required to cross active area of trigger hodoscope pair corresponding to one of the fired triggers
+    XX0, radiation length)
+    */
 
     if(imu0)
     {
