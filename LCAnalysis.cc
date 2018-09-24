@@ -316,7 +316,7 @@ void LCAnalysis::DoEvent(PaEvent& ev)
    if( !fIsMC &&(ev.RunNum() >52564 && ev.RunNum() <54639))RescaleMom(ev,true);
 
    //--- Target Management
-   fTcell->Init(ev);
+   // fTcell->Init(ev);
 
   // call event handler
   (this->*fEvHandler)(ev);

@@ -14,10 +14,10 @@ TargetCell& TargetCell::Instance()
 
 TargetCell::TargetCell(): year(-1)
 {
-  /*
+
   char tstr[500];
   std::ifstream fin;
-  sprintf(tstr,"/afs/cern.ch/compass/dvcs/Production/Analysis/plots/target-107924-109081.dat");
+  sprintf(tstr,"/sps/compass/npierre/PHAST/user/Target/target-274508-274901-1.dat");
   cout<<"Opening target cell description: "<<tstr<<"..."<<endl;
   fin.open(tstr);
   while(fin.is_open() && !fin.eof()) {
@@ -29,12 +29,6 @@ TargetCell::TargetCell(): year(-1)
     yv.push_back(y);
   }
   cout<<"Target cell description loaded"<<endl;
-  */
-  /*
-  for(unsigned int i = 0; i < zv.size(); i++) {
-    xv[i] = 0;
-    yv[i] = -0.5f*i;
-    }*/
 }
 
 
