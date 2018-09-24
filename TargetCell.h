@@ -18,7 +18,7 @@ class TargetCell
 
   bool InTarget(const PaVertex& vtx, float R);
 
-  bool InTarget(const PaTrack& track, float zmin, float zmax, float R, float Y);
+  bool CrossCells(const PaTrack& track, float zmin, float zmax, float R, float Y);
 
   void CellCenter(float z, float& xc, float& yc);
 };
