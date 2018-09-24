@@ -510,7 +510,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->MZfirst = fMZfirst;
   fDISEvt->beam_chi2 = fChi2beam;
   fDISEvt->mu_prim_chi2 = fChi2muprim;
-  fDISEvt->backPropFlag = fChi2CutFlag;
+  fDISEvt->BMS = fBMS;
 
   // cout << ">>> *************************** <<<" << endl;
   // cout << ">>>     LCAnalysis message :    <<<" << endl;
@@ -682,13 +682,13 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   }
 
   // save "back propagation flag"
-  if((ev.RunNum() >52564 && ev.RunNum() <54639)){  fChi2CutFlag = Mu0.Chi2CutFlag();}
+  if((ev.RunNum() >52564 && ev.RunNum() <54639)){  fChi2beam = Mu0.Chi2CutFlag();}
   //cout<<"check SetMuKinematics "<<endl;
 
   //save 2012 "back prop flag"
   if( ev.RunNum() >107923 && ev.RunNum() <109082){
   const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
-  fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);}
+  fBMS = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);}
 
   //save 2016 "back prop flag"
   if((269918<ev.RunNum())){
