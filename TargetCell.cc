@@ -271,11 +271,11 @@ float TargetCell::PathLength(PaTrack* trk, float zmin, float zmax, float R)
 }
 
 
-bool TargetCell::InTarget(PaVertex* vtx, float R)
+bool TargetCell::InTarget(const PaVertex& vtx, float R)
 {
-  float xvtx = vtx->X();
-  float yvtx = vtx->Y();
-  float zvtx = vtx->Z();
+  float xvtx = vtx.X();
+  float yvtx = vtx.Y();
+  float zvtx = vtx.Z();
 
   float xc, yc;
   CellCenter(zvtx, xc, yc);
@@ -294,7 +294,7 @@ bool TargetCell::InTarget(PaVertex* vtx, float R)
 }
 
 
-bool TargetCell::InTarget(const PaTrack* trk, float zmin, float zmax, float R, float Y)
+bool TargetCell::CrossCells(const PaTrack& trk, float zmin, float zmax, float R, float Y)
 {
   if( zv.size() != xv.size() ) return 0;
   if( zv.size() != yv.size() ) return 0;
@@ -325,7 +325,7 @@ bool TargetCell::InTarget(const PaTrack* trk, float zmin, float zmax, float R, f
       float xc, yc;
       CellCenter( zmin, xc, yc );
 
-      trk->Extrap(zmin, hout1);
+      trk.Extrap(zmin, hout1);
       double xt1 = hout1.X();
       double yt1 = hout1.Y();
 
@@ -341,7 +341,7 @@ bool TargetCell::InTarget(const PaTrack* trk, float zmin, float zmax, float R, f
       float xc, yc;
       CellCenter( zmax, xc, yc );
 
-      trk->Extrap(zmax, hout1);
+      trk.Extrap(zmax, hout1);
       double xt1 = hout1.X();
       double yt1 = hout1.Y();
 
@@ -353,7 +353,7 @@ bool TargetCell::InTarget(const PaTrack* trk, float zmin, float zmax, float R, f
     }
 
     // Extrapolate to the current segment
-    trk->Extrap(z1, hout1);
+    trk.Extrap(z1, hout1);
     double xt1 = hout1.X();
     double yt1 = hout1.Y();
 
