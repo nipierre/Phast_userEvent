@@ -3,15 +3,6 @@
 
 #include "TargetCell.h"
 
-TargetCell* TargetCell::ptr = NULL;
-
-TargetCell& TargetCell::Instance()
-{
-  if( ptr == NULL ) ptr = new TargetCell();
-  return *ptr;
-}
-
-
 TargetCell::TargetCell(): year(-1)
 {
 
