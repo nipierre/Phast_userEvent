@@ -33,7 +33,7 @@ struct DISEventData{
   Float_t beam_chi2;
   Float_t mu_prim_chi2;
   Bool_t cellsCrossed;
-  Bool_t backPropFlag;
+  Int_t BMS;
 
   void Reset();
   void CalcKin();

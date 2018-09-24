@@ -74,7 +74,7 @@ class LCAnalysis{
   int fTrigMask;
   bool fTrigOk;
   bool fCellsCrossed;
-  bool fChi2CutFlag;
+  int fBMS;
   float fChi2beam;
   float fChi2muprim;
   DISEventData* fDISEvt;

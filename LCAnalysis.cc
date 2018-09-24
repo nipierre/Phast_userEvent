@@ -692,9 +692,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
   //save 2016 "back prop flag"
   if((269918<ev.RunNum())){
-    // const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
-    // fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
-    fChi2CutFlag = (track0.NHitsFoundInDetect("BM")>3)?(true):(false);
+    fBMS = track0.NHitsFoundInDetect("BM");
     fChi2beam = track0.Chi2tot()/float(track0.Ndf());
     fChi2muprim = track.Chi2tot()/float(track.Ndf());
     fMZfirst = track.ZFirst();

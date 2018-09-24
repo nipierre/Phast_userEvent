@@ -20,7 +20,7 @@ DISEventData::DISEventData():
   beam_chi2(0),
   mu_prim_chi2(0),
   cellsCrossed(false),
-  backPropFlag(false)
+  BMS(0)
 {}
 
 void DISEventData::Reset()
@@ -42,7 +42,7 @@ void DISEventData::Reset()
   beam_chi2=0;
   mu_prim_chi2=0;
   cellsCrossed=false;
-  backPropFlag=false;
+  BMS=0;
 }
 
 static const double muMass  = G3partMass[5];
