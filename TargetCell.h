@@ -5,9 +5,11 @@ class TargetCell
 {
   std::vector<float> xv, yv, zv;
   int year;
-  TargetCell();
 
  public:
+
+  TargetCell();
+
   void Init();
 
   float PathLength(PaTrack* track, float zmin, float zmax, float R);
