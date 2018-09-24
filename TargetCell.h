@@ -12,7 +12,7 @@ class TargetCell
  public:
   static TargetCell& Instance();
 
-  void Init(const PaEvent& e);
+  void Init();
 
   float PathLength(PaTrack* track, float zmin, float zmax, float R);
 
