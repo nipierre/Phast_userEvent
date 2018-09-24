@@ -676,7 +676,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   }
   else if( (ev.RunNum() > 269918)||fMCtargetType==-1){ //2016 data and MC
     fInTarget = fTcell->TargetCell::InTarget(VertexMu0,1.9);
-    fCellsCrossed = fTcell->TargetCell::CrossCells(itr0);
+    fCellsCrossed = fTcell->TargetCell::CrossCells(track0);
   }
   else {
       cout << "Year not found.. " << endl;
