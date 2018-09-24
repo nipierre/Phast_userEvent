@@ -503,6 +503,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HG021y = HG021y;
   fDISEvt->HG022x = HG022x;
   fDISEvt->HG022y = HG022y;
+  if(!fChi2CutFlag) cout << fChi2CutFlag << endl;
   fDISEvt->backPropFlag = fChi2CutFlag;
 
   // cout << ">>> *************************** <<<" << endl;
@@ -684,7 +685,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   if((269918<ev.RunNum())){
   const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
   fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
-  if(!Mu0track.NHitsFoundInDetect("BM")>3) cout << Mu0track.NHitsFoundInDetect("BM") << " " << ParamMu0.Mom() << endl;}
+  if(!(Mu0track.NHitsFoundInDetect("BM")>3)) cout << Mu0track.NHitsFoundInDetect("BM") << " " << ParamMu0.Mom() << endl;}
 
   HM04h = track.NHitsFoundInDetect("HM04Y1");
   HM05h = track.NHitsFoundInDetect("HM05Y1");
