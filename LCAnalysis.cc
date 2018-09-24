@@ -93,8 +93,6 @@ LCAnalysis::LCAnalysis():
   fMCHadronsPtr(&fMCHadrons),
   //--------------- Pid utility class object
   fPid(new PaPid),
-  //--------------- 2012 target utility class object
-  fTcell(new TargetCell),
   //--------------- Pointer initialisations
   fOutFile(0),
   fEvtTree(0),
@@ -145,8 +143,6 @@ LCAnalysis::LCAnalysis():
   if(pos==string::npos) pos = -1;
   disEvtFileName.insert(pos+1,"disevt_");
   cout<<"LCAnalysis: DISEvtTree file is: "<<disEvtFileName<<endl;
-
-
 
   //--- setting handler pointer
   switch(fAnalysisType){
@@ -318,6 +314,9 @@ void LCAnalysis::DoEvent(PaEvent& ev)
   ++fTotNEvts; // increment total number of events
   if(ev.iBestPrimaryVertex()>=0)count_bestpv++;
    if( !fIsMC &&(ev.RunNum() >52564 && ev.RunNum() <54639))RescaleMom(ev,true);
+
+   //--- Target Management
+   fTcell->Init(ev);
 
   // call event handler
   (this->*fEvHandler)(ev);
