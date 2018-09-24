@@ -144,6 +144,9 @@ LCAnalysis::LCAnalysis():
   disEvtFileName.insert(pos+1,"disevt_");
   cout<<"LCAnalysis: DISEvtTree file is: "<<disEvtFileName<<endl;
 
+  //--- Target Management
+  fTcell->Init();
+
   //--- setting handler pointer
   switch(fAnalysisType){
   case 0:
@@ -314,9 +317,6 @@ void LCAnalysis::DoEvent(PaEvent& ev)
   ++fTotNEvts; // increment total number of events
   if(ev.iBestPrimaryVertex()>=0)count_bestpv++;
    if( !fIsMC &&(ev.RunNum() >52564 && ev.RunNum() <54639))RescaleMom(ev,true);
-
-   //--- Target Management
-   // fTcell->Init(ev);
 
   // call event handler
   (this->*fEvHandler)(ev);

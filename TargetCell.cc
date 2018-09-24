@@ -15,33 +15,19 @@ TargetCell& TargetCell::Instance()
 TargetCell::TargetCell(): year(-1)
 {
 
-  char tstr[500];
-  std::ifstream fin;
-  sprintf(tstr,"/sps/compass/npierre/PHAST/user/Target/target-274508-274901-1.dat");
-  cout<<"Opening target cell description: "<<tstr<<"..."<<endl;
-  fin.open(tstr);
-  while(fin.is_open() && !fin.eof()) {
-    float z, x, y, dummy;
-    fin >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
-        >> x >> y;
-    zv.push_back(z);
-    xv.push_back(x);
-    yv.push_back(y);
-  }
-  cout<<"Target cell description loaded"<<endl;
 }
 
 
-void TargetCell::Init(const PaEvent& e)
+void TargetCell::Init()
 {
   // Check if already initialized
-  if( year == e.Year() ) return;
+  // if( year == e.Year() ) return;
 
   //char tstr[500];
   std::ifstream fin;
   std::string tstr;
-  year = e.Year();
-  if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
+  year = 2016;
+  // if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
   else {
     if(year==2012) tstr = "/sps/compass/npierre/PHAST/user/Target/target-107924-109081.dat";
     if(year==2016) tstr = "/sps/compass/npierre/PHAST/user/Target/target-274508-274901-1.dat";
