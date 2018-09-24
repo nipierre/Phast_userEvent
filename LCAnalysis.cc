@@ -587,8 +587,8 @@ bool LCAnalysis::CellsCrossed()
 
 bool LCAnalysis::CellsCrossed2016()
 {
-  const PaTPar& ParamMu0 = fEvent->vParticle(fimu0).ParInVtx(fiBPV);
-  return fTcell->TargetCell::CrossCells(ParamMu0,fEvent->RunNum());
+  const PaTrack& track0 = fEvent->vTrack(fEvent->vParticle(fimu0).iTrack());
+  return fTcell->TargetCell::CrossCells(track0);
   //cout<<"check CellsCrossed"<<endl;
 }
 
@@ -676,8 +676,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   }
   else if( (ev.RunNum() > 269918)||fMCtargetType==-1){ //2016 data and MC
     fInTarget = fTcell->TargetCell::InTarget(VertexMu0,1.9);
-    fCellsCrossed = fTcell->TargetCell::CrossCells(ParamMu0,fMCtargetType);
-    if(fCellsCrossed)fCellsCrossed = fTcell->TargetCell::CrossCells(ParamMu0,ev.RunNum());
+    fCellsCrossed = fTcell->TargetCell::CrossCells(itr0);
   }
   else {
       cout << "Year not found.. " << endl;
