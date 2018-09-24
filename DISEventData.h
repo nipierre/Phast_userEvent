@@ -12,12 +12,14 @@ struct DISEventData{
 
   Int_t runNo,spillNo,evtInSpill;
   Int_t trigMask;
+  Int_t iMuPrim;
   Double_t  evNo,timeInSpill;
   Float_t x,y,z; // vertex position
   Double_t p0x,p0y,p0z; // beam momentum
   Double_t p1x,p1y,p1z; // mu1 momentum
   Double_t E_beam;    // beam energie
   Double_t E_mu_prim; // mu1 energie
+  Int_t Charge;
   Double_t XX0; // no. of rad. len. crossed by mu1
   Double_t HM04x,HM04y,HM05x,HM05y;
   Double_t HL04x,HL04y,HL05x,HL05y;
@@ -25,6 +27,11 @@ struct DISEventData{
   Double_t HG01x,HG01y,HG021x,HG021y,HG022x,HG022y;
 
   Bool_t saved;
+  Int_t BPV;
+  Bool_t isMuPrim;
+  Float_t MZfirst;
+  Float_t beam_chi2;
+  Float_t mu_prim_chi2;
   Bool_t cellsCrossed;
   Bool_t backPropFlag;
 
@@ -62,11 +69,14 @@ struct HadronData{
   Double_t thC;
   Float_t LH[6];
 
+
   Short_t MCpid;
 
   Double_t MM01x,MM01y,MM02x,MM02y,MM03x,MM03y;
   Double_t Z2Ax,Z2Ay,Z2Bx,Z2By;
   Double_t RICHx,RICHy;                       //Extrapolation at RICH by Quiela
+  Float_t chi2_hadron;
+  Float_t HZfirst, HZlast;
 
   void Reset();
   void CalcVariables(const double& M=-1);

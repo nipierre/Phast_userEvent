@@ -66,13 +66,17 @@ class LCAnalysis{
   const PaVertex* fBPV;
   int fiBPV;
   double fzVTX;
+  float fMZfirst;
   int fimu0,fimu1;
+  int fMCharge;
   bool fReconsEvent;
   bool fValidMu;
   int fTrigMask;
   bool fTrigOk;
   bool fCellsCrossed;
   bool fChi2CutFlag;
+  float fChi2beam;
+  float fChi2muprim;
   DISEventData* fDISEvt;
   DISEventMCData* fDISMCEvt;
   std::vector<HadronData> fHadrons;

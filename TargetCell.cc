@@ -27,15 +27,15 @@ bool TargetCell::GetTargetLocation( int run,
 {
   if (run == -1)
   { // MC
-    x = 0; y = 0;  z_1 = -318.5; z_2 = -78.5;
-    R    = 1.5;
-    yCUT = 1.6;
+    x = 0; y = 0;  z_1 = -325; z_2 = -71;
+    R    = 1.9;
+    yCUT = 1.2;
   }
   else if( run > 0 )
   { // 2016 DVCS - lh2
-    x = 0; y = 0;  z_1 = -318.5; z_2 = -78.5;
-    R    = 1.5;
-    yCUT = 1.6;
+    x = 0; y = 0;  z_1 = -325; z_2 = -71;
+    R    = 1.9;
+    yCUT = 1.2;
   }
   else { // Not known
     cout<<"TargetCell::GetTargetLocation ==> target location for the run "<<run<<" is not known."<<endl;

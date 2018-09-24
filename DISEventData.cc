@@ -11,8 +11,14 @@ DISEventData::DISEventData():
   p1x(0),p1y(0),p1z(0), // mu1 momentum
   E_beam(0), // beam energie
   E_mu_prim(0), // mu1 energie
+  Charge(0),
   XX0(0),  // no. of rad. len. crossed by mu1
   saved(false),
+  BPV(0),
+  isMuPrim(false),
+  MZfirst(0),
+  beam_chi2(0),
+  mu_prim_chi2(0),
   cellsCrossed(false),
   backPropFlag(false)
 {}
@@ -27,8 +33,14 @@ void DISEventData::Reset()
   p1x=0; p1y=0; p1z=0;  // mu1 momentum
   E_beam=0; // beam energie
   E_mu_prim=0; // mu1 energie
+  Charge=0;
   XX0=0;   // no. of rad. len. crossed by mu1
   saved=false;
+  BPV=0;
+  isMuPrim=false;
+  MZfirst=0;
+  beam_chi2=0;
+  mu_prim_chi2=0;
   cellsCrossed=false;
   backPropFlag=false;
 }
@@ -80,7 +92,8 @@ HadronData::HadronData():
   Z2Ax(0),Z2Ay(0),
   Z2Bx(0),Z2By(0),
   RICHx(0),RICHy(0), //Extrapolation at RICH by Quiela
-
+  chi2_hadron(0),
+  HZfirst(0), HZlast(0),
   dis(0),
   E(0),z(0),
   z_pi(0),z_p(0)
@@ -109,6 +122,8 @@ void HadronData::Reset()
   MM01x=MM01y=MM02x=MM02y=MM03x=MM03y=0.0;
   Z2Ax=Z2Ay=Z2Bx=Z2By=0.0;
   RICHx=RICHy=0.0;      //Extrapolation at RICH by Quiela
+  chi2_hadron=0;
+  HZfirst=HZlast=0;
 
 }
 
