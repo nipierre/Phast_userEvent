@@ -20,6 +20,7 @@ DISEventData::DISEventData():
   beam_chi2(0),
   mu_prim_chi2(0),
   cellsCrossed(false),
+  inTarget(false),
   BMS(0)
 {}
 
@@ -42,6 +43,7 @@ void DISEventData::Reset()
   beam_chi2=0;
   mu_prim_chi2=0;
   cellsCrossed=false;
+  inTarget=false;
   BMS=0;
 }
 

@@ -17,9 +17,9 @@ TargetCell::TargetCell(): year(-1)
   /*
   char tstr[500];
   std::ifstream fin;
-  sprintf(tstr,"/afs/cern.ch/compass/dvcs/Production/Analysis/plots/target-107924-109081.dat"); 
+  sprintf(tstr,"/afs/cern.ch/compass/dvcs/Production/Analysis/plots/target-107924-109081.dat");
   cout<<"Opening target cell description: "<<tstr<<"..."<<endl;
-  fin.open(tstr); 
+  fin.open(tstr);
   while(fin.is_open() && !fin.eof()) {
     float z, x, y, dummy;
     fin >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
@@ -47,12 +47,11 @@ void TargetCell::Init(const PaEvent& e)
   std::ifstream fin;
   std::string tstr;
   year = e.Year();
-  if(e.IsMC()) tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc.dat";
+  if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/src/Target/target-mc.dat";
   else {
-    if(year==2012) tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-107924-109081.dat";
-    //if(year==2016) tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-265000-276500.dat";
-    if(year==2016) tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-274508-274901-1.dat";
-    if(year==2017) tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-278473-278706-0.dat";
+    if(year==2012) tstr = "/sps/compass/npierre/PHAST/src/Target/target-107924-109081.dat";
+    if(year==2016) tstr = "/sps/compass/npierre/PHAST/src/Target/target-274508-274901-1.dat";
+    if(year==2017) tstr = "/sps/compass/npierre/PHAST/src/Target/target-278473-278706-0.dat";
   }
   cout<<"Opening target cell description: "<<tstr<<"..."<<endl;
   fin.open(tstr.c_str());
@@ -108,28 +107,28 @@ float TargetCell::PathLength(PaTrack* trk, float zmin, float zmax, float R)
     if( z2 <= zmin ) continue;
     if( z1 >= zmax ) continue;
     //double dz = z2-z1;
-    
+
     double xc1 = xv[i];
     double xc2 = xv[i+1];
-    
+
     double yc1 = yv[i];
     double yc2 = yv[i+1];
-    
+
     double dxcdz = (xc2-xc1)/(z2-z1);
     double dycdz = (yc2-yc1)/(z2-z1);
-    
+
     if( z1 < zmin ) {
       z1 = zmin;
       xc1 = xv[i] + dxcdz*(z1-zv[i]);
       yc1 = yv[i] + dycdz*(z1-zv[i]);
     }
-    
+
     if( z2 > zmax ) {
       z2 = zmax;
       xc2 = xv[i] + dxcdz*(z2-zv[i]);
       yc2 = yv[i] + dycdz*(z2-zv[i]);
     }
-    
+
     trk->Extrap(z1, hout1);
     double xt1 = hout1.X();
     double yt1 = hout1.Y();
@@ -139,7 +138,7 @@ float TargetCell::PathLength(PaTrack* trk, float zmin, float zmax, float R)
     trk->Extrap(z2, hout2);
     double xt2 = hout2.X();
     double yt2 = hout2.Y();
-    
+
     double Dx = xt1 - xc1;
     double Dy = yt1 - yc1;
     double Dx2 = xt2 - xc2;
@@ -151,7 +150,7 @@ float TargetCell::PathLength(PaTrack* trk, float zmin, float zmax, float R)
     double b = (ddx*Dx + ddy*Dy)*2.0f;
     double c = Dx*Dx + Dy*Dy - R*R;
     double D = b*b - a*c*4.0f;
-    
+
     /*
     cout<<endl<<"z1="<<z1<<"  z2="<<z2<<endl;
     cout<<"xc1="<<xc1<<"  yc1="<<yc1<<endl;
@@ -164,10 +163,10 @@ float TargetCell::PathLength(PaTrack* trk, float zmin, float zmax, float R)
     cout<<"ddx="<<ddx<<"  ddy="<<ddy<<endl;
     cout<<"a="<<a<<"  b="<<b<<"  c="<<c<<"  D="<<D<<endl;
     */
-    
+
     //double Rbegin = sqrt(pow(xt1-xc1,2)+pow(yt1-yc1,2));
     //double Rend = sqrt(pow(xt2-xc2,2)+pow(yt2-yc2,2));
-    
+
 //     if( D < 0 && (Rbegin<R || Rend<R))
 //       {
 //  cout << "D < 0:" << endl;
@@ -283,7 +282,7 @@ bool TargetCell::InTarget(PaVertex* vtx, float R)
   double dx = xvtx-xc;
   double dy = yvtx-yc;
   double r = TMath::Sqrt(dx*dx + dy*dy);
-  
+
   //if(r>R)cout << "Z = "<< zvtx << " R = " << r << endl;
   /*
   cout<<"TargetCell::InTarget()"<<endl
@@ -291,7 +290,7 @@ bool TargetCell::InTarget(PaVertex* vtx, float R)
       <<"  cell:   "<<xc<<"  "<<yc<<endl
       <<"  dist:   "<<dx<<"  "<<dy<<"  "<<r<<endl;
   */
-  return( r <= R );
+  return( r <= R && yvtx < 1.2);
 }
 
 
@@ -377,7 +376,7 @@ void TargetCell::CellCenter(float z, float& xc, float& yc)
     double z2 = zv[i+1];
     if( z2 < z ) continue;
     if( z1 > z ) continue;
-    
+
     double xc1 = xv[i];
     double xc2 = xv[i+1];
 

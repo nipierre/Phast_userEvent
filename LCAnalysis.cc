@@ -486,6 +486,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->E_mu_prim = fkMu1.E();
   fDISEvt->Charge = fMCharge;
   fDISEvt->XX0 = fXX0mu1;
+  fDISEvt->inTarget = fInTarget;
   fDISEvt->cellsCrossed = fCellsCrossed;
   fDISEvt->HM04x = HM04x;
   fDISEvt->HM04y = HM04y;
@@ -571,10 +572,9 @@ bool LCAnalysis::InteractionInTarget2009()
 
 bool LCAnalysis::InteractionInTarget2016()
 {
-  const PaTPar& ParamMu0 = fEvent->vParticle(fimu0).ParInVtx(fiBPV);
-  int runno = fIsMC ? fMCtargetType : fEvent->RunNum();
+  const PaVertex& VertexMu0 = fEvent->vVertex(fiBPV);
 
-  return fTcell->TargetCell::InTarget(ParamMu0,runno);
+  return fTcell->TargetCell::InTarget(VertexMu0,1.9);
 }
 
 
@@ -607,6 +607,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 				 const int& imu0,const int& imu1)
 {
   //cout<<"First check SetMuKinematics"<<endl;
+  const PaVertex& VertexMu0 = fEvent->vVertex(fiBPV); // The BPV
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
   const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
@@ -674,6 +675,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
     if(fCellsCrossed)fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fdatatargetType);
   }
   else if( (ev.RunNum() > 269918)||fMCtargetType==-1){ //2016 data and MC
+    fInTarget = fTcell->TargetCell::InTarget(VertexMu0,1.9);
     fCellsCrossed = fTcell->TargetCell::CrossCells(ParamMu0,fMCtargetType);
     if(fCellsCrossed)fCellsCrossed = fTcell->TargetCell::CrossCells(ParamMu0,ev.RunNum());
   }
