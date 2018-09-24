@@ -294,7 +294,7 @@ bool TargetCell::InTarget(const PaVertex& vtx, float R)
 }
 
 
-bool TargetCell::CrossCells(const PaTrack& trk, float zmin=-325, float zmax=-71, float R=1.9, float Y=1.2)
+bool TargetCell::CrossCells(const PaTrack& trk, float zmin, float zmax, float R, float Y)
 {
   if( zv.size() != xv.size() ) return 0;
   if( zv.size() != yv.size() ) return 0;
