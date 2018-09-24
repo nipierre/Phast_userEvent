@@ -28,11 +28,11 @@ void TargetCell::Init()
   std::string tstr;
   year = 2016;
   // if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
-  else {
+  // else {
     if(year==2012) tstr = "/sps/compass/npierre/PHAST/user/Target/target-107924-109081.dat";
     if(year==2016) tstr = "/sps/compass/npierre/PHAST/user/Target/target-274508-274901-1.dat";
     if(year==2017) tstr = "/sps/compass/npierre/PHAST/user/Target/target-278473-278706-0.dat";
-  }
+  // }
   cout<<"Opening target cell description: "<<tstr<<"..."<<endl;
   fin.open(tstr.c_str());
   while(fin.is_open() && !fin.eof()) {
