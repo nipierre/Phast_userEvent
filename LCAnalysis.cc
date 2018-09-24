@@ -39,6 +39,7 @@ static const double M_p  = G3partMass[14]; // proton mass
 
 static const char* PREFIX=
   "/sps/compass/npierre";
+  // "/afs/cern.ch/user/n/nipierre/workspace";
 
 static const char* CONFFILENAME=
   Form("%s/PHAST/user/LC_configuration/lc_conf_file.txt",PREFIX);
@@ -483,6 +484,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->p1z = fkMu1.Z();
   fDISEvt->E_beam = fkMu0.E();
   fDISEvt->E_mu_prim = fkMu1.E();
+  fDISEvt->Charge = fMCharge;
   fDISEvt->XX0 = fXX0mu1;
   fDISEvt->cellsCrossed = fCellsCrossed;
   fDISEvt->HM04x = HM04x;
@@ -503,7 +505,11 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->HG021y = HG021y;
   fDISEvt->HG022x = HG022x;
   fDISEvt->HG022y = HG022y;
-  if(!fChi2CutFlag) cout << fChi2CutFlag << endl;
+  fDISEvt->BPV = fiBPV;
+  fDISEvt->isMuPrim = fimu1;
+  fDISEvt->MZfirst = fMZfirst;
+  fDISEvt->beam_chi2 = fChi2beam;
+  fDISEvt->mu_prim_chi2 = fChi2muprim;
   fDISEvt->backPropFlag = fChi2CutFlag;
 
   // cout << ">>> *************************** <<<" << endl;
@@ -614,9 +620,12 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fy     = fnu/fEbeam;
   fxBj   = PaAlgo::xbj(fkMu0,fkMu1);
   fW2    = PaAlgo::W2(fkMu0,fkMu1);
+  fMCharge = Mu0.Q();
 
-  int itr = Mu1.iTrack();
-  const PaTrack& track = ev.vTrack(itr);
+  int itr0 = Mu0.iTrack();
+  int itr1 = Mu1.iTrack();
+  const PaTrack& track0 = ev.vTrack(itr0);
+  const PaTrack& track = ev.vTrack(itr1);
   fXX0mu1 = track.XX0();
 
   fzVTX = fBPV->Z();
@@ -683,9 +692,13 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 
   //save 2016 "back prop flag"
   if((269918<ev.RunNum())){
-  const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
-  fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
-  if(!(Mu0track.NHitsFoundInDetect("BM")>3)) cout << Mu0track.NHitsFoundInDetect("BM") << " " << ParamMu0.Mom() << endl;}
+    // const PaTrack& Mu0track   = ev.vTrack(imu0); // the beam muon track reference
+    // fChi2CutFlag = (Mu0track.NHitsFoundInDetect("BM")>3)?(true):(false);
+    fChi2CutFlag = (track0.NHitsFoundInDetect("BM")>3)?(true):(false);
+    fChi2beam = track0.Chi2tot()/float(track0.Ndf());
+    fChi2muprim = track.Chi2tot()/float(track.Ndf());
+    fMZfirst = track.ZFirst();
+  }
 
   HM04h = track.NHitsFoundInDetect("HM04Y1");
   HM05h = track.NHitsFoundInDetect("HM05Y1");
@@ -818,7 +831,15 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    imu1 = fimu1 = v.iMuPrim();
+    imu1 = fimu1 = v.iMuPrim(0,1,1,0,30);
+    /*
+    iMuPrim(
+    checkYokeSM2, should mu' candidates crossing SM2 yoke be rejected
+    reject2MuEvents, should events with >=2 outgoing muon tracks
+    checkCanBeMuon, should events with tracks pointing to the absorbers hole be rejected
+    checkHodos, should mu' candidates be required to cross active area of trigger hodoscope pair corresponding to one of the fired triggers
+    XX0, radiation length)
+    */
 
     if(imu0)
     {
@@ -831,6 +852,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     }
   }
 
+  // fReconsEvent = IsThereABestPV();
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
   // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
@@ -1004,17 +1026,22 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       //--- check Zfirst
       fZfirst = track.ZFirst();
-      if(fZfirst > fZref) continue;
+      hadron.HZfirst = fZfirst;
+      // if(fZfirst > fZref) continue;
       ++fNZfirst;
 
       //--- check Zlast
       fZlast = track.ZLast();
-      if(fZlast < fZref) continue;
+      hadron.HZlast = fZlast;
+      // if(fZlast < fZref) continue;
       ++fNZlast;
 
       //--- check X/X0
       hadron.XX0 = track.XX0();
       ++fNXX0;
+
+      //--- check chi2/ndf
+      hadron.chi2_hadron = track.Chi2tot()/float(track.Ndf());
 
       //--- check trigger
       // N. PIERRE : Should move to post-PHAST analysis TODO Suppress it.
