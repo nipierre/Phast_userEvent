@@ -105,6 +105,7 @@ LCAnalysis::LCAnalysis():
   fDISEvtList(0),
   fUtilityTree(0),
   fdatatargetType(50000),
+  fTcell(new TargetCell),
   fMCtargetType(-1) // -2 two cells (2004), -3 three cells (from 2006) -5 three cells(Yann) -1 one cell (2016)
 {
   fEvent=0;
