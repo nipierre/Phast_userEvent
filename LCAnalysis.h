@@ -73,6 +73,7 @@ class LCAnalysis{
   bool fValidMu;
   int fTrigMask;
   bool fTrigOk;
+  bool fInTarget;
   bool fCellsCrossed;
   int fBMS;
   float fChi2beam;
