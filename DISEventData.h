@@ -152,6 +152,7 @@ struct HadronMCData{
   //Double_t RICHx,RICHy;                       //Extrapolation at RICH by Quiela
   ///////////////////////////////////////////////////
   Short_t pid;
+  Double_t lastVtxPos;
 
   Bool_t recons; // if true the hadron has been detected
   Short_t recHadIdx; // index of the corresponding reconstructed particle;

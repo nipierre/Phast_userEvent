@@ -947,6 +947,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       mcHadron.charge = hadr.Q();
       mcHadron.pid = hadr.Pid();
 
+      //--- recover position of last vertex
+      const vector<int>& MCvtx = hadr.vMCvertex();
+      int lastvtx = MCvtx[int(MCvtx.size())-1];
+      const PaMCvertex& lvtx = ev.vMCvertex(lastvtx);
+      mcHadron.lastVtxPos = lvtx.Pos(2);
+
       mcHadron.recons = false;
       std::set<int>::iterator it=hadr.sTrkRef().begin();
       for(; it!=hadr.sTrkRef().end(); ++it){
@@ -1107,13 +1113,15 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 	        if( mch->itrack == itr ) mch->recHadIdx = Nh;
 	      }
 
-	      //--- find the true pid of this track if any
+        //--- find the true pid of this track if any
       	int imctr = track.iMCtrack();
       	if( imctr >= 0 )
         {
       	  const PaMCtrack& mcTrack = ev.vMCtrack(imctr);
       	  hadron.MCpid = mcTrack.Pid();
       	}
+
+
       } //end special treatment for MC
 
       //--- fill hadron vector
