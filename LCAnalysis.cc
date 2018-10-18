@@ -949,8 +949,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       //--- recover position of last vertex
       const vector<int>& MCvtx = hadr.vMCvertex();
-      int lastvtx = MCvtx[int(MCvtx.size())-1];
-      const PaMCvertex& lvtx = ev.vMCvertex(lastvtx);
+      const PaMCvertex& lvtx = ev.vMCvertex(MCvtx.back());
       mcHadron.lastVtxPos = lvtx.Pos(2);
 
       mcHadron.recons = false;
