@@ -948,12 +948,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       mcHadron.pid = hadr.Pid();
 
       //--- recover position of last vertex
-      cout << "pouet" << endl;
       const vector<int>& MCvtx = hadr.vMCvertex();
-      // cout << "pouet1 : " << MCvtx.back() << endl;
-      // const PaMCvertex& lvtx = ev.vMCvertex(MCvtx.back());
-      // cout << "pouet2 : " << lvtx.Pos(2) << endl;
-      // mcHadron.lastVtxPos = lvtx.Pos(2);
+      if(!MCvtx.empty())
+      {
+        const PaMCvertex& lvtx = ev.vMCvertex(MCvtx.back());
+        mcHadron.lastVtxPos = lvtx.Pos(2);
+      }
 
       mcHadron.recons = false;
       std::set<int>::iterator it=hadr.sTrkRef().begin();
