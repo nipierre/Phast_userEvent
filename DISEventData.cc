@@ -208,7 +208,9 @@ HadronMCData::HadronMCData():
   Z2Bx(0),Z2By(0),
   RICHx(0),RICHy(0), //Extrapolation at RICH by Quiela*/
   pid(0),
-  lastVtxPos(0),
+  lastVtxPosX(0),
+  lastVtxPosY(0),
+  lastVtxPosZ(0),
   recons(false),recHadIdx(-1),
   itrack(-1)
 {}

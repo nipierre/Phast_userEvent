@@ -952,7 +952,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       if(!MCvtx.empty())
       {
         const PaMCvertex& lvtx = ev.vMCvertex(MCvtx.back());
-        mcHadron.lastVtxPos = lvtx.Pos(2);
+        mcHadron.lastVtxPosX = lvtx.Pos(0);
+        mcHadron.lastVtxPosY = lvtx.Pos(1);
+        mcHadron.lastVtxPosZ = lvtx.Pos(2);
       }
 
       mcHadron.recons = false;
