@@ -956,6 +956,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
         mcHadron.lastVtxPosY = lvtx.Pos(1);
         mcHadron.lastVtxPosZ = lvtx.Pos(2);
       }
+      else
+      {
+        mcHadron.lastVtxPosX = -3000;
+        mcHadron.lastVtxPosY = -3000;
+        mcHadron.lastVtxPosZ = -3000;
+      }
 
       mcHadron.recons = false;
       std::set<int>::iterator it=hadr.sTrkRef().begin();
