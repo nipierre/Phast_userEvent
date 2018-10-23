@@ -830,7 +830,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     const PaVertex& v = ev.vVertex(fiBPV);
 
     imu0 = fimu0 = v.InParticle();
-    imu1 = fimu1 = v.iMuPrim(0,1,1,0,30);
+    imu1 = fimu1 = v.iMuPrim(0,1,1,1,30);
     /*
     iMuPrim(
     checkYokeSM2, should mu' candidates crossing SM2 yoke be rejected
