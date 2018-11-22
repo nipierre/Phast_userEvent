@@ -288,9 +288,9 @@ bool TargetCell::InTarget(const PaVertex& vtx, float R)
 
 bool TargetCell::InTargetMC(const PaMCvertex& vtx, float R)
 {
-  float xvtx = vtx.X();
-  float yvtx = vtx.Y();
-  float zvtx = vtx.Z();
+  float xvtx = vtx.Pos(0);
+  float yvtx = vtx.Pos(1);
+  float zvtx = vtx.Pos(2);
 
   float xc, yc;
   CellCenterMC(zvtx, xc, yc);
