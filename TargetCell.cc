@@ -286,7 +286,7 @@ bool TargetCell::InTarget(const PaVertex& vtx, float R)
   return( r <= R && yvtx < 1.2);
 }
 
-bool TargetCell::InTargetMC(const PaMCVertex& vtx, float R)
+bool TargetCell::InTargetMC(const PaMCvertex& vtx, float R)
 {
   float xvtx = vtx.X();
   float yvtx = vtx.Y();
@@ -380,7 +380,7 @@ bool TargetCell::CrossCells(const PaTrack& trk, float zmin, float zmax, float R,
   return true;
 }
 
-bool TargetCell::CrossCellsMC(const PaMCTrack& trk, float zmin, float zmax, float R, float Y)
+bool TargetCell::CrossCellsMC(const PaMCtrack& trk, float zmin, float zmax, float R, float Y)
 {
   if( zMCv.size() != xMCv.size() ) return 0;
   if( zMCv.size() != yMCv.size() ) return 0;
