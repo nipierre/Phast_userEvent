@@ -469,6 +469,8 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
     fDISMCEvt->MC_HG022y = MC_HG022y;
     fDISMCEvt->MC_TCx = TCx;
     fDISMCEvt->MC_TCy = TCy;
+    fDISMCEvt->inTargetMC = fInTargetMC;
+    fDISMCEvt->cellsCrossedMC = fCellsCrossedMC;
   }
 
   if(!pReconsEvent) return;
@@ -576,7 +578,6 @@ bool LCAnalysis::InteractionInTarget2016()
 
   return fTcell->TargetCell::InTarget(VertexMu0,1.9);
 }
-
 
 bool LCAnalysis::CellsCrossed()
 {
@@ -852,8 +853,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }
 
   // fReconsEvent = IsThereABestPV();
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
-  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  if(fIsMC && fEvent->vMCtrack(mcVtx.iBeam()).ParInVtx().LzVec(M_mu).E()==160)  fReconsEvent = 0;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
@@ -923,6 +925,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1x =  kmu1.X();
     fDISMCEvt->MC_p1y =  kmu1.Y();
     fDISMCEvt->MC_p1z =  kmu1.Z();
+
+    fInTargetMC = fTcell->TargetCell::InTargetMC(mcVtx,1.9);
+    fCellsCrossedMC = fTcell->TargetCell::CrossCells(mu0);
 
     fDISMCEvt->recons = fReconsEvent;
 

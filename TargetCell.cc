@@ -36,6 +36,28 @@ void TargetCell::Init()
     cout<<"  z="<<z<<"  x="<<x<<"  y="<<y<<endl;
   }
   cout<<"Target cell description loaded"<<endl;
+
+  std::ifstream finMC;
+  std::string tstrMC;
+  year = 2016;
+  // if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
+  // else {
+    if(year==2012) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
+    if(year==2016) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
+    if(year==2017) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
+  // }
+  cout<<"Opening MC target cell description: "<<tstrMC<<"..."<<endl;
+  finMC.open(tstr.c_str());
+  while(finMC.is_open() && !fin.eof()) {
+    float z, x, y, dummy;
+    finMC >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
+        >> x >> y;
+    zMCv.push_back(z);
+    xMCv.push_back(x);
+    yMCv.push_back(y);
+    cout<<"  z="<<z<<"  x="<<x<<"  y="<<y<<endl;
+  }
+  cout<<"MC Target cell description loaded"<<endl;
   /*
   for(unsigned int i = 0; i < zv.size(); i++) {
     cout << zv[i] << "  "  << xv[i] << "  "  << yv[i] << endl;
@@ -264,6 +286,28 @@ bool TargetCell::InTarget(const PaVertex& vtx, float R)
   return( r <= R && yvtx < 1.2);
 }
 
+bool TargetCell::InTarget(const PaVertex& vtx, float R)
+{
+  float xvtx = vtx.X();
+  float yvtx = vtx.Y();
+  float zvtx = vtx.Z();
+
+  float xc, yc;
+  CellCenterMC(zvtx, xc, yc);
+  double dx = xvtx-xc;
+  double dy = yvtx-yc;
+  double r = TMath::Sqrt(dx*dx + dy*dy);
+
+  //if(r>R)cout << "Z = "<< zvtx << " R = " << r << endl;
+  /*
+  cout<<"TargetCell::InTarget()"<<endl
+      <<"  vertex: "<<xvtx<<"  "<<yvtx<<"  "<<zvtx<<endl
+      <<"  cell:   "<<xc<<"  "<<yc<<endl
+      <<"  dist:   "<<dx<<"  "<<dy<<"  "<<r<<endl;
+  */
+  return( r <= R && yvtx < 1.2);
+}
+
 
 bool TargetCell::CrossCells(const PaTrack& trk, float zmin, float zmax, float R, float Y)
 {
@@ -336,6 +380,77 @@ bool TargetCell::CrossCells(const PaTrack& trk, float zmin, float zmax, float R,
   return true;
 }
 
+bool TargetCell::CrossCellsMC(const PaMCTrack& trk, float zmin, float zmax, float R, float Y)
+{
+  if( zMCv.size() != xMCv.size() ) return 0;
+  if( zMCv.size() != yMCv.size() ) return 0;
+  if( zMCv.size() < 2 ) return 0;
+
+  if( zmin < zMCv[0] ) zmin = zMCv[0];
+  if( zmax > zMCv[zMCv.size()-1] ) zmax = zMCv[zMCv.size()-1];
+
+  double R2 = R*R;
+  PaTPar hout1;
+
+  for( unsigned int i = 1; i < zMCv.size(); i++ ) {
+    double z0 = zMCv[i-1];
+    double z1 = zMCv[i];
+    if( z1 <= zmin ) continue;
+    if( z0 >= zmax ) continue;
+
+
+
+    double xc0 = xMCv[i-1];
+    double yc0 = yMCv[i-1];
+    double xc1 = xMCv[i];
+    double yc1 = yMCv[i];
+
+
+    if( zmin > z0 && zmin < z1) {
+      // Zmin is inside the current segment, so we need to interpolate
+      float xc, yc;
+      CellCenterMC( zmin, xc, yc );
+
+      trk.ParInVtx().Extrapolate(zmin,hout1,0);
+      double xt1 = hout1.X();
+      double yt1 = hout1.Y();
+
+      double dx = xt1 - xc;
+      double dy = yt1 - yc;
+      double r2 = dx*dx + dy*dy;
+      if(yt1>=Y) return false;
+      if( r2 > R2 ) return false;
+    }
+
+    if( zmax > z0 && zmax < z1) {
+      // Zmax is inside the current segment, so we need to interpolate
+      float xc, yc;
+      CellCenterMC( zmax, xc, yc );
+
+      trk.ParInVtx().Extrapolate(zmax,hout1,0);
+      double xt1 = hout1.X();
+      double yt1 = hout1.Y();
+
+      double dx = xt1 - xc;
+      double dy = yt1 - yc;
+      double r2 = dx*dx + dy*dy;
+      if(yt1>=Y) return false;
+      if( r2 > R2 ) return false;
+    }
+
+    // Extrapolate to the current segment
+    trk.ParInVtx().Extrapolate(z1,hout1,0);
+    double xt1 = hout1.X();
+    double yt1 = hout1.Y();
+
+    double dx = xt1 - xc1;
+    double dy = yt1 - yc1;
+    double r2 = dx*dx + dy*dy;
+    if( r2 > R2 || yt1>=Y ) return false;
+  }
+  return true;
+}
+
 
 void TargetCell::CellCenter(float z, float& xc, float& yc)
 {
@@ -352,6 +467,33 @@ void TargetCell::CellCenter(float z, float& xc, float& yc)
 
     double yc1 = yv[i];
     double yc2 = yv[i+1];
+
+    double dxcdz = (xc2-xc1)/(z2-z1);
+    double dycdz = (yc2-yc1)/(z2-z1);
+
+    double dz = z-z1;
+    xc = xc1 + dxcdz*dz;
+    yc = yc1 + dycdz*dz;
+
+    break;
+  }
+}
+
+void TargetCell::CellCenterMC(float z, float& xc, float& yc)
+{
+  xc = 1000000;
+  yc = 1000000;
+  for( int i = 0; i < zMCv.size()-1; i++ ) {
+    double z1 = zMCv[i];
+    double z2 = zMCv[i+1];
+    if( z2 < z ) continue;
+    if( z1 > z ) continue;
+
+    double xc1 = xMCv[i];
+    double xc2 = xMCv[i+1];
+
+    double yc1 = yMCv[i];
+    double yc2 = yMCv[i+1];
 
     double dxcdz = (xc2-xc1)/(z2-z1);
     double dycdz = (yc2-yc1)/(z2-z1);

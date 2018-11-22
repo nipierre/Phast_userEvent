@@ -155,6 +155,7 @@ DISEventMCData::DISEventMCData():
   mcWeight(0),              // HEPGEN weight
   w1(0),w2(0),              // RADGEN weights
   difType(0),              // values 1 for dd and 0 for elastic (see documentation of HEPGEN) diffractive evnt
+  inTargetMC(false), cellsCrossedMC(false),
   MC_nuTr(0),MC_Q2Tr(0),      // True photon kinematics
   MC_xTr(0),MC_yTr(0),      // True photon kinematics
   MC_w(1),                 // Weight

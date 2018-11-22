@@ -106,6 +106,7 @@ struct DISEventMCData{
   Double_t w2; // RADGEN weight
   Double_t mcWeight; // HEPGEN weight
   Short_t difType; // values 1 for dd and 0 for elastic (see documentation of HEPGEN) diffractive evnt
+  Bool_t inTargetMC, cellsCrossedMC;
   float   MC_nuTr, MC_Q2Tr; // True photon kinematics
   float   MC_yTr, MC_xTr;
   float   MC_w;          // RC weight
