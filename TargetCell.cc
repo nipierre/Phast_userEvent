@@ -47,7 +47,7 @@ void TargetCell::Init()
     if(year==2017) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
   // }
   cout<<"Opening MC target cell description: "<<tstrMC<<"..."<<endl;
-  finMC.open(tstr.c_str());
+  finMC.open(tstrMC.c_str());
   while(finMC.is_open() && !finMC.eof()) {
     float z, x, y, dummy;
     finMC >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
