@@ -48,7 +48,7 @@ void TargetCell::Init()
   // }
   cout<<"Opening MC target cell description: "<<tstrMC<<"..."<<endl;
   finMC.open(tstr.c_str());
-  while(finMC.is_open() && !fin.eof()) {
+  while(finMC.is_open() && !finMC.eof()) {
     float z, x, y, dummy;
     finMC >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
         >> x >> y;
