@@ -927,7 +927,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1z =  kmu1.Z();
 
     fInTargetMC = fTcell->TargetCell::InTargetMC(mcVtx,1.9);
-    fCellsCrossedMC = fTcell->TargetCell::CrossCells(mu0);
+    fCellsCrossedMC = fTcell->TargetCell::CrossCellsMC(mu0);
 
     fDISMCEvt->recons = fReconsEvent;
 

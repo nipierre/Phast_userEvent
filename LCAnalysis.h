@@ -75,6 +75,8 @@ class LCAnalysis{
   bool fTrigOk;
   bool fInTarget;
   bool fCellsCrossed;
+  bool fInTargetMC;
+  bool fCellsCrossedMC;
   int fBMS;
   float fChi2beam;
   float fChi2muprim;

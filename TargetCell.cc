@@ -286,7 +286,7 @@ bool TargetCell::InTarget(const PaVertex& vtx, float R)
   return( r <= R && yvtx < 1.2);
 }
 
-bool TargetCell::InTarget(const PaVertex& vtx, float R)
+bool TargetCell::InTargetMC(const PaMCVertex& vtx, float R)
 {
   float xvtx = vtx.X();
   float yvtx = vtx.Y();
