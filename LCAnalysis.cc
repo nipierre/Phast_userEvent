@@ -855,7 +855,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   // fReconsEvent = IsThereABestPV();
   // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
-  if(fIsMC && fEvent->vMCtrack(mcVtx.iBeam()).ParInVtx().LzVec(M_mu).E()==160)  fReconsEvent = 0;
+  if(fIsMC && fEvent->vMCtrack(ev.vMCvertex(0).iBeam()).ParInVtx().LzVec(M_mu).E()==160)  fReconsEvent = 0;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
