@@ -15,6 +15,7 @@
 #include <TVector3.h>
 #include <TLorentzVector.h>
 #include "PaEvent.h"
+#include <vector>
 
 using namespace std;
 
@@ -23,10 +24,11 @@ class PaAlgo
 
 {
 
-private:
-  vector<float> xv, yv, zv; // !!NEW!!
+protected:
+  vector<double> xv, yv, zv;
 
 public:
+
 
 /*! \brief Gives the target location in space: shift and tilting.
   Returns false if no information for the given year.
@@ -95,8 +97,7 @@ static bool GetTargetLocation(int run,
   \author Alexandre.Korzenev@cern.ch
 */
 static bool GetTargetLocation(int run,
-           double &xC, double &yC, double &z, double &zC_1, double &zC_2,
-           double &R, double &yCUT) // !!NEW!!
+           double &xC, double &yC, double z, double &R, double &yCUT); // !!NEW!!
 
 
 /*! \brief The requirement that the muon beam trajectory crosses
@@ -105,11 +106,14 @@ static bool GetTargetLocation(int run,
 
   \param par    the beam track parameters in the primary vertex
   \param run    the run number ("-2" = 2 cell MC, "-3" = 3 cell MC LiD, "-4" = 3 cell MC NH3)
-  \param R_U    the user defined radial cut (R<1.4cm)
-  \param yCUT_U the user defined vertical cut (y<1cm)
+  \param R_U    the user defined radial cut (R<1.4cm), for 2012/2016/2017: use (R<1.9cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
+  \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to the target file in GetTargetLocation.
+  // !!NEW!!
+  \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to the target file in GetTargetLocation.
+  \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
   \author Alexandre.Korzenev@cern.ch
 */
- static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin = -9000, double zmax = 9000 );
+ static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 );
 
 
 
@@ -118,11 +122,14 @@ static bool GetTargetLocation(int run,
  \param par  The beam track parameters in the primary vertex
  \param Cell The one of cells (if 'U' - upstream cell, if 'D' - downstream, if 'C' - central)
  \param run  The run number ("-2" = 2 cell MC, "-3" = 3 cell MC LiD, "-4" = 3 cell MC NH3)
- \param R_U    the user defined radial cut (R<1.4cm)
- \param yCUT_U the user defined vertical cut (y<1cm)
+ \param R_U    the user defined radial cut (R<1.4cm), for 2012/2016/2017: use (R<1.9cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
+ \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to the target file in GetTargetLocation.
+  // !!NEW!!
+ \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to the target file in GetTargetLocation.
+ \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
  \author Alexandre.Korzenev@cern.ch
  */
- static bool InTarget( PaTPar par, char Cell, int run, double R_U = -9999, double yCUT_U = -9999 );
+ static bool InTarget( PaTPar par, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 );
 
  /*! \brief Returns the average muon beam polarization
 
