@@ -485,6 +485,7 @@ void LCAnalysis::CopyDISEvtData(int pReconsEvent)
   fDISEvt->p1y = fkMu1.Y();
   fDISEvt->p1z = fkMu1.Z();
   fDISEvt->E_beam = fkMu0.E();
+  fDISEvt->Mu0Cov = fMu0Cov;
   fDISEvt->E_mu_prim = fkMu1.E();
   fDISEvt->Charge = fMCharge;
   fDISEvt->XX0 = fXX0mu1;
@@ -847,15 +848,14 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV);
 
       //--- Covariance test for RD
-      if(fIsMC) fValidMu=1;
-      else fValidMu=IsMu0Valid(ParamMu0);
+      fValidMu=IsMu0Valid(ParamMu0);
+      fMu0Cov=ParamMu0(5,5);
     }
   }
 
   // fReconsEvent = IsThereABestPV();
   // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
   fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
-  if(fIsMC && fEvent->vMCtrack(ev.vMCvertex(0).iBeam()).ParInVtx().LzVec(M_mu).E()==160)  fReconsEvent = 0;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
