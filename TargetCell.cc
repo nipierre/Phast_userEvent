@@ -36,32 +36,6 @@ void TargetCell::Init()
     cout<<"  z="<<z<<"  x="<<x<<"  y="<<y<<endl;
   }
   cout<<"Target cell description loaded"<<endl;
-
-  std::ifstream finMC;
-  std::string tstrMC;
-  year = 2016;
-  // if(e.IsMC()) tstr = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
-  // else {
-    if(year==2012) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
-    if(year==2016) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
-    if(year==2017) tstrMC = "/sps/compass/npierre/PHAST/user/Target/target-mc.dat";
-  // }
-  cout<<"Opening MC target cell description: "<<tstrMC<<"..."<<endl;
-  finMC.open(tstrMC.c_str());
-  while(finMC.is_open() && !finMC.eof()) {
-    float z, x, y, dummy;
-    finMC >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
-        >> x >> y;
-    zMCv.push_back(z);
-    xMCv.push_back(x);
-    yMCv.push_back(y);
-    cout<<"  z="<<z<<"  x="<<x<<"  y="<<y<<endl;
-  }
-  cout<<"MC Target cell description loaded"<<endl;
-  /*
-  for(unsigned int i = 0; i < zv.size(); i++) {
-    cout << zv[i] << "  "  << xv[i] << "  "  << yv[i] << endl;
-  }*/
 }
 
 
@@ -481,27 +455,6 @@ void TargetCell::CellCenter(float z, float& xc, float& yc)
 
 void TargetCell::CellCenterMC(float z, float& xc, float& yc)
 {
-  xc = 1000000;
-  yc = 1000000;
-  for( int i = 0; i < zMCv.size()-1; i++ ) {
-    double z1 = zMCv[i];
-    double z2 = zMCv[i+1];
-    if( z2 < z ) continue;
-    if( z1 > z ) continue;
-
-    double xc1 = xMCv[i];
-    double xc2 = xMCv[i+1];
-
-    double yc1 = yMCv[i];
-    double yc2 = yMCv[i+1];
-
-    double dxcdz = (xc2-xc1)/(z2-z1);
-    double dycdz = (yc2-yc1)/(z2-z1);
-
-    double dz = z-z1;
-    xc = xc1 + dxcdz*dz;
-    yc = yc1 + dycdz*dz;
-
-    break;
-  }
+  xc = 0;
+  yc = 0,00161*(-2022-z);
 }

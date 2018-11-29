@@ -25,7 +25,7 @@ class PaAlgo
 {
 
 protected:
-  vector<double> xv, yv, zv;
+  static vector<double> xv, yv, zv;
 
 public:
 
