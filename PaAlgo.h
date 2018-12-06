@@ -25,7 +25,8 @@ class PaAlgo
 {
 
 protected:
-  vector<double> xv, yv, zv;
+  static vector<double> xv, yv, zv;
+  double xMC, phiMC, yMC, thetaMC, zMC;
 
 public:
 
@@ -81,20 +82,17 @@ static bool GetTargetLocation(int run,
 
 
 
-/* \brief Gives the target location in space: shift and tilting.
+/*! \brief Gives the x and y coordinates of the target center for a given z.
   Returns false if no information for the given year.
-  Can be used for three cells configuration of the target
-  (from the beginning of year 2006).
+  Can be used for one cell configuration of the target (2012/2016/2017).
 
   \param run the run number
-  \param xC    shift in x of the target
-  \param yC    shift in y of the target
-  \param z     z position in the target
-  \param zC_1  z position of the beginning of the target
-  \param zC_2  z position of the end of the target
-  \param R     the radial cut
-  \param yCUT  the cut for upper part of the cell
-  \author Alexandre.Korzenev@cern.ch
+  \param xC    x(z) of the centre of the target
+  \param yC    y(z) of the centre of the target
+  \param z     z position in the target (input parameter)
+  \param R     the recommended radial cut
+  \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
+  \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
 static bool GetTargetLocation(int run,
            double &xC, double &yC, double z, double &R, double &yCUT); // !!NEW!!
@@ -106,12 +104,12 @@ static bool GetTargetLocation(int run,
 
   \param par    the beam track parameters in the primary vertex
   \param run    the run number ("-2" = 2 cell MC, "-3" = 3 cell MC LiD, "-4" = 3 cell MC NH3)
-  \param R_U    the user defined radial cut (R<1.4cm), for 2012/2016/2017: use (R<1.9cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
-  \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to the target file in GetTargetLocation.
-  // !!NEW!!
-  \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to the target file in GetTargetLocation.
-  \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
+  \param R_U    the user defined radial cut (R<1.4cm), for 2012/2016/2017: use (R<1.9cm), if R_U is not set by user it is set according GetTargetLocation.
+  \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to GetTargetLocation.
+  \param zmin_U the user defined zmin of the target - only for 2012/2016/2017. If zmin_U is not set by user it is set according to GetTargetLocation.
+  \param zmax_U the user defined zmax of the target - only for 2012/2016/2017. If zmax_U is not set by user it is set according to GetTargetLocation.
   \author Alexandre.Korzenev@cern.ch
+  \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
  static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 );
 
@@ -120,7 +118,7 @@ static bool GetTargetLocation(int run,
  /*! \brief The check for the primary vertex to be in one of the target cells.
 
  \param par  The beam track parameters in the primary vertex
- \param Cell The one of cells (if 'U' - upstream cell, if 'D' - downstream, if 'C' - central)
+ \param Cell The one of cells (if 'U' - upstream cell, if 'D' - downstream, if 'C' - central, 'O' - one cell)
  \param run  The run number ("-2" = 2 cell MC, "-3" = 3 cell MC LiD, "-4" = 3 cell MC NH3)
  \param R_U    the user defined radial cut (R<1.4cm), for 2012/2016/2017: use (R<1.9cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
  \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to the target file in GetTargetLocation.
@@ -128,8 +126,12 @@ static bool GetTargetLocation(int run,
  \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to the target file in GetTargetLocation.
  \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
  \author Alexandre.Korzenev@cern.ch
+ \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
  */
- static bool InTarget( PaTPar par, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 );
+ static bool InTarget( PaTPar par, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999, double RMC_U = -9999 )
+ { return InTarget(par.X(), par.Y(), par.Z(), Cell, run, R_U, yCUT_U, zmin_U, zmax_U, RMC_U); }
+
+ static bool InTarget( double X, double Y, double Z, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 , double RMC_U = -9999 );
 
  /*! \brief Returns the average muon beam polarization
 
