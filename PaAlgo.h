@@ -89,8 +89,11 @@ static bool GetTargetLocation(int run,
   \param run the run number
   \param xC    x(z) of the centre of the target
   \param yC    y(z) of the centre of the target
+	\param xCmc  x(z) of the centre of the target for MC
+  \param yCmc  y(z) of the centre of the target for MC
   \param z     z position in the target (input parameter)
   \param R     the recommended radial cut
+	\param RMC   the recommended radial cut for MC
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
@@ -108,6 +111,7 @@ static bool GetTargetLocation(int run,
   \param yCUT_U the user defined vertical cut (y<1cm), for 2012/2016/2017: use (y<1.2cm)), if yCUT_U is not set by user it is set according to GetTargetLocation.
   \param zmin_U the user defined zmin of the target - only for 2012/2016/2017. If zmin_U is not set by user it is set according to GetTargetLocation.
   \param zmax_U the user defined zmax of the target - only for 2012/2016/2017. If zmax_U is not set by user it is set according to GetTargetLocation.
+  \param RMC_U  the user defined radial cut for MC (R<2cm), for 2012/2016/2017: use (R<2cm), if R_U is not set by user it is set according GetTargetLocation.
   \author Alexandre.Korzenev@cern.ch
   \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
@@ -125,6 +129,7 @@ static bool GetTargetLocation(int run,
   // !!NEW!!
  \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to the target file in GetTargetLocation.
  \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
+ \param RMC_U  the user defined radial cut for MC (R<2cm), for 2012/2016/2017: use (R<2cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
  \author Alexandre.Korzenev@cern.ch
  \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
  */
