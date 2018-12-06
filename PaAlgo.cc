@@ -226,8 +226,11 @@ bool PaAlgo::GetTargetLocation(int run,
   \param run the run number
   \param xC    x(z) of the centre of the target
   \param yC    y(z) of the centre of the target
+	\param xCmc  x(z) of the centre of the target for MC
+  \param yCmc  y(z) of the centre of the target for MC
   \param z     z position in the target (input parameter)
   \param R     the recommended radial cut
+	\param RMC   the recommended radial cut for MC
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author antoine.vidon@cern.ch, nicolas.pierre@cern.ch, karolina.juraskova@cern.ch, jan.matousek@cern.ch
 */
@@ -256,6 +259,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 		{
 			tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-278473-278706-0.dat"; // 2017
 			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2017.dat"; // 2017
+			cout << "!!! PaAlgo::GetTargetLocation() WARNING: TARGET GEOMETRY FILE HAVE NOT BEEN PROPERLY UPDATED !!!" << endl;
 		}
     else return false; //check, otherwise segmentation fault
     fin.open(tstr.c_str());
