@@ -111,7 +111,7 @@ static bool GetTargetLocation(int run,
   \author Alexandre.Korzenev@cern.ch
   \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
- static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 );
+ static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999, double RMC_U = -9999 );
 
 
 

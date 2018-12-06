@@ -238,7 +238,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
   yC = 1000000;
  if( !(xv.size() && yv.size() && zv.size()) )  // Check if already initialized
  {
-    std::ifstream fin;
+    std::ifstream fin, finmc;
     std::string tstr, tstrmc;
 
     if( 96224 <= run && run <= 109125 )
@@ -275,7 +275,6 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 		fin.close();
 		finmc.open(tstrmc.c_str());
 		while(finmc.is_open() && !finmc.eof()) {
-      double z, x, y, dummy;
       fin >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
       if (zMC >=0) //check if file is empty or with wrong numbers
 			{
@@ -333,16 +332,16 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
   \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to GetTargetLocation.
   \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to GetTargetLocation.
 */
-bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
+bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U, double RMC_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
 {
   PaTPar parE;
-  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, yCUT, xC, yC, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
+  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, RMC, yCUT, xC, yC, yCmc, yCmc, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
 
   // !!NEW!!
   if( (96224 <= run && run <= 109125) || (264860<= run && run <= 281775) ) // 1 cell   2012/2016/2017
   {
     double z = par.Z();  //function GetTargetLocation(run,xC,yC,z) is called latter with different z arguments, here it is just check
-    if( !GetTargetLocation(run,xC,yC,z, R, yCUT) ) {
+    if( !GetTargetLocation(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT) ) {
       cout<<"PaAlgo::CrossCells PROBLEM: no info for the run "<<run<<" (1 cell)"<<endl;
       return false;
     }
@@ -362,6 +361,7 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
   }
 
   if( R_U    != -9999 ) R    = R_U;
+	if( RMC_U  != -9999 ) RMC  = RMC_U;
   if( yCUT_U != -9999 ) yCUT = yCUT_U;
 
   // !!NEW!!
@@ -389,17 +389,17 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
       if( zmin > z0 && zmin < z1) {
         // Zmin is inside the current segment, so we need to interpolate
         par.Extrapolate(zmin, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
         }
       if( zmax > z0 && zmax < z1) {
         // Zmax is inside the current segment, so we need to interpolate
         par.Extrapolate(zmax, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
 		}
 	  if (zmax > z1) {
         // Extrapolate to the downstream end of the current segment
         par.Extrapolate(z1, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
 	  }
     }
   }
@@ -503,7 +503,7 @@ bool PaAlgo::InTarget( double x, double y, double z, char Cell, int run, double 
   else  //2012/2016/2017
   {
     r = sqrt( (x-xC)*(x-xC) + (y-yC)*(y-yC) );
-		rMC = sqrt( (x-xCmc)*(x-xCmc) + (y-yCmc)*(y-yCmc) )
+		rMC = sqrt( (x-xCmc)*(x-xCmc) + (y-yCmc)*(y-yCmc) );
 
 		if( R_U    == -9999 ) cout <<"PaAlgo::InTarget WARNING: R_cut was not defined by user and it was set automatically to R= "<< R << "cm" << endl; //set according to the target file in GetTargetLocation
 		if( RMC_U    == -9999 ) cout <<"PaAlgo::InTarget WARNING: RMC_cut was not defined by user and it was set automatically to R= "<< RMC << "cm" << endl; //set according to the MC target file in GetTargetLocation
