@@ -335,7 +335,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U, double RMC_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
 {
   PaTPar parE;
-  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, RMC, yCUT, xC, yC, yCmc, yCmc, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
+  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, RMC, yCUT, xC, yC, xCmc, yCmc, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
 
   // !!NEW!!
   if( (96224 <= run && run <= 109125) || (264860<= run && run <= 281775) ) // 1 cell   2012/2016/2017
