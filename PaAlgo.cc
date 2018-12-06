@@ -7,7 +7,14 @@
 #include "Phast.h"
 #include "PaAlgo.h"
 
-vector<double> PaAlgo::xv, PaAlgo::yv, PaAlgo::zv;
+vector<double> PaAlgo::xv = std::vector<double>();	// initiaize empty vectors
+vector<double> PaAlgo::yv = std::vector<double>();	// (ctarget cell centres)
+vector<double> PaAlgo::zv = std::vector<double>();
+double PaAlgo::xMC = 0;
+double PaAlgo::phiMC = 0;
+double PaAlgo::yMC = 0;
+double PaAlgo::thetaMC = 0;
+double PaAlgo::zMC = 0;
 
 /* \brief Gives the target location in space: shift and tilting.
   Returns false if no information for the given year.
@@ -224,14 +231,6 @@ bool PaAlgo::GetTargetLocation(int run,
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author antoine.vidon@cern.ch, nicolas.pierre@cern.ch, karolina.juraskova@cern.ch, jan.matousek@cern.ch
 */
-vector<double> PaAlgo::xv = std::vector<double>();	// initiaize empty vectors
-vector<double> PaAlgo::yv = std::vector<double>();	// (ctarget cell centres)
-vector<double> PaAlgo::zv = std::vector<double>();
-double PaAlgo::xMC = 0;
-double PaAlgo::phiMC = 0;
-double PaAlgo::yMC = 0;
-double PaAlgo::thetaMC = 0;
-double PaAlgo::zMC = 0;
 
 bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT) // !!NEW!!
 {
