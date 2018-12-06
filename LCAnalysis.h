@@ -71,6 +71,7 @@ class LCAnalysis{
   int fMCharge;
   bool fReconsEvent;
   bool fValidMu;
+  double fMu0Cov;
   int fTrigMask;
   bool fTrigOk;
   bool fInTarget;

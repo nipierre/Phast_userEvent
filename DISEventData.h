@@ -18,6 +18,7 @@ struct DISEventData{
   Double_t p0x,p0y,p0z; // beam momentum
   Double_t p1x,p1y,p1z; // mu1 momentum
   Double_t E_beam;    // beam energie
+  Double_t Mu0Cov;    // covariance of beam track
   Double_t E_mu_prim; // mu1 energie
   Int_t Charge;
   Double_t XX0; // no. of rad. len. crossed by mu1

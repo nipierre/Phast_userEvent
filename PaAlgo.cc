@@ -7,6 +7,7 @@
 #include "Phast.h"
 #include "PaAlgo.h"
 
+vector<double> PaAlgo::xv, PaAlgo::yv, PaAlgo::zv;
 
 /* \brief Gives the target location in space: shift and tilting.
   Returns false if no information for the given year.

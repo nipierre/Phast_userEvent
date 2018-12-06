@@ -10,6 +10,7 @@ DISEventData::DISEventData():
   p0x(0),p0y(0),p0z(0), // beam momentum
   p1x(0),p1y(0),p1z(0), // mu1 momentum
   E_beam(0), // beam energie
+  Mu0Cov(0), // covariance of beam track
   E_mu_prim(0), // mu1 energie
   Charge(0),
   XX0(0),  // no. of rad. len. crossed by mu1
