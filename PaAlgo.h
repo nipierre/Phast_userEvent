@@ -95,7 +95,7 @@ static bool GetTargetLocation(int run,
   \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
 static bool GetTargetLocation(int run,
-           double &xC, double &yC, double z, double &R, double &RMC, double &yCUT); // !!NEW!!
+           double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT); // !!NEW!!
 
 
 /*! \brief The requirement that the muon beam trajectory crosses
