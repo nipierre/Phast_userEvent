@@ -7,7 +7,14 @@
 #include "Phast.h"
 #include "PaAlgo.h"
 
-vector<double> PaAlgo::xv, PaAlgo::yv, PaAlgo::zv;
+vector<double> PaAlgo::xv = std::vector<double>();	// initiaize empty vectors
+vector<double> PaAlgo::yv = std::vector<double>();	// (ctarget cell centres)
+vector<double> PaAlgo::zv = std::vector<double>();
+double PaAlgo::xMC = 0;
+double PaAlgo::phiMC = 0;
+double PaAlgo::yMC = 0;
+double PaAlgo::thetaMC = 0;
+double PaAlgo::zMC = 0;
 
 /* \brief Gives the target location in space: shift and tilting.
   Returns false if no information for the given year.
@@ -219,19 +226,14 @@ bool PaAlgo::GetTargetLocation(int run,
   \param run the run number
   \param xC    x(z) of the centre of the target
   \param yC    y(z) of the centre of the target
+	\param xCmc  x(z) of the centre of the target for MC
+  \param yCmc  y(z) of the centre of the target for MC
   \param z     z position in the target (input parameter)
   \param R     the recommended radial cut
+	\param RMC   the recommended radial cut for MC
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author antoine.vidon@cern.ch, nicolas.pierre@cern.ch, karolina.juraskova@cern.ch, jan.matousek@cern.ch
 */
-vector<double> PaAlgo::xv = std::vector<double>();	// initiaize empty vectors
-vector<double> PaAlgo::yv = std::vector<double>();	// (ctarget cell centres)
-vector<double> PaAlgo::zv = std::vector<double>();
-double PaAlgo::xMC = 0;
-double PaAlgo::phiMC = 0;
-double PaAlgo::yMC = 0;
-double PaAlgo::thetaMC = 0;
-double PaAlgo::zMC = 0;
 
 bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT) // !!NEW!!
 {
@@ -239,7 +241,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
   yC = 1000000;
  if( !(xv.size() && yv.size() && zv.size()) )  // Check if already initialized
  {
-    std::ifstream fin;
+    std::ifstream fin, finmc;
     std::string tstr, tstrmc;
 
     if( 96224 <= run && run <= 109125 )
@@ -251,15 +253,21 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 		{
 			tstr = //"/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-274508-274901-1.dat"; // 2016
 			"/eos/user/j/jmatouse/analysis/Sidis-2016/realdata/TargetCell_cut/target-274508-274901-2.dat";
-			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2016.dat"; // 2016
+			tstrmc = "/eos/user/j/jmatouse/Tmp/newFromNicolas/target-mc-2016.dat"; // 2016
 		}
     else if( 276880 <= run && run <= 281775 )
 		{
 			tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-278473-278706-0.dat"; // 2017
 			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2017.dat"; // 2017
+			cout << "!!! PaAlgo::GetTargetLocation() WARNING: TARGET GEOMETRY FILE HAVE NOT BEEN PROPERLY UPDATED !!!" << endl;
 		}
     else return false; //check, otherwise segmentation fault
     fin.open(tstr.c_str());
+	if (!fin.is_open())
+	{
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: FAILED TO OPEN TARGET GEOMETRY FILE " << tstr << " !!!" << endl;
+      	return false;
+	}
     while(fin.is_open() && !fin.eof()) {
       double z, x, y, dummy;
       fin >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
@@ -269,22 +277,28 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
       yv.push_back(y);
       if (z >=0) //check if file is empty or with wrong numbers
 			{
-      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG TARGET GEOMETRY FILE !!!" << endl;
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG TARGET GEOMETRY FILE " << tstr << " !!!" << endl;
       	return false;
     	}
     }
-		fin.close();
-		finmc.open(tstrmc.c_str());
-		while(finmc.is_open() && !finmc.eof()) {
-      double z, x, y, dummy;
-      fin >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
+	cout << "PaAlgo::GetTargetLocation(): Loaded RD target file " << tstr << endl;
+	fin.close();
+	finmc.open(tstrmc.c_str());
+	if (!finmc.is_open())
+	{
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: FAILED TO OPEN TARGET MC GEOMETRY FILE " << tstrmc << " !!!" << endl;
+      	return false;
+	}
+	while(finmc.is_open() && !finmc.eof()) {
+      finmc >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
       if (zMC >=0) //check if file is empty or with wrong numbers
 			{
-      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG MC TARGET GEOMETRY FILE !!!" << endl;
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG MC TARGET GEOMETRY FILE " << tstrmc << " !!!" << endl;
       	return false;
     	}
     }
 		finmc.close();
+		cout << "PaAlgo::GetTargetLocation(): Loaded MC target file " << tstrmc << endl;
   }
 
   if( !(xv.size() && yv.size() && zv.size()) ) {
@@ -334,16 +348,16 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
   \param zmin_U the user defined zmin of the target - now available only for 2012/2016/2017. If zmin_U is not set by user it is set according to GetTargetLocation.
   \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to GetTargetLocation.
 */
-bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
+bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U, double RMC_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
 {
   PaTPar parE;
-  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, yCUT, xC, yC, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
+  double xU,yU,zU_1,zU_2, xD,yD,zD_1,zD_2, R, RMC, yCUT, xC, yC, xCmc, yCmc, zmin, zmax; // !!NEW!! xC, yC, zmin, zmax declaration for 2012/2016/2017
 
   // !!NEW!!
   if( (96224 <= run && run <= 109125) || (264860<= run && run <= 281775) ) // 1 cell   2012/2016/2017
   {
     double z = par.Z();  //function GetTargetLocation(run,xC,yC,z) is called latter with different z arguments, here it is just check
-    if( !GetTargetLocation(run,xC,yC,z, R, yCUT) ) {
+    if( !GetTargetLocation(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT) ) {
       cout<<"PaAlgo::CrossCells PROBLEM: no info for the run "<<run<<" (1 cell)"<<endl;
       return false;
     }
@@ -363,6 +377,7 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
   }
 
   if( R_U    != -9999 ) R    = R_U;
+	if( RMC_U  != -9999 ) RMC  = RMC_U;
   if( yCUT_U != -9999 ) yCUT = yCUT_U;
 
   // !!NEW!!
@@ -390,17 +405,17 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
       if( zmin > z0 && zmin < z1) {
         // Zmin is inside the current segment, so we need to interpolate
         par.Extrapolate(zmin, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
         }
       if( zmax > z0 && zmax < z1) {
         // Zmax is inside the current segment, so we need to interpolate
         par.Extrapolate(zmax, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
 		}
 	  if (zmax > z1) {
         // Extrapolate to the downstream end of the current segment
         par.Extrapolate(z1, parE, false);
-        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax)) return false;
+        if (!InTarget(parE,'O',run,R,yCUT,zmin,zmax,RMC)) return false;
 	  }
     }
   }
@@ -504,7 +519,7 @@ bool PaAlgo::InTarget( double x, double y, double z, char Cell, int run, double 
   else  //2012/2016/2017
   {
     r = sqrt( (x-xC)*(x-xC) + (y-yC)*(y-yC) );
-		rMC = sqrt( (x-xCmc)*(x-xCmc) + (y-yCmc)*(y-yCmc) )
+		rMC = sqrt( (x-xCmc)*(x-xCmc) + (y-yCmc)*(y-yCmc) );
 
 		if( R_U    == -9999 ) cout <<"PaAlgo::InTarget WARNING: R_cut was not defined by user and it was set automatically to R= "<< R << "cm" << endl; //set according to the target file in GetTargetLocation
 		if( RMC_U    == -9999 ) cout <<"PaAlgo::InTarget WARNING: RMC_cut was not defined by user and it was set automatically to R= "<< RMC << "cm" << endl; //set according to the MC target file in GetTargetLocation
