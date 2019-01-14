@@ -723,7 +723,7 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   partr.Extrapolate(4000, parH, false);
   TCx = parH(1);
   TCy = parH(2);
-  for (auto it = MCHitset.begin(); it != MCHitset.end(); ++it)
+  for (iterator it = MCHitset.begin(); it != MCHitset.end(); ++it)
   {
     if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
     {
@@ -926,8 +926,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1y =  kmu1.Y();
     fDISMCEvt->MC_p1z =  kmu1.Z();
 
-    fInTargetMC = PaAlgo::InTarget(mcVtx.Pos(0), mcVtx.Pos(1), mcVtx.Pos(2), 'O', ev.RunNum(), 1.9, 1.2, -325, -71, 1.9);
-    fCellsCrossedMC = PaAlgo::CrossCells(ParamMu0, ev.RunNum(), 1.9, 1.2, -325, -71, 1.9);
+    fInTargetMC = fInTarget;
+    fCellsCrossedMC = fCellsCrossed;
 
     fDISMCEvt->recons = fReconsEvent;
 
