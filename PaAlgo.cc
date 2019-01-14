@@ -280,6 +280,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
       	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG TARGET GEOMETRY FILE " << tstr << " !!!" << endl;
       	return false;
     	}
+<<<<<<< HEAD
     }
 	cout << "PaAlgo::GetTargetLocation(): Loaded RD target file " << tstr << endl;
 	fin.close();
@@ -291,6 +292,13 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 	}
 	while(finmc.is_open() && !finmc.eof()) {
       finmc >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
+=======
+    }
+		fin.close();
+		finmc.open(tstrmc.c_str());
+		while(finmc.is_open() && !finmc.eof()) {
+      fin >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
+>>>>>>> 98e484250b2078beece430dd34e287006dd3f10c
       if (zMC >=0) //check if file is empty or with wrong numbers
 			{
       	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG MC TARGET GEOMETRY FILE " << tstrmc << " !!!" << endl;
