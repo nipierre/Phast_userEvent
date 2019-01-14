@@ -723,7 +723,7 @@ void LCAnalysis::GetMChits(const PaEvent& ev)
   partr.Extrapolate(4000, parH, false);
   TCx = parH(1);
   TCy = parH(2);
-  for (iterator it = MCHitset.begin(); it != MCHitset.end(); ++it)
+  for (set<int>::iterator it = MCHitset.begin(); it != MCHitset.end(); ++it)
   {
     if(mcHits[*it].iDet()==PaSetup::Ref().iDetector("HM04Y1_d"))
     {
@@ -969,7 +969,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       }
 
       mcHadron.recons = false;
-      std::set<int>::iterator it=hadr.sTrkRef().begin();
+      set<int>::iterator it=hadr.sTrkRef().begin();
       for(; it!=hadr.sTrkRef().end(); ++it){
 	       if( ev.vTrack(*it).HasMom() ){
 	          if(mcHadron.recons){
