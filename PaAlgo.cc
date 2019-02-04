@@ -253,7 +253,7 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 		{
 			tstr = //"/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-274508-274901-1.dat"; // 2016
 			"/eos/user/j/jmatouse/analysis/Sidis-2016/realdata/TargetCell_cut/target-274508-274901-2.dat";
-			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2016.dat"; // 2016
+			tstrmc = "/eos/user/j/jmatouse/Tmp/newFromNicolas/target-mc-2016.dat"; // 2016
 		}
     else if( 276880 <= run && run <= 281775 )
 		{
@@ -263,6 +263,11 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 		}
     else return false; //check, otherwise segmentation fault
     fin.open(tstr.c_str());
+	if (!fin.is_open())
+	{
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: FAILED TO OPEN TARGET GEOMETRY FILE " << tstr << " !!!" << endl;
+      	return false;
+	}
     while(fin.is_open() && !fin.eof()) {
       double z, x, y, dummy;
       fin >> z >> dummy >> dummy >> dummy >> dummy >> dummy >> dummy
@@ -272,21 +277,28 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
       yv.push_back(y);
       if (z >=0) //check if file is empty or with wrong numbers
 			{
-      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG TARGET GEOMETRY FILE !!!" << endl;
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG TARGET GEOMETRY FILE " << tstr << " !!!" << endl;
       	return false;
     	}
     }
-		fin.close();
-		finmc.open(tstrmc.c_str());
-		while(finmc.is_open() && !finmc.eof()) {
-      fin >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
+	cout << "PaAlgo::GetTargetLocation(): Loaded RD target file " << tstr << endl;
+	fin.close();
+	finmc.open(tstrmc.c_str());
+	if (!finmc.is_open())
+	{
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: FAILED TO OPEN TARGET MC GEOMETRY FILE " << tstrmc << " !!!" << endl;
+      	return false;
+	}
+	while(finmc.is_open() && !finmc.eof()) {
+      finmc >> xMC >> phiMC >> yMC >> thetaMC >> zMC;
       if (zMC >=0) //check if file is empty or with wrong numbers
 			{
-      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG MC TARGET GEOMETRY FILE !!!" << endl;
+      	cout << "!!! PaAlgo::GetTargetLocation() PROBLEM: EMPTY or WRONG MC TARGET GEOMETRY FILE " << tstrmc << " !!!" << endl;
       	return false;
     	}
     }
 		finmc.close();
+		cout << "PaAlgo::GetTargetLocation(): Loaded MC target file " << tstrmc << endl;
   }
 
   if( !(xv.size() && yv.size() && zv.size()) ) {

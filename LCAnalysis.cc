@@ -589,6 +589,7 @@ bool LCAnalysis::CellsCrossed2016()
   int run = fEvent->RunNum();
 
   return PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
+
   //cout<<"check CellsCrossed"<<endl;
 }
 
@@ -925,8 +926,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1y =  kmu1.Y();
     fDISMCEvt->MC_p1z =  kmu1.Z();
 
-    fInTargetMC = PaAlgo::InTarget(ParamMu0,'O',run,1.9,1.2,-325,-71,1.9);
-    fCellsCrossedMC = PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
+    fInTargetMC = fInTarget;
+    fCellsCrossedMC = fCellsCrossed;
 
     fDISMCEvt->recons = fReconsEvent;
 
@@ -968,7 +969,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       }
 
       mcHadron.recons = false;
-      std::set<int>::iterator it=hadr.sTrkRef().begin();
+      set<int>::iterator it=hadr.sTrkRef().begin();
       for(; it!=hadr.sTrkRef().end(); ++it){
 	       if( ev.vTrack(*it).HasMom() ){
 	          if(mcHadron.recons){
