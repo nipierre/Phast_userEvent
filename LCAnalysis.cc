@@ -631,6 +631,8 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fXX0mu1 = track.XX0();
 
   fzVTX = fBPV->Z();
+  
+  int run = fEvent->RunNum();
 
   // save mu1 pos at hodos
   int Npars = track.NTPar();
