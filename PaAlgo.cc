@@ -246,19 +246,18 @@ bool PaAlgo::GetTargetLocation(int run, double &xC, double &yC, double &xCmc, do
 
     if( 96224 <= run && run <= 109125 )
 		{
-			tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-107924-109081.dat"; // 2012
-			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2012.dat"; // 2012
+			tstr = "/sps/compass/npierre/PHAST/user/Target/target-107924-109081.dat"; // 2012
+			tstrmc = "/sps/compass/npierre/PHAST/user/Target/target-mc-2012.dat"; // 2012
 		}
     else if( 264860 <= run && run <= 276879 )
 		{
-			tstr = //"/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-274508-274901-1.dat"; // 2016
-			"/eos/user/j/jmatouse/analysis/Sidis-2016/realdata/TargetCell_cut/target-274508-274901-2.dat";
-			tstrmc = "/eos/user/j/jmatouse/Tmp/newFromNicolas/target-mc-2016.dat"; // 2016
+			tstr = "/sps/compass/npierre/PHAST/user/Target/target-274508-274901-1.dat"; // 2016
+			tstrmc = "/sps/compass/npierre/PHAST/user/Target/target-mc-2016.dat"; // 2016
 		}
     else if( 276880 <= run && run <= 281775 )
 		{
-			tstr = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-278473-278706-0.dat"; // 2017
-			tstrmc = "/afs/cern.ch/compass/dvcs/Production/Analysis/Target/target-mc-2017.dat"; // 2017
+			tstr = "/sps/compass/npierre/PHAST/user/Target/target-278473-278706-0.dat"; // 2017
+			tstrmc = "/sps/compass/npierre/PHAST/user/Target/target-mc-2017.dat"; // 2017
 			cout << "!!! PaAlgo::GetTargetLocation() WARNING: TARGET GEOMETRY FILE HAVE NOT BEEN PROPERLY UPDATED !!!" << endl;
 		}
     else return false; //check, otherwise segmentation fault
