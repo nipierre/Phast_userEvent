@@ -97,7 +97,7 @@ static bool GetTargetLocation(int run,
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
-static bool GetTargetLocation(int run,
+static bool GetTargetLocationCenter(int run,
            double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT); // !!NEW!!
 
 
