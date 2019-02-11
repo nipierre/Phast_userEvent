@@ -332,7 +332,7 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
 bool PaAlgo::InTarget( double x, double y, double z, char Cell, int run, double R_U, double yCUT_U, double zmin_U, double zmax_U, double RMC_U ) // Added zmin/zmax in case some people want to have stricter cuts than in target file
 {
   double xU,yU, zU_1, zU_2, zC_1, zC_2, xD, yD, zD_1, zD_2, R, RMC, yCUT, xC, yC, xCmc, yCmc, r;
-	double rMC=0;
+	double rMC = 0;
 	// xC, yC, r defined here because it is used bellow for different number of cells
   double zmin = 0;
   double zmax = 0;
