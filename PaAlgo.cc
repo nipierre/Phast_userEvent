@@ -234,7 +234,7 @@ bool PaAlgo::CrossCells( PaTPar par, int run, double R_U, double yCUT_U, double 
   if( (96224 <= run && run <= 109125) || (264860<= run && run <= 281775) ) // 1 cell   2012/2016/2017
   {
     double z = par.Z();  //function GetTargetLocation(run,xC,yC,z) is called latter with different z arguments, here it is just check
-    if( !GetTargetLocationCenter(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT, zv) ) {
+    if( !GetDVCSTargetLocationCenter(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT, zv) ) {
       cout<<"PaAlgo::CrossCells PROBLEM: no info for the run "<<run<<" (1 cell)"<<endl;
       return false;
     }
@@ -345,7 +345,7 @@ bool PaAlgo::InTarget( double x, double y, double z, char Cell, int run, double 
       cout<<"PaAlgo::InTarget() PROBLEM: target for the run "<<run<<" has 1 cell!"<<endl;
       return false;
     }
-    if( !GetTargetLocationCenter(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT, zv) ) {
+    if( !GetDVCSTargetLocationCenter(run,xC,yC,xCmc,yCmc,z, R, RMC, yCUT, zv) ) {
       cout<<"PaAlgo::InTarget() PROBLEM: no info for the run "<<run<<" (1 cell)"<<endl;
       return false;
     }
