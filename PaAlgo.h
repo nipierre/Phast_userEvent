@@ -141,7 +141,7 @@ static bool GetTargetLocationCenter(int run,
 
   \param run The run number (real run number should also be assigned to MC).
   */
- bool GetTargetData(int run);
+ static bool GetTargetData(int run);
 
  /*! \brief Returns the average muon beam polarization
 
