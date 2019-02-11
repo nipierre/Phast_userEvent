@@ -150,6 +150,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
 		}
     else return false; //check, otherwise segmentation fault
     cout << "PaAlgo::GetTargetLocationCenter(): Loaded RD/MC target file " << tstr << endl;
+  }
 
   R=1.9;    //will be set if R is not defined by user in CrossCells or in InTarget
 	RMC=2;    //will be set if R is not defined by user in CrossCells or in InTarget
