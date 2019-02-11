@@ -223,6 +223,66 @@ bool PaAlgo::GetTargetLocation(int run,
   return true;
 }
 
+/* \brief ives the x and y coordinates of the target center for a given z.
+  Returns false if no information for the given year.
+  Can be used for one cell configuration of the target
+  (from the years 2012/2016/2017).
+
+  \param run the run number
+  \param xC    x(z) of the centre of the target
+  \param yC    y(z) of the centre of the target
+	\param xCmc  x(z) of the centre of the target for MC
+  \param yCmc  y(z) of the centre of the target for MC
+  \param z     z position in the target (input parameter)
+  \param R     the recommended radial cut
+	\param RMC   the recommended radial cut for MC
+  \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
+  \author antoine.vidon@cern.ch, nicolas.pierre@cern.ch, karolina.juraskova@cern.ch, jan.matousek@cern.ch
+*/
+
+bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT)
+{
+  xC = 1000000;
+  yC = 1000000;
+  if( !(xv.size() && yv.size() && zv.size()) )  // Check if already initialized
+  {
+    if( !GetTargetData(run)){
+	  	cout << "!!! PaAlgo::GetTargetLocationCenter() PROBLEM: NONEXISTING TARGET INFORMATION FOR RUN " << run << "" !!!" << endl;
+	  	return false; //check, otherwise segmentation fault if there is nothing in vectors xv, yv, zv
+		}
+  }
+
+  R=1.9;    //will be set if R is not defined by user in CrossCells or in InTarget
+	RMC=2;    //will be set if R is not defined by user in CrossCells or in InTarget
+	yCUT=1.2; //will be set if yCUT is not defined by user in CrossCells or in InTarget
+
+  for(unsigned int i = 0; i < zv.size()-1; i++ ) {
+    double z1 = zv[i];
+    double z2 = zv[i+1];
+    if( z2 < z ) continue;
+    if( z1 > z ) continue;
+
+    double xc1 = xv[i];
+    double xc2 = xv[i+1];
+
+    double yc1 = yv[i];
+    double yc2 = yv[i+1];
+
+    double dxcdz = (xc2-xc1)/(z2-z1);
+    double dycdz = (yc2-yc1)/(z2-z1);
+
+    double dz = z-z1;
+    xC = xc1 + dxcdz*dz;
+    yC = yc1 + dycdz*dz;
+    break;
+  }
+
+	xCmc = xMC+sin(phiMC)*(zMC-z);
+	yCmc = yMC+sin(thetaMC)*(zMC-z);
+
+  return true;
+}
+
 /* \brief The requirement that the muon beam trajectory crosses
   entirely two target cells. It is used in order to equalize fluxes
   through both cells.

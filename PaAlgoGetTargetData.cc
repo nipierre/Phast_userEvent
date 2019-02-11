@@ -102,16 +102,8 @@ double target_mc_2016[5] = {0.0, 0.0, -0.5, -0.00161, -202.0};
 
 double target_mc_2017[5] = {0.0, 0.0, -0.5, -0.00117, -202.5};
 
-bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT)
+bool PaAlgo::GetTargetData(int run)
 {
-  xC = 1000000;
-  yC = 1000000;
-
-  vector<double> xv, yv, zv;
-  double xMC, phiMC, yMC, thetaMC, zMC;
-
-  if( !(xv.size() && yv.size() && zv.size()) )  // Check if already initialized
-  {
     std::ifstream fin, finmc;
     std::string tstr, tstrmc;
 
@@ -125,6 +117,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
       }
       xMC = target_mc_2012[0]; phiMC = target_mc_2012[1]; yMC = target_mc_2012[2];
       thetaMC = target_mc_2012[3]; zMC = target_mc_2012[4];
+      return true;
 		}
     else if( 264860 <= run && run <= 276879 )
 		{
@@ -136,6 +129,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
       }
       xMC = target_mc_2016[0]; phiMC = target_mc_2016[1]; yMC = target_mc_2016[2];
       thetaMC = target_mc_2016[3]; zMC = target_mc_2016[4];
+      return true;
 		}
     else if( 276880 <= run && run <= 281775 )
 		{
@@ -147,38 +141,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
       }
       xMC = target_mc_2017[0]; phiMC = target_mc_2017[1]; yMC = target_mc_2017[2];
       thetaMC = target_mc_2017[3]; zMC = target_mc_2017[4];
+      return true;
 		}
     else return false; //check, otherwise segmentation fault
-    cout << "PaAlgo::GetTargetLocationCenter(): Loaded RD/MC target file " << tstr << endl;
-  }
-
-  R=1.9;    //will be set if R is not defined by user in CrossCells or in InTarget
-	RMC=2;    //will be set if R is not defined by user in CrossCells or in InTarget
-	yCUT=1.2; //will be set if yCUT is not defined by user in CrossCells or in InTarget
-
-  for(unsigned int i = 0; i < zv.size()-1; i++ ) {
-    double z1 = zv[i];
-    double z2 = zv[i+1];
-    if( z2 < z ) continue;
-    if( z1 > z ) continue;
-
-    double xc1 = xv[i];
-    double xc2 = xv[i+1];
-
-    double yc1 = yv[i];
-    double yc2 = yv[i+1];
-
-    double dxcdz = (xc2-xc1)/(z2-z1);
-    double dycdz = (yc2-yc1)/(z2-z1);
-
-    double dz = z-z1;
-    xC = xc1 + dxcdz*dz;
-    yC = yc1 + dycdz*dz;
-    break;
-  }
-
-	xCmc = xMC+sin(phiMC)*(zMC-z);
-	yCmc = yMC+sin(thetaMC)*(zMC-z);
-
-  return true;
 }

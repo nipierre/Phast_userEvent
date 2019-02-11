@@ -26,7 +26,6 @@ class PaAlgo
 
 protected:
   static vector<double> xv, yv, zv;
-  static double xMC, phiMC, yMC, thetaMC, zMC;
 
 public:
 
@@ -137,6 +136,12 @@ static bool GetTargetLocationCenter(int run,
  { return InTarget(par.X(), par.Y(), par.Z(), Cell, run, R_U, yCUT_U, zmin_U, zmax_U, RMC_U); }
 
  static bool InTarget( double X, double Y, double Z, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999 , double RMC_U = -9999 );
+
+ /*! \brief Gets the single cell target position (2012, 2016, 2017)
+
+  \param run The run number (real run number should also be assigned to MC).
+  */
+ bool GetTargetData(int run);
 
  /*! \brief Returns the average muon beam polarization
 
