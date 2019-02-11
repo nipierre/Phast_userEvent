@@ -26,7 +26,7 @@ class PaAlgo
 
 protected:
   static vector<double> xv, yv, zv;
-
+  static double xMC, phiMC, yMC, thetaMC, zMC;
 public:
 
 

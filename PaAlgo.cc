@@ -247,7 +247,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
   if( !(xv.size() && yv.size() && zv.size()) )  // Check if already initialized
   {
     if( !GetTargetData(run)){
-	  	cout << "!!! PaAlgo::GetTargetLocationCenter() PROBLEM: NONEXISTING TARGET INFORMATION FOR RUN " << run << "" !!!" << endl;
+	  	cout << "!!! PaAlgo::GetTargetLocationCenter() PROBLEM: NONEXISTING TARGET INFORMATION FOR RUN " << run << " !!!" << endl;
 	  	return false; //check, otherwise segmentation fault if there is nothing in vectors xv, yv, zv
 		}
   }
