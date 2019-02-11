@@ -24,9 +24,6 @@ class PaAlgo
 
 {
 
-protected:
-  static vector<double> xv, yv, zv;
-  static double xMC, phiMC, yMC, thetaMC, zMC;
 public:
 
 
@@ -45,6 +42,7 @@ public:
   \param R    the radial cut
   \param yCUT the cut for upper part of the cell
   \author Alexandre.Korzenev@cern.ch
+  \author genki@quark.kj.yamagata-u.ac.jp
 */
 static bool GetTargetLocation(int run,
                        double &xU, double &yU, double &zU_1, double &zU_2,
@@ -96,8 +94,8 @@ static bool GetTargetLocation(int run,
   \param yCUT  the recommended 'hydrogen level cut' (y < yCUT)
   \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
-static bool GetTargetLocationCenter(int run,
-           double &xC, double &yC, double &xCmc, double &yCmc, double z, double &R, double &RMC, double &yCUT); // !!NEW!!
+static bool GetTargetLocationCenter(int run, double &xC, double &yC, double &xCmc, double &yCmc, double z, 
+				    double &R, double &RMC, double &yCUT, vector<double>& zv); // see PaAlgoGetTargetLocationCenter.cc
 
 
 /*! \brief The requirement that the muon beam trajectory crosses
@@ -112,7 +110,7 @@ static bool GetTargetLocationCenter(int run,
   \param zmax_U the user defined zmax of the target - only for 2012/2016/2017. If zmax_U is not set by user it is set according to GetTargetLocation.
   \param RMC_U  the user defined radial cut for MC (R<2cm), for 2012/2016/2017: use (R<2cm), if R_U is not set by user it is set according GetTargetLocation.
   \author Alexandre.Korzenev@cern.ch
-  \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
+  \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
 */
  static bool CrossCells( PaTPar par, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999, double RMC_U = -9999 );
 
@@ -130,7 +128,7 @@ static bool GetTargetLocationCenter(int run,
  \param zmax_U the user defined zmax of the target - now available only for 2012/2016/2017. If zmax_U is not set by user it is set according to the target file in GetTargetLocation.
  \param RMC_U  the user defined radial cut for MC (R<2cm), for 2012/2016/2017: use (R<2cm), if R_U is not set by user it is set according to the target file in GetTargetLocation.
  \author Alexandre.Korzenev@cern.ch
- \author 2012/16/17 update: karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
+ \author karolina.juraskova@cern.ch, antoine.vidon@cern.ch, nicolas.pierre@cern.ch, jan.matousek@cern.ch
  */
  static bool InTarget( PaTPar par, char Cell, int run, double R_U = -9999, double yCUT_U = -9999, double zmin_U = -9999, double zmax_U = -9999, double RMC_U = -9999 )
  { return InTarget(par.X(), par.Y(), par.Z(), Cell, run, R_U, yCUT_U, zmin_U, zmax_U, RMC_U); }
