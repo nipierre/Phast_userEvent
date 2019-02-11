@@ -66,7 +66,7 @@ double target_file_2016[29][9] =
 {-60.00, 0.548578, 0.000571343, 1.60366, 0.000906274, 2.00107, 0.000492774, 0.0180271, -0.548282}};
 
 double target_file_2017[29][9] =
-{{-500,00, 0.229376, 0.000370072, 0.301833, 0.00122449, 1.99753, 0.000287844, -0.219007, -0.0681867},
+{{-500.00, 0.229376, 0.000370072, 0.301833, 0.00122449, 1.99753, 0.000287844, -0.219007, -0.0681867},
 {-323.79, 0.229376, 0.000370072, 0.301833, 0.00122449, 1.99753, 0.000287844, -0.219007, -0.0681867},
 {-313.79, 0.25106, 0.000729378, 0.224252, 0.00182379, 1.98916, 0.000583362, -0.244773, -0.05583},
 {-303.79, 0.32493, 0.00133207, 0.319432, 0.00209533, 2.00523, 0.000775463, -0.308493, -0.102037},
@@ -117,7 +117,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
 
     if( 96224 <= run && run <= 109125 )
 		{
-			for(int i<0; i<25; i++)
+			for(int i=0; i<25; i++)
       {
         zv.push_back(target_file_2012[i][0]);
         xv.push_back(target_file_2012[i][7]);
@@ -128,7 +128,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
 		}
     else if( 264860 <= run && run <= 276879 )
 		{
-      for(int i<0; i<29; i++)
+      for(int i=0; i<29; i++)
       {
         zv.push_back(target_file_2016[i][0]);
         xv.push_back(target_file_2016[i][7]);
@@ -139,7 +139,7 @@ bool PaAlgo::GetTargetLocationCenter(int run, double &xC, double &yC, double &xC
 		}
     else if( 276880 <= run && run <= 281775 )
 		{
-      for(int i<0; i<29; i++)
+      for(int i=0; i<29; i++)
       {
         zv.push_back(target_file_2017[i][0]);
         xv.push_back(target_file_2017[i][7]);
