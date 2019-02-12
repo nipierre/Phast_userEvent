@@ -1,5 +1,3 @@
-include(${CMAKE_CURRENT_LIST_DIR}/FindPackageHandleStandardArgs.cmake)
-
 #=============================================================================
 # If the user has provided ``GSL_ROOT_DIR``, use it!  Choose items found
 # at this location over system locations.
@@ -83,24 +81,6 @@ if( NOT GSL_VERSION )
 
   # might also try scraping the directory name for a regex match "gsl-X.X"
 endif()
-
-#=============================================================================
-# handle the QUIETLY and REQUIRED arguments and set GSL_FOUND to TRUE if all
-# listed variables are TRUE
-find_package_handle_standard_args( GSL
-  FOUND_VAR
-    GSL_FOUND
-  REQUIRED_VARS
-    GSL_INCLUDE_DIR
-    GSL_LIBRARY
-    GSL_CBLAS_LIBRARY
-  VERSION_VAR
-    GSL_VERSION
-    )
-
-mark_as_advanced( GSL_ROOT_DIR GSL_VERSION GSL_LIBRARY GSL_INCLUDE_DIR
-  GSL_CBLAS_LIBRARY GSL_LIBRARY_DEBUG GSL_CBLAS_LIBRARY_DEBUG
-  GSL_USE_PKGCONFIG GSL_CONFIG )
 
 #=============================================================================
 # Register imported libraries:
