@@ -854,8 +854,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }
 
   // fReconsEvent = IsThereABestPV();
-  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
@@ -949,6 +949,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       mcHadron.P   = Ph.Rho();
       mcHadron.th  = Ph.Theta();
       mcHadron.ph  = Ph.Phi();
+      mcHadron.pt  = Ph.Pt();
       mcHadron.charge = hadr.Q();
       mcHadron.pid = hadr.Pid();
 

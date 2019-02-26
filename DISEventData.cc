@@ -199,7 +199,7 @@ void DISEventMCData::CalcKin()
 
 
 HadronMCData::HadronMCData():
-  P(0),th(0),ph(0),
+  P(0),pt(0),th(0),ph(0),
   /* XX0(0),*/
   charge(0),
   /*thRICH(0),
@@ -219,7 +219,7 @@ HadronMCData::HadronMCData():
 
 void HadronMCData::Reset()
 {
-  P=0; th=0; ph=0; pid=0; recons=false; recHadIdx=-1;
+  P=0; pt=0; th=0; ph=0; pid=0; recons=false; recHadIdx=-1;
   itrack=-1;
   E=0.0; z=0.0;
   dis=0;
