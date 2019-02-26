@@ -19,8 +19,6 @@ class LCEventSelectionRangeCut;
 //class DISEventMCData;
 class HadronPairData;
 
-class TargetCell;
-
 class LCAnalysis{
 
   //--- type of analysis from config file
@@ -113,8 +111,6 @@ class LCAnalysis{
   short fCharge;
   double fMom,fthP,fphP,fthRICH,fthC;
   //double fMom,fthP,fphP,fthRICH;
-  //---Target Management
-  TargetCell* fTcell;
   //--- Likelihoods
   PaPid* fPid;
   short fLikePid,fMCPid,fTruePidMC;

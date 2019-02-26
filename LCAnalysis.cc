@@ -1,7 +1,6 @@
 #include "LCAnalysis.h"
 #include "DISEventData.h"
 #include "HadronPairData.h"
-#include "TargetCell.h"
 
 #include <stdio.h>
 #include "Phast.h"
@@ -105,7 +104,6 @@ LCAnalysis::LCAnalysis():
   fDISEvtList(0),
   fUtilityTree(0),
   fdatatargetType(50000),
-  fTcell(new TargetCell),
   fMCtargetType(-1) // -2 two cells (2004), -3 three cells (from 2006) -5 three cells(Yann) -1 one cell (2016)
 {
   fEvent=0;
@@ -144,9 +142,6 @@ LCAnalysis::LCAnalysis():
   if(pos==string::npos) pos = -1;
   disEvtFileName.insert(pos+1,"disevt_");
   cout<<"LCAnalysis: DISEvtTree file is: "<<disEvtFileName<<endl;
-
-  //--- Target Management
-  fTcell->Init();
 
   //--- setting handler pointer
   switch(fAnalysisType){
@@ -575,9 +570,10 @@ bool LCAnalysis::InteractionInTarget2009()
 
 bool LCAnalysis::InteractionInTarget2016()
 {
-  const PaVertex& VertexMu0 = fEvent->vVertex(fiBPV);
+  const PaTPar& ParamMu0 = fEvent->vParticle(fimu0).ParInVtx(fiBPV);
+  int run = fEvent->RunNum();
 
-  return fTcell->TargetCell::InTarget(VertexMu0,1.9);
+  return PaAlgo::InTarget(ParamMu0,'O',run,1.9,1.2,-325,-71,1.9);
 }
 
 bool LCAnalysis::CellsCrossed()
@@ -590,7 +586,10 @@ bool LCAnalysis::CellsCrossed()
 bool LCAnalysis::CellsCrossed2016()
 {
   const PaTPar& ParamMu0 = fEvent->vParticle(fimu0).ParInVtx(fiBPV);
-  return PaAlgo::CrossCells(ParamMu0, 274509, 1.9, 1.2, -325, -71, 1.9);
+  int run = fEvent->RunNum();
+
+  return PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
+
   //cout<<"check CellsCrossed"<<endl;
 }
 
@@ -632,6 +631,8 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fXX0mu1 = track.XX0();
 
   fzVTX = fBPV->Z();
+  
+  int run = fEvent->RunNum();
 
   // save mu1 pos at hodos
   int Npars = track.NTPar();
@@ -677,8 +678,8 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
     if(fCellsCrossed)fCellsCrossed = PaAlgo::CrossCells(ParamMu0,fdatatargetType);
   }
   else if( (ev.RunNum() > 269918)||fMCtargetType==-1){ //2016 data and MC
-    fInTarget = PaAlgo::InTarget(fBPV->X(), fBPV->Y(), fBPV->Z(), 'O', ev.RunNum(), 1.9, 1.2, -325, -71, 1.9);
-    fCellsCrossed = PaAlgo::CrossCells(ParamMu0, ev.RunNum(), 1.9, 1.2, -325, -71, 1.9);
+    fInTarget = PaAlgo::InTarget(ParamMu0,'O',run,1.9,1.2,-325,-71,1.9);
+    fCellsCrossed = PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
   }
   else {
       cout << "Year not found.. " << endl;
@@ -909,6 +910,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
     const PaMCtrack& mu0 = fEvent->vMCtrack(mcVtx.iBeam());
     const PaMCtrack& mu1 = fEvent->vMCtrack(1);
+    const PaTPar& ParamMu0 = mu0.ParInVtx();
 
     if( mu1.Pid() == 5 )count_mupp++;
     if( mu1.Pid() == 6 )count_munp++;
