@@ -6,11 +6,19 @@
 using namespace std;
 
 namespace {
+  double mQ2;
+  double x;
+  double y;
+  double mW;
+  int trigMask;
+  double p;
+  double z;
   double xVtx;
   double yVtx;
   double zVtx;
   double xPos;
   double yPos;
+  int PotGhost;
 
   TTree *tree;
 
@@ -19,12 +27,22 @@ namespace {
   {
     TTree* t = tree = new TTree("GhostTracks", "Ghost Tracks Study");
 
+    t->Branch("mQ2", &mQ2, "mQ2/D");
+    t->Branch("x", &x, "x/D");
+    t->Branch("y", &y, "y/D");
+    t->Branch("mW", &mW, "mW/D");
+    t->Branch("trigMask", &trigMask, "trigMask/I");
+    t->Branch("p", &p, "p/D");
+    t->Branch("z", &z, "z/D");
+
     t->Branch("xVtx", &xVtx, "xVtx/D");
     t->Branch("yVtx", &yVtx, "yVtx/D");
     t->Branch("zVtx", &zVtx, "zVtx/D");
 
     t->Branch("xPos", &xPos, "xPos/D");
     t->Branch("yPos", &yPos, "yPos/D");
+
+    t->Branch("PotGhost", &PotGhost, "PotGhost/I");
   }
 }
 
@@ -37,7 +55,7 @@ void UserEvent1992(PaEvent& ev)
     init();
   }
 
-  fiBPV = ev.iBestPrimaryVertex();
+  int fiBPV = ev.iBestPrimaryVertex();
 
   const PaVertex& v = ev.vVertex(fiBPV);
   set<int> tracklist;
@@ -84,8 +102,8 @@ void UserEvent1992(PaEvent& ev)
   fInTarget = PaAlgo::InTarget(ParamMu0,'O',run,1.9,1.2,-325,-71,1.9);
   fCellsCrossed = PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
 
-  if(fQ2 && fy && fxBj && fW2 && TrigOk && fBMS && fChi2beam && fChi2muprim
-      && fMZfirst && fInTarget && fCellsCrossed && fEbeam ) return;
+  if(!(fQ2 && fy && fxBj && fW2 && TrigOk && fBMS && fChi2beam && fChi2muprim
+      && fMZfirst && fInTarget && fCellsCrossed && fEbeam)) return;
 
   for(int i=0; i<v.NOutParticles(); i++)
   {
@@ -99,17 +117,42 @@ void UserEvent1992(PaEvent& ev)
   for(int i=0; i<ev.NTrack(); i++)
   {
     const PaTrack& tr = ev.vTrack(i);
+    const PaParticle& outPart = ev.vParticle(tr.iParticle());
+    const PaTPar& param = outPart.ParInVtx(fiBPV);
+    p = param.Mom();
+    PaTPar tParRich;
+    tr.Extrapolate(615.6, tParRich);
+    RICHx=tParRich.Pos(0);
+    RICHy=tParRich.Pos(1);
+    z = sqrt(pow(p,2)+pow(0.13957018,2))/nu;
+
+    int fhchi2 = tr.Chi2tot()/float(tr.Ndf())<10 ? 1 : 0;
+    int fXX0 = tr.XX0()<15 ? 1 : 0;
+    int fZfirst = tr.ZFirst()<350 ? 1 : 0;
+    int fZlast = tr.ZLast()>350 ? 1 : 0;
+    int fp = (12 < p && p < 40) ? 1 : 0;
+    int fthRICH = (0.01<tParRich.Theta(false) && tParRich.Theta(false)<0.12) ? 1 : 0;
+    int fpipe = (pow(RICHx,2)+pow(RICHy,2)>25 ? 1 : 0;
+    int fz = (0.2<z && z<0.85) ? 1 : 0;
+
+    if(fhchi2 && fXX0 && fZfirst && fZlast && fp && fThRICH && fpipe
+        && fz ) continue;
+
+    PaTPar parH;
+    tr.Extrapolate(v.Z(),parH);
+    xPos = parH(1)-v.X();
+    yPos = parH(2)-v.Y();
+
     if(tracklist.find(i) != tracklist.end())
     {
       tracklist.erase(tracklist.find(i));
+      PotGhost = 0;
     }
     else
     {
-      PaTPar parH;
-      tr.Extrapolate(v.Z(),parH);
-      xPos = parH(1)-v.X();
-      yPos = parH(2)-v.Y();
-      tree->Fill();
+      PotGhost = 1;
     }
+
+    tree->Fill();
   }
 }
