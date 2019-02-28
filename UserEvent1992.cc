@@ -43,7 +43,7 @@ void UserEvent1992(PaEvent& e)
   for(int i=0; i<ev.NTrack(); i++)
   {
     const PaTrack& tr = ev.vTrack(i);
-    if(tracklist.find(i) != container.end())
+    if(tracklist.find(i) != tracklist.end())
     {
       tracklist.erase(tracklist.find(i));
     }
@@ -51,10 +51,9 @@ void UserEvent1992(PaEvent& e)
     {
       PaTPar parH;
       tr.Extrapolate(v.Z(),parH);
-      xPos = parH(1);
-      yPos = parH(2);
+      xPos = parH(1)-v.X();
+      yPos = parH(2)-v.Y();
       tree->Fill();
     }
   }
-  tracks->Clear();
 }
