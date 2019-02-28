@@ -3,7 +3,11 @@
 #include "PaAlgo.h"
 #include "TTree.h"
 
+#include "G3part.h"
+
 using namespace std;
+
+static const double M_mu = G3partMass[5];
 
 namespace {
   double mQ2;
@@ -65,17 +69,17 @@ void UserEvent1992(PaEvent& ev)
   zVtx = v.Z();
 
   int imu0=-1, imu1=-1;
-  imu0 = fimu0 = v.InParticle();
-  imu1 = fimu1 = v.iMuPrim(0,1,1,1,30);
+  imu0 = v.InParticle();
+  imu1 = v.iMuPrim(0,1,1,1,30);
 
   if(!(fiBPV!=-1 && fimu1!=-1)) return;
 
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
-  const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
-  const PaTPar& ParamMu1  = Mu1.ParInVtx(iVtx); // fitted mu' parameters in the primary vertex
-  TLorentzVector kMu0 = ParamMu0.LzVec(M_mu); // beam      mu Lorentz vector
-  TLorentzVector kMu1 = ParamMu1.LzVec(M_mu); // scattered mu Lorentz vector
+  const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV); // fitted mu  parameters in the primary vertex
+  const PaTPar& ParamMu1  = Mu1.ParInVtx(fiBPV); // fitted mu' parameters in the primary vertex
+  TLorentzVector kMu0 = ParamMu0.LzVec(); // beam      mu Lorentz vector
+  TLorentzVector kMu1 = ParamMu1.LzVec(); // scattered mu Lorentz vector
   int itr0 = Mu0.iTrack();
   int itr1 = Mu1.iTrack();
   const PaTrack& track0 = ev.vTrack(itr0);
@@ -97,7 +101,7 @@ void UserEvent1992(PaEvent& ev)
 
   int fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
   int fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
-  int fChi2muprim = track.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
+  int fChi2muprim = track1.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
   int fMZfirst = track1.ZFirst()<350 ? 1 : 0;
   int fInTarget = PaAlgo::InTarget(ParamMu0,'O',ev.RunNum(),1.9,1.2,-325,-71,1.9);
   int fCellsCrossed = PaAlgo::CrossCells(ParamMu0,ev.RunNum(),1.9,1.2,-325,-71,1.9);
