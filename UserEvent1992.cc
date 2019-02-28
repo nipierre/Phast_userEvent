@@ -5,6 +5,8 @@
 using namespace std;
 
 namespace {
+  double xVtx;
+  double yVtx;
   double zVtx;
   double xPos;
   double yPos;
@@ -16,6 +18,8 @@ namespace {
   {
     TTree* t = tree = new TTree("GhostTracks", "Ghost Tracks Study");
 
+    t->Branch("xVtx", &zVtx, "zVtx/D");
+    t->Branch("yVtx", &zVtx, "zVtx/D");
     t->Branch("zVtx", &zVtx, "zVtx/D");
 
     t->Branch("xPos", &xPos, "xPos/D");
@@ -35,6 +39,8 @@ void UserEvent1992(PaEvent& ev)
   const PaVertex& v = ev.vVertex(ev.iBestPrimaryVertex());
   set<int> tracklist;
 
+  xVtx = v.X();
+  yVtx = v.Y();
   zVtx = v.Z();
 
   for(int i=0; i<v.NOutParticles(); i++)
