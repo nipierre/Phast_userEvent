@@ -143,7 +143,7 @@ struct HadronMCData{
   virtual ~HadronMCData(){};
 
   ///////////added by erin/////////////////////////
-  Double_t P,th,ph;
+  Double_t P,pt,th,ph;
   // Double_t XX0;
 
   Short_t charge;

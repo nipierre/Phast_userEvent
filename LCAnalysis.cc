@@ -631,7 +631,7 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
   fXX0mu1 = track.XX0();
 
   fzVTX = fBPV->Z();
-  
+
   int run = fEvent->RunNum();
 
   // save mu1 pos at hodos
@@ -855,8 +855,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   }
 
   // fReconsEvent = IsThereABestPV();
-  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
-  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
+  fReconsEvent = IsThereABestPV() && IsMu1Reconstructed();
+  // fReconsEvent = IsThereABestPV() && IsMu1Reconstructed() && fValidMu;
   // cout << IsThereABestPV() << " " << IsMu1Reconstructed() << " " << fValidMu << endl;
   if(fReconsEvent)count_mup++;
 
@@ -951,6 +951,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       mcHadron.P   = Ph.Rho();
       mcHadron.th  = Ph.Theta();
       mcHadron.ph  = Ph.Phi();
+      mcHadron.pt  = Ph.Pt();
       mcHadron.charge = hadr.Q();
       mcHadron.pid = hadr.Pid();
 
@@ -997,6 +998,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     //cout<<"3rd check FindHadron"<<endl;
     if( fReconsEvent ){ // continue only if the event is reconstructed
 
+    fTrigMask = fEvent->TrigMask();
     SetMuKinematics(ev,fiBPV,imu0,imu1);
     const PaVertex& v = ev.vVertex(fiBPV);
 
