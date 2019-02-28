@@ -5,9 +5,9 @@
 using namespace std;
 
 namespace {
-  Double_t zVtx;
-  Double_t xPos;
-  Double_t yPos;
+  double zVtx;
+  double xPos;
+  double yPos;
 
   TTree *tree;
 
@@ -16,15 +16,21 @@ namespace {
   {
     TTree* t = tree = new TTree("GhostTracks", "Ghost Tracks Study");
 
-    t->Branch("zVtx", "Double_t", &zVtx);
+    t->Branch("zVtx", &zVtx, "zVtx/D");
 
-    t->Branch("xPos", "Double_t", &xPos);
-    t->Branch("yPos", "Double_t", &yPos);
+    t->Branch("xPos", &xPos, "xPos/D");
+    t->Branch("yPos", &yPos, "yPos/D");
   }
 }
 
-void UserEvent1992(PaEvent& e)
+void UserEvent1992(PaEvent& ev)
 {
+  static bool first = true;
+  if (first)
+  {
+    first = false;
+    init();
+  }
 
   const PaVertex& v = ev.vVertex(ev.iBestPrimaryVertex());
   set<int> tracklist;
