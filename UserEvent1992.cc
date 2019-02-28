@@ -139,8 +139,8 @@ void UserEvent1992(PaEvent& ev)
     int fpipe = (pow(RICHx,2)+pow(RICHy,2))>25 ? 1 : 0;
     int fz = (0.2<z && z<0.85) ? 1 : 0;
 
-    if(fhchi2 && fXX0 && fZfirst && fZlast && fp && fthRICH && fpipe
-        && fz ) continue;
+    if(!(fhchi2 && fXX0 && fZfirst && fZlast && fp && fthRICH && fpipe
+        && fz )) continue;
 
     xPos = param(1)-v.X();
     yPos = param(2)-v.Y();
