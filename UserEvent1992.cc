@@ -85,7 +85,7 @@ void UserEvent1992(PaEvent& ev)
   int fEbeam = (140<Ebeam && Ebeam<180) ? 1 : 0;
   mQ2 = PaAlgo::Q2(kMu0, kMu1);
   int fQ2    = mQ2>1 ? 1 : 0;
-  int fnu    = (Ebeam - kMu1.E());
+  double nu    = (Ebeam - kMu1.E());
   y = nu/Ebeam;
   int fy     = (0.1<y && y<0.7) ? 1 : 0;
   x = PaAlgo::xbj(kMu0,kMu1);
@@ -95,12 +95,12 @@ void UserEvent1992(PaEvent& ev)
   trigMask = ev.TrigMask();
   int TrigOk = trigMask&2 || trigMask&4 || trigMask&8 || trigMask&512;
 
-  fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
-  fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
-  fChi2muprim = track.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
-  fMZfirst = track1.ZFirst()<350 ? 1 : 0;
-  fInTarget = PaAlgo::InTarget(ParamMu0,'O',run,1.9,1.2,-325,-71,1.9);
-  fCellsCrossed = PaAlgo::CrossCells(ParamMu0,run,1.9,1.2,-325,-71,1.9);
+  int fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
+  int fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
+  int fChi2muprim = track.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
+  int fMZfirst = track1.ZFirst()<350 ? 1 : 0;
+  int fInTarget = PaAlgo::InTarget(ParamMu0,'O',ev.RunNum(),1.9,1.2,-325,-71,1.9);
+  int fCellsCrossed = PaAlgo::CrossCells(ParamMu0,ev.RunNum(),1.9,1.2,-325,-71,1.9);
 
   if(!(fQ2 && fy && fxBj && fW2 && TrigOk && fBMS && fChi2beam && fChi2muprim
       && fMZfirst && fInTarget && fCellsCrossed && fEbeam)) return;
@@ -122,8 +122,8 @@ void UserEvent1992(PaEvent& ev)
     p = param.Mom();
     PaTPar tParRich;
     tr.Extrapolate(615.6, tParRich);
-    RICHx=tParRich.Pos(0);
-    RICHy=tParRich.Pos(1);
+    double RICHx=tParRich.Pos(0);
+    double RICHy=tParRich.Pos(1);
     z = sqrt(pow(p,2)+pow(0.13957018,2))/nu;
 
     int fhchi2 = tr.Chi2tot()/float(tr.Ndf())<10 ? 1 : 0;
@@ -132,10 +132,10 @@ void UserEvent1992(PaEvent& ev)
     int fZlast = tr.ZLast()>350 ? 1 : 0;
     int fp = (12 < p && p < 40) ? 1 : 0;
     int fthRICH = (0.01<tParRich.Theta(false) && tParRich.Theta(false)<0.12) ? 1 : 0;
-    int fpipe = (pow(RICHx,2)+pow(RICHy,2)>25 ? 1 : 0;
+    int fpipe = (pow(RICHx,2)+pow(RICHy,2))>25 ? 1 : 0;
     int fz = (0.2<z && z<0.85) ? 1 : 0;
 
-    if(fhchi2 && fXX0 && fZfirst && fZlast && fp && fThRICH && fpipe
+    if(fhchi2 && fXX0 && fZfirst && fZlast && fp && fthRICH && fpipe
         && fz ) continue;
 
     PaTPar parH;
