@@ -72,20 +72,20 @@ void UserEvent1992(PaEvent& ev)
   imu0 = v.InParticle();
   imu1 = v.iMuPrim(0,1,1,1,30);
 
-  if(!(fiBPV!=-1 && fimu1!=-1)) return;
+  if(!(fiBPV!=-1 && imu1!=-1)) return;
 
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
   const PaTPar& ParamMu0  = Mu0.ParInVtx(fiBPV); // fitted mu  parameters in the primary vertex
   const PaTPar& ParamMu1  = Mu1.ParInVtx(fiBPV); // fitted mu' parameters in the primary vertex
-  TLorentzVector kMu0 = ParamMu0.LzVec(); // beam      mu Lorentz vector
-  TLorentzVector kMu1 = ParamMu1.LzVec(); // scattered mu Lorentz vector
+  TLorentzVector kMu0 = ParamMu0.LzVec(M_mu); // beam      mu Lorentz vector
+  TLorentzVector kMu1 = ParamMu1.LzVec(M_mu); // scattered mu Lorentz vector
   int itr0 = Mu0.iTrack();
   int itr1 = Mu1.iTrack();
   const PaTrack& track0 = ev.vTrack(itr0);
   const PaTrack& track1 = ev.vTrack(itr1);
 
-  Ebeam = kMu0.E();
+  double Ebeam = kMu0.E();
   int fEbeam = (140<Ebeam && Ebeam<180) ? 1 : 0;
   mQ2 = PaAlgo::Q2(kMu0, kMu1);
   int fQ2    = mQ2>1 ? 1 : 0;
