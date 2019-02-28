@@ -72,7 +72,7 @@ void UserEvent1992(PaEvent& ev)
   imu0 = v.InParticle();
   imu1 = v.iMuPrim(0,1,1,1,30);
 
-  if(!(fiBPV!=-1 && imu1!=-1)) return;
+  if(fiBPV==-1 || imu1==-1 || imu0==-1) return;
 
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
@@ -121,7 +121,6 @@ void UserEvent1992(PaEvent& ev)
   for(int i=0; i<ev.NTrack(); i++)
   {
     const PaTrack& tr = ev.vTrack(i);
-    const PaParticle& outPart = ev.vParticle(tr.iParticle());
     PaTPar param;
     tr.Extrapolate(v.Z(),param);
     p = param.Mom();
