@@ -18,8 +18,8 @@ namespace {
   {
     TTree* t = tree = new TTree("GhostTracks", "Ghost Tracks Study");
 
-    t->Branch("xVtx", &zVtx, "zVtx/D");
-    t->Branch("yVtx", &zVtx, "zVtx/D");
+    t->Branch("xVtx", &xVtx, "xVtx/D");
+    t->Branch("yVtx", &yVtx, "yVtx/D");
     t->Branch("zVtx", &zVtx, "zVtx/D");
 
     t->Branch("xPos", &xPos, "xPos/D");
