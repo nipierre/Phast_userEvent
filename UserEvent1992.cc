@@ -122,7 +122,8 @@ void UserEvent1992(PaEvent& ev)
   {
     const PaTrack& tr = ev.vTrack(i);
     const PaParticle& outPart = ev.vParticle(tr.iParticle());
-    const PaTPar& param = outPart.ParInVtx(fiBPV);
+    PaTPar param;
+    tr.Extrapolate(v.Z(),param);
     p = param.Mom();
     PaTPar tParRich;
     tr.Extrapolate(615.6, tParRich);
@@ -142,10 +143,8 @@ void UserEvent1992(PaEvent& ev)
     if(fhchi2 && fXX0 && fZfirst && fZlast && fp && fthRICH && fpipe
         && fz ) continue;
 
-    PaTPar parH;
-    tr.Extrapolate(v.Z(),parH);
-    xPos = parH(1)-v.X();
-    yPos = parH(2)-v.Y();
+    xPos = param(1)-v.X();
+    yPos = param(2)-v.Y();
 
     if(tracklist.find(i) != tracklist.end())
     {
