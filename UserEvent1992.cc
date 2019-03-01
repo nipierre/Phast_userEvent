@@ -167,6 +167,12 @@ void UserEvent1992(PaEvent& ev)
     else
     {
       PotGhost = 1;
+      if(-110<zVtx && zVtx<-70)
+      {
+        ofstream ofs_debug("/sps/compass/npierre/Ghost/debug.txt", ofstream::out | ofstream::app);
+        ofs_debug << int(ev.UniqueEvNum()) << " " ev.ChunkNumber() << endl;
+        ofs_debug.close();
+      }
     }
 
     tree->Fill();
