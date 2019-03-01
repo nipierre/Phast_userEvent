@@ -26,6 +26,7 @@ namespace {
   double xVtx;
   double yVtx;
   double zVtx;
+  double chi2Vtx;
   double xPos;
   double yPos;
   int PotGhost;
@@ -53,6 +54,7 @@ namespace {
     t->Branch("xVtx", &xVtx, "xVtx/D");
     t->Branch("yVtx", &yVtx, "yVtx/D");
     t->Branch("zVtx", &zVtx, "zVtx/D");
+    t->Branch("chi2Vtx", &chi2Vtx, "chi2Vtx/D");
 
     t->Branch("xPos", &xPos, "xPos/D");
     t->Branch("yPos", &yPos, "yPos/D");
@@ -83,6 +85,7 @@ void UserEvent1992(PaEvent& ev)
   xVtx = v.X();
   yVtx = v.Y();
   zVtx = v.Z();
+  chi2Vtx = v.Chi2()/v.Ndf();
 
   int imu0=-1, imu1=-1;
   imu0 = v.InParticle();
@@ -169,12 +172,12 @@ void UserEvent1992(PaEvent& ev)
     else
     {
       PotGhost = 1;
-      if(-110<zVtx && zVtx<-70)
-      {
-        ofstream ofs_debug("/sps/compass/npierre/Ghost/debug.txt", ofstream::out | ofstream::app);
-        ofs_debug << ev.RunNum() << " " << ev.SpillNum() << " " << ev.EvInSpill() << " " << ev.ChunkNumber() << endl;
-        ofs_debug.close();
-      }
+      // if(-110<zVtx && zVtx<-70)
+      // {
+      //   ofstream ofs_debug("/sps/compass/npierre/Ghost/debug.txt", ofstream::out | ofstream::app);
+      //   ofs_debug << ev.RunNum() << " " << ev.SpillNum() << " " << ev.EvInSpill() << " " << ev.ChunkNumber() << endl;
+      //   ofs_debug.close();
+      // }
     }
 
     tree->Fill();
