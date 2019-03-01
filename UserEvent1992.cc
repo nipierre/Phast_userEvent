@@ -172,7 +172,7 @@ void UserEvent1992(PaEvent& ev)
       if(-110<zVtx && zVtx<-70)
       {
         ofstream ofs_debug("/sps/compass/npierre/Ghost/debug.txt", ofstream::out | ofstream::app);
-        ofs_debug << int(ev.UniqueEvNum()) << " " << ev.ChunkNumber() << endl;
+        ofs_debug << ev.RunNum() << " " << ev.SpillNum() << " " << ev.EvInSpill() << " " << ev.ChunkNumber() << endl;
         ofs_debug.close();
       }
     }
