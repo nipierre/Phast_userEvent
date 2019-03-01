@@ -10,6 +10,10 @@ using namespace std;
 static const double M_mu = G3partMass[5];
 
 namespace {
+  int RunNumber;
+  int ChunkNumbr;
+  int SpillNumber;
+  int EvSpill;
   double mQ2;
   double x;
   double y;
@@ -30,6 +34,11 @@ namespace {
   init()
   {
     TTree* t = tree = new TTree("GhostTracks", "Ghost Tracks Study");
+
+    t->Branch("RunNumber", &RunNumber, "RunNumber/I");
+    t->Branch("ChunkNumbr", &ChunkNumbr, "ChunkNumbr/I");
+    t->Branch("SpillNumber", &SpillNumber, "SpillNumber/I");
+    t->Branch("EvSpill", &EvSpill, "EvSpill/I");
 
     t->Branch("mQ2", &mQ2, "mQ2/D");
     t->Branch("x", &x, "x/D");
@@ -58,6 +67,11 @@ void UserEvent1992(PaEvent& ev)
     first = false;
     init();
   }
+
+  RunNumber = ev.RunNum();
+  ChunkNumbr = ev.ChunkNumber();
+  SpillNumber = ev.SpillNum();
+  EvSpill = ev.EvInSpill();
 
   int fiBPV = ev.iBestPrimaryVertex();
 
@@ -107,7 +121,7 @@ void UserEvent1992(PaEvent& ev)
   int fCellsCrossed = PaAlgo::CrossCells(ParamMu0,ev.RunNum(),1.9,1.2,-325,-71,1.9);
 
   if(!(fQ2 && fy && fxBj && fW2 && TrigOk && fBMS && fChi2beam && fChi2muprim
-      && fMZfirst && fInTarget && fCellsCrossed && fEbeam)) return;
+      && fMZfirst && fMZlast && fInTarget && fCellsCrossed && fEbeam)) return;
 
   for(int i=0; i<v.NOutParticles(); i++)
   {
