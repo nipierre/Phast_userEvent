@@ -121,7 +121,7 @@ void UserEvent1992(PaEvent& ev)
   int fCellsCrossed = PaAlgo::CrossCells(ParamMu0,ev.RunNum(),1.9,1.2,-325,-71,1.9);
 
   if(!(fQ2 && fy && fxBj && fW2 && TrigOk && fBMS && fChi2beam && fChi2muprim
-      && fMZfirst && fMZlast && fInTarget && fCellsCrossed && fEbeam)) return;
+      && fMZfirst && fInTarget && fCellsCrossed && fEbeam)) return;
 
   for(int i=0; i<v.NOutParticles(); i++)
   {
