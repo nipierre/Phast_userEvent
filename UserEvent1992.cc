@@ -80,18 +80,21 @@ void UserEvent1992(PaEvent& ev)
   EvSpill = ev.EvInSpill();
 
   int fiBPV = ev.iBestPrimaryVertex();
-
-  const PaVertex& v = ev.vVertex(fiBPV);
-  set<int> tracklist;
-
-  xVtx = v.X();
-  yVtx = v.Y();
-  zVtx = v.Z();
-  chi2Vtx = v.Chi2()/v.Ndf();
-
   int imu0=-1, imu1=-1;
-  imu0 = v.InParticle();
-  imu1 = v.iMuPrim(0,1,1,1,30);
+
+  if(fiBPV>=0)
+  {
+    const PaVertex& v = ev.vVertex(fiBPV);
+    set<int> tracklist;
+
+    xVtx = v.X();
+    yVtx = v.Y();
+    zVtx = v.Z();
+    chi2Vtx = v.Chi2()/v.Ndf();
+
+    imu0 = v.InParticle();
+    imu1 = v.iMuPrim(0,1,1,1,30);
+  }
 
   if(fiBPV==-1 || imu1==-1 || imu0==-1) return;
 
