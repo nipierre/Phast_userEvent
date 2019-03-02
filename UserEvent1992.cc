@@ -30,7 +30,7 @@ namespace {
   double xPos;
   double yPos;
   int PotGhost;
-  int fisMC;
+  int fIsMC;
 
   TTree *tree;
 
@@ -121,7 +121,7 @@ void UserEvent1992(PaEvent& ev)
   int TrigOk = trigMask&2 || trigMask&4 || trigMask&8 || trigMask&512;
 
   int fBMS;
-  if(fisMC) fBMS = 1;
+  if(fIsMC) fBMS = 1;
   else fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
   int fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
   int fChi2muprim = track1.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
