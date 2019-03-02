@@ -23,6 +23,7 @@ namespace {
   double xPos;
   double yPos;
   int PotGhost;
+  int fisMC;
 
   TTree *tree;
 
@@ -57,6 +58,7 @@ void UserEvent1992(PaEvent& ev)
   {
     first = false;
     init();
+    if(Phast::Ref().TextUserFlag(0)=="MC2016"){fIsMC=true;}
   }
 
   int fiBPV = ev.iBestPrimaryVertex();
@@ -99,7 +101,9 @@ void UserEvent1992(PaEvent& ev)
   trigMask = ev.TrigMask();
   int TrigOk = trigMask&2 || trigMask&4 || trigMask&8 || trigMask&512;
 
-  int fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
+  int fBMS;
+  if(fisMC) fBMS = 1;
+  else fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
   int fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
   int fChi2muprim = track1.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
   int fMZfirst = track1.ZFirst()<350 ? 1 : 0;
