@@ -81,10 +81,12 @@ void UserEvent1992(PaEvent& ev)
 
   int fiBPV = ev.iBestPrimaryVertex();
   int imu0=-1, imu1=-1;
+  set<int> tracklist;
+  const PaVertex& v;
 
   if(fiBPV>=0)
   {
-    const PaVertex& v = ev.vVertex(fiBPV);
+    v = ev.vVertex(fiBPV);
     set<int> tracklist;
 
     xVtx = v.X();
