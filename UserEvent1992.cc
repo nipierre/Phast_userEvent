@@ -82,11 +82,10 @@ void UserEvent1992(PaEvent& ev)
   int fiBPV = ev.iBestPrimaryVertex();
   int imu0=-1, imu1=-1;
   set<int> tracklist;
-  const PaVertex& v;
 
   if(fiBPV>=0)
   {
-    v = ev.vVertex(fiBPV);
+    const PaVertex& v = ev.vVertex(fiBPV);
     set<int> tracklist;
 
     xVtx = v.X();
@@ -99,6 +98,8 @@ void UserEvent1992(PaEvent& ev)
   }
 
   if(fiBPV==-1 || imu1==-1 || imu0==-1) return;
+
+  const PaVertex& v = ev.vVertex(fiBPV);
 
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
