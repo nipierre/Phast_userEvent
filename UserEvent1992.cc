@@ -22,7 +22,9 @@ namespace {
   double mW;
   int trigMask;
   double p;
+  double pt;
   double z;
+  double theta_h;
   double xVtx;
   double yVtx;
   double zVtx;
@@ -50,7 +52,9 @@ namespace {
     t->Branch("mW", &mW, "mW/D");
     t->Branch("trigMask", &trigMask, "trigMask/I");
     t->Branch("p", &p, "p/D");
+    t->Branch("pt", &pt, "pt/D");
     t->Branch("z", &z, "z/D");
+    t->Branch("theta_h", &theta_h, "theta_h/D");
 
     t->Branch("xVtx", &xVtx, "xVtx/D");
     t->Branch("yVtx", &yVtx, "yVtx/D");
@@ -153,6 +157,8 @@ void UserEvent1992(PaEvent& ev)
     PaTPar param;
     tr.Extrapolate(v.Z(),param);
     p = param.Mom();
+    theta_h = param.Theta();
+    pt = param.Pt();
     PaTPar tParRich;
     tr.Extrapolate(615.6, tParRich);
     double RICHx=tParRich.Pos(0);
