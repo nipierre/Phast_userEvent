@@ -1166,7 +1166,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       {
         const PaTrack& track = ev.vTrack(i);
         ip = track.iParticle();
-        if(ip==-1 || !track(itrack).HasMom()) continue;
+        if(ip==-1 || !track.HasMom()) continue;
         PaTPar pext;
         track.Extrapolate(v.Z(),pext);
 
