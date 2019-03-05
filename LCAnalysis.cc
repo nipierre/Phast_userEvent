@@ -1166,12 +1166,12 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       {
         const PaTrack& track = ev.vTrack(i);
         ip = track.iParticle();
+        if(ip==-1) continue;
         PaTPar pext;
         track.Extrapolate(v.Z(),pext);
 
         if(sqrt(pow(pext(1)-v.X(),2)+pow(pext(2)-v.Y(),2))>0.2) continue;
 
-        cout << ip << endl;
         const PaParticle& outPart = ev.vParticle(ip);
 
         // itr = outPart.iTrack();
