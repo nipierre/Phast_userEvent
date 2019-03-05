@@ -90,7 +90,6 @@ void UserEvent1992(PaEvent& ev)
   if(fiBPV>=0)
   {
     const PaVertex& v = ev.vVertex(fiBPV);
-    set<int> tracklist;
 
     xVtx = v.X();
     yVtx = v.Y();
