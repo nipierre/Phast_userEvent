@@ -608,7 +608,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 				 const int& imu0,const int& imu1)
 {
   //cout<<"First check SetMuKinematics"<<endl;
-  const PaVertex& VertexMu0 = fEvent->vVertex(fiBPV); // The BPV
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
   const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
@@ -1172,13 +1171,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
         if(sqrt(pow(pext(1)-v.X(),2)+pow(pext(2)-v.Y(),2))>0.2) continue;
 
-        //--- check if it is mu'
-        if(ip == imu1) continue;
-        ++fNsec;
-
         const PaParticle& outPart = ev.vParticle(ip);
-        if(outPart.IsBeam()) // this check should be always negative at this stage!
-  	      printf("LCAnalysis::FindHadrons: outgoing beam particle!\n");
 
         // itr = outPart.iTrack();
 
