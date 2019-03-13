@@ -138,6 +138,7 @@ class LCAnalysis{
   int fMCtargetType;
 
   //--- pointers to hadronic calorimeters
+  PaCalorimeter *fEMCal0, *fEMCal1, *fEMCal2;
   PaCalorimeter *fHadrCal1, *fHadrCal2;
 
 public:

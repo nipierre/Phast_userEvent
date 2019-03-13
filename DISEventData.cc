@@ -83,8 +83,13 @@ void DISEventData::CalcKin()
 HadronData::HadronData():
   P(0),pt(0),th(0),ph(0),ph_pl(0),
   XX0(0),
+  inECALacc(false),
   inHCALacc(false),
-  HCAL(0),
+  ECAL0(0),
+  ECAL1(0),
+  ECAL2(0),
+  HCAL1(0),
+  HCAL2(0),
   charge(0),
   thRICH(0),
   thC(0),
@@ -111,8 +116,13 @@ void HadronData::Reset()
 {
   P=0; pt=0; th=0; ph=0; ph_pl=0;
   XX0=0;
+  inECALacc=false;
   inHCALacc=false;
-  HCAL=0;
+  ECAL0=0;
+  ECAL1=0;
+  ECAL2=0;
+  HCAL1=0;
+  HCAL2=0;
   charge=0;
   thRICH=0;
   thC=0;

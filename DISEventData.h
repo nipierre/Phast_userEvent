@@ -64,8 +64,13 @@ struct HadronData{
 
   Double_t P,pt,th,ph,ph_pl;
   Double_t XX0;
+  Bool_t  inECALacc;
   Bool_t  inHCALacc;
-  Float_t HCAL;
+  Float_t ECAL0;
+  Float_t ECAL1;
+  Float_t ECAL2;
+  Float_t HCAL1;
+  Float_t HCAL2;
   Short_t charge;
   Double_t thRICH;
   Double_t thC;

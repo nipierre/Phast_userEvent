@@ -52,8 +52,11 @@ static const char* LOGFILENAME=
 
 static const float  Zrich= 615.6; //entrance of the RICH 580.0
 
-static const float ZHCAL1 = 1195.0;
-static const float ZHCAL2 = 3520.0;
+static const float ZHCAL1 = 1263.0;
+static const float ZHCAL2 = 3566.0;
+static const float ECAL0 = 75.0;
+static const float ECAL1 = 1107.0;
+static const float ECAL2 = 3325.0;
 
 void RescaleMom(PaEvent & e, bool faster_mode);
 
@@ -179,6 +182,9 @@ LCAnalysis::LCAnalysis():
 
   //--- get pointers to hadronic calorimeters
   const PaSetup& setup = PaSetup::Ref();
+  fEMCal0 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("EC00P1__"));
+  fEMCal1 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("EC01P1__"));
+  fEMCal2 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("EC02P1__"));
   fHadrCal1 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC01P1__"));
   fHadrCal2 = (PaCalorimeter*)&setup.Calorimeter(setup.iCalorim("HC02P1__"));
 
@@ -1085,6 +1091,24 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       //--- get likelihoods
       for(int i=0; i<6; ++i) hadron.LH[i] = fPid->GetLike(i,track);
 
+      //--- check if track falls into EM calorimeter acceptance
+      PaTPar tParECAL;
+      double xc,yc;
+
+      track.vTPar(0).Extrapolate(ZECAL0, tParECAL, false);  // ECAL0
+      hadron.inECALacc = fEMCal1->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+
+      if( !hadron.inECALacc )
+      {
+        track.vTPar(0).Extrapolate(ZECAL1, tParECAL, false);  // ECAL1
+        hadron.inECALacc = fEMCal1->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+
+        if( !hadron.inECALacc ){
+  	      track.vTPar(0).Extrapolate(ZECAL2, tParECAL, false);  // ECAL2
+  	      hadron.inECALacc = fEMCal2->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+        }
+      }
+
       //--- check if track falls into hadronic calorimeter acceptance
       PaTPar tParHCAL;
       double xc,yc;
@@ -1096,7 +1120,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 	      hadron.inHCALacc = fHadrCal2->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
       }
 
-      //--- get hadronic calorimeter signals
+      //--- get EM/hadronic calorimeter signals
       int iC;
       for(int i=0; i<outPart.NCalorim(); ++i)
       {
@@ -1104,7 +1128,17 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       	const PaCaloClus & clus = ev.vCaloClus(iC);
 
         if( clus.CalorimName()[0] == 'H' ) // only HCALs
-      	 hadron.HCAL += clus.E();
+        {
+          if( clus.CalorimName() == "HC01P1__") hadron.HCAL1 = clus.E();
+          else if( clus.CalorimName() == "HC02P1__") hadron.HCAL2 = clus.E();
+        }
+
+        if( clus.CalorimName()[0] == 'E' ) // only HCALs
+        {
+          if( clus.CalorimName() == "EC00P1__") hadron.ECAL0 = clus.E();
+          else if( clus.CalorimName() == "EC01P1__") hadron.ECAL1 = clus.E();
+          else if( clus.CalorimName() == "EC02P1__") hadron.ECAL2 = clus.E();
+        }
       }
 
 
