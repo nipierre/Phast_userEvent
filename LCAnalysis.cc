@@ -614,7 +614,6 @@ void LCAnalysis::SetMuKinematics(const PaEvent& ev,const int& iVtx,
 				 const int& imu0,const int& imu1)
 {
   //cout<<"First check SetMuKinematics"<<endl;
-  const PaVertex& VertexMu0 = fEvent->vVertex(fiBPV); // The BPV
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
   const PaTPar& ParamMu0  = Mu0.ParInVtx(iVtx); // fitted mu  parameters in the primary vertex
@@ -1008,6 +1007,9 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     SetMuKinematics(ev,fiBPV,imu0,imu1);
     const PaVertex& v = ev.vVertex(fiBPV);
 
+    //--- Hotfix : rescue hadrons not attached to BPV
+    set<int> tracklist;
+
     //--- loop on primary vertex outgoing particles
     int NoutPart = v.NOutParticles();
     fTotNHadr += NoutPart;
@@ -1027,6 +1029,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       itr = outPart.iTrack();
       if(itr == -1)
 	      printf("LCAnalysis::FindHadrons: outgoing particle without track!\n");
+      else
+        tracklist.insert(itr); // Added for hadron rescue
 
       TVector3 v3mu = fkMu0.Vect();
       TVector3 v3mup = fkMu1.Vect();
@@ -1184,6 +1188,154 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
 
     }//--- end loop on primary vertex secondaries
+
+    // Looping over all tracks to rescue hadrons not attached to BPV but that should be
+    for(int i=0; i<ev.NTrack(); i++)
+    {
+      if(tracklist.find(i) != tracklist.end())
+      {
+        tracklist.erase(tracklist.find(i));
+      }
+      else
+      {
+        const PaTrack& track = ev.vTrack(i);
+        ip = track.iParticle();
+        if(ip==-1 || !track.HasMom()) continue;
+        PaTPar pext;
+        track.Extrapolate(v.Z(),pext);
+
+        if(sqrt(pow(pext(1)-v.X(),2)+pow(pext(2)-v.Y(),2))>0.2) continue;
+
+        const PaParticle& outPart = ev.vParticle(ip);
+
+        // itr = outPart.iTrack();
+
+        TVector3 v3mu = fkMu0.Vect();
+        TVector3 v3mup = fkMu1.Vect();
+        TVector3 v3plane = v3mu.Cross(v3mup);
+
+        TLorentzVector LzPhoton = fkMu0 - fkMu1;
+        TVector3 v3q = LzPhoton.Vect();
+
+        const PaTPar& param = track.vTPar(0);
+        TVector3 v3h = param.Mom3();
+
+        TVector3 had_pl = v3q.Cross(v3h);
+        TVector3 lep_pl = v3q.Cross(v3plane);
+
+        HadronData hadron;
+        hadron.P  = param.Mom();
+        hadron.pt  = param.Pt();
+        hadron.th = param.Theta();
+        hadron.ph = param.Phi();
+        hadron.ph_pl = had_pl.Angle(v3plane); // [0,Pi] definition
+        // hadron.ph_pl = lep_pl.Angle(v3h)*acos(lep_pl.Angle(had_pl)); // [0,2*Pi] definition
+
+        //--- check z > 1
+        Calcz(track);  // also fLikePid is set!
+        if(fz < 1) ++fNzlt1;
+
+        //--- check Zfirst
+        fZfirst = track.ZFirst();
+        hadron.HZfirst = fZfirst;
+        // if(fZfirst > fZref) continue;
+        ++fNZfirst;
+
+        //--- check Zlast
+        fZlast = track.ZLast();
+        hadron.HZlast = fZlast;
+        // if(fZlast < fZref) continue;
+        ++fNZlast;
+
+        //--- check X/X0
+        hadron.XX0 = track.XX0();
+        ++fNXX0;
+
+        //--- check chi2/ndf
+        hadron.chi2_hadron = track.Chi2tot()/float(track.Ndf());
+
+        //--- check trigger
+        // N. PIERRE : Should move to post-PHAST analysis TODO Suppress it.
+        // CheckTriggerMask(ev);
+        // if(fTrigOk) {++fNTrigHad;++fTrigger;}
+
+        // cout << "check end cut" << endl;
+
+        //--- polar angle at RICH entrance
+        PaTPar tParRich;
+        track.Extrapolate(Zrich, tParRich);
+        fthRICH = hadron.thRICH = tParRich.Theta(false);
+        fthC = hadron.thC = fPid->Theta_Ch(track);
+        hadron.RICHx=tParRich.Pos(0);                   //extrapolation RICH added by Quiela
+        hadron.RICHy=tParRich.Pos(1);                   //extrapolation RICH added by Quiel
+
+        //--- get likelihoods
+        for(int i=0; i<6; ++i) hadron.LH[i] = fPid->GetLike(i,track);
+
+        //--- check if track falls into hadronic calorimeter acceptance
+        PaTPar tParHCAL;
+        double xc,yc;
+        track.vTPar(0).Extrapolate(ZHCAL1, tParHCAL, false);  // HCAL1
+        hadron.inHCALacc = fHadrCal1->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
+
+        if( !hadron.inHCALacc ){
+  	      track.vTPar(0).Extrapolate(ZHCAL2, tParHCAL, false);  // HCAL2
+  	      hadron.inHCALacc = fHadrCal2->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
+        }
+
+        //--- get hadronic calorimeter signals
+        int iC;
+        for(int i=0; i<outPart.NCalorim(); ++i)
+        {
+        	iC = outPart.iCalorim(i);
+        	const PaCaloClus & clus = ev.vCaloClus(iC);
+
+          if( clus.CalorimName()[0] == 'H' ) // only HCALs
+        	 hadron.HCAL += clus.E();
+        }
+
+
+        //--- calculate track extrapolations
+        PaTPar tParH;
+        track.vTPar(0).Extrapolate(MM02z,tParH,false);
+        hadron.MM02x = tParH(1); hadron.MM02y = tParH(2);
+        track.vTPar(0).Extrapolate(MM03z,tParH,false);
+        hadron.MM03x = tParH(1); hadron.MM03y = tParH(2);
+
+        track.vTPar(0).Extrapolate(Z2Az,tParH,false);
+        hadron.Z2Ax = tParH(1); hadron.Z2Ay = tParH(2);
+        track.vTPar(0).Extrapolate(Z2Bz,tParH,false);
+        hadron.Z2Bx = tParH(1); hadron.Z2By = tParH(2);
+
+
+
+        if( fIsMC )
+        {// special treatment for MC
+
+  	      //--- set vector position of this hadron to MC branch
+  	      vector<HadronMCData>::iterator mch = fMCHadrons.begin();
+  	      for( ; mch != fMCHadrons.end(); ++mch)
+          {
+  	        if( mch->itrack == itr ) mch->recHadIdx = Nh;
+  	      }
+
+          //--- find the true pid of this track if any
+        	int imctr = track.iMCtrack();
+        	if( imctr >= 0 )
+          {
+        	  const PaMCtrack& mcTrack = ev.vMCtrack(imctr);
+        	  hadron.MCpid = mcTrack.Pid();
+        	}
+
+
+        } //end special treatment for MC
+
+        //--- fill hadron vector
+        hadron.charge = outPart.Q();
+        fHadrons.push_back(hadron);
+        Nh = fHadrons.size();
+      }
+    }
 
   // cout<< fReconsEvent <<endl;
   }// end if event reconstructed

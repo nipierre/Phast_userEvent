@@ -22,7 +22,9 @@ namespace {
   double mW;
   int trigMask;
   double p;
+  double pt;
   double z;
+  double theta_h;
   double xVtx;
   double yVtx;
   double zVtx;
@@ -30,6 +32,7 @@ namespace {
   double xPos;
   double yPos;
   int PotGhost;
+  int fIsMC;
 
   TTree *tree;
 
@@ -49,7 +52,9 @@ namespace {
     t->Branch("mW", &mW, "mW/D");
     t->Branch("trigMask", &trigMask, "trigMask/I");
     t->Branch("p", &p, "p/D");
+    t->Branch("pt", &pt, "pt/D");
     t->Branch("z", &z, "z/D");
+    t->Branch("theta_h", &theta_h, "theta_h/D");
 
     t->Branch("xVtx", &xVtx, "xVtx/D");
     t->Branch("yVtx", &yVtx, "yVtx/D");
@@ -70,6 +75,7 @@ void UserEvent1992(PaEvent& ev)
   {
     first = false;
     init();
+    if(Phast::Ref().TextUserFlag(0)=="MC2016"){fIsMC=true;}
   }
 
   RunNumber = ev.RunNum();
@@ -78,20 +84,25 @@ void UserEvent1992(PaEvent& ev)
   EvSpill = ev.EvInSpill();
 
   int fiBPV = ev.iBestPrimaryVertex();
-
-  const PaVertex& v = ev.vVertex(fiBPV);
+  int imu0=-1, imu1=-1;
   set<int> tracklist;
 
-  xVtx = v.X();
-  yVtx = v.Y();
-  zVtx = v.Z();
-  chi2Vtx = v.Chi2()/v.Ndf();
+  if(fiBPV>=0)
+  {
+    const PaVertex& v = ev.vVertex(fiBPV);
 
-  int imu0=-1, imu1=-1;
-  imu0 = v.InParticle();
-  imu1 = v.iMuPrim(0,1,1,1,30);
+    xVtx = v.X();
+    yVtx = v.Y();
+    zVtx = v.Z();
+    chi2Vtx = v.Chi2()/v.Ndf();
+
+    imu0 = v.InParticle();
+    imu1 = v.iMuPrim(0,1,1,1,30);
+  }
 
   if(fiBPV==-1 || imu1==-1 || imu0==-1) return;
+
+  const PaVertex& v = ev.vVertex(fiBPV);
 
   const PaParticle& Mu0   = ev.vParticle(imu0); // the beam muon
   const PaParticle& Mu1   = ev.vParticle(imu1); // the scattered muon
@@ -118,7 +129,9 @@ void UserEvent1992(PaEvent& ev)
   trigMask = ev.TrigMask();
   int TrigOk = trigMask&2 || trigMask&4 || trigMask&8 || trigMask&512;
 
-  int fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
+  int fBMS;
+  if(fIsMC) fBMS = 1;
+  else fBMS = track0.NHitsFoundInDetect("BM")>3 ? 1 : 0;
   int fChi2beam = track0.Chi2tot()/float(track0.Ndf())<10 ? 1 : 0;
   int fChi2muprim = track1.Chi2tot()/float(track1.Ndf())<10 ? 1 : 0;
   int fMZfirst = track1.ZFirst()<350 ? 1 : 0;
@@ -143,6 +156,8 @@ void UserEvent1992(PaEvent& ev)
     PaTPar param;
     tr.Extrapolate(v.Z(),param);
     p = param.Mom();
+    theta_h = param.Theta();
+    pt = param.Pt();
     PaTPar tParRich;
     tr.Extrapolate(615.6, tParRich);
     double RICHx=tParRich.Pos(0);
