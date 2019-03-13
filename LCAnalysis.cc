@@ -1115,7 +1115,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       //--- check if track falls into hadronic calorimeter acceptance
       PaTPar tParHCAL;
-      
+
       track.vTPar(0).Extrapolate(ZHCAL1, tParHCAL, false);  // HCAL1
       hadron.inHCALacc = fHadrCal1->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
 
@@ -1133,15 +1133,15 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
         if( clus.CalorimName()[0] == 'H' ) // only HCALs
         {
-          if( clus.CalorimName() == "HC01P1__") hadron.HCAL1 = clus.E();
-          else if( clus.CalorimName() == "HC02P1__") hadron.HCAL2 = clus.E();
+          if( clus.CalorimName() == "HC01P1__") hadron.HCAL1 += clus.E();
+          else if( clus.CalorimName() == "HC02P1__") hadron.HCAL2 += clus.E();
         }
 
         if( clus.CalorimName()[0] == 'E' ) // only HCALs
         {
-          if( clus.CalorimName() == "EC00P1__") hadron.ECAL0 = clus.E();
-          else if( clus.CalorimName() == "EC01P1__") hadron.ECAL1 = clus.E();
-          else if( clus.CalorimName() == "EC02P1__") hadron.ECAL2 = clus.E();
+          if( clus.CalorimName() == "EC00P1__") hadron.ECAL0 += clus.E();
+          else if( clus.CalorimName() == "EC01P1__") hadron.ECAL1 += clus.E();
+          else if( clus.CalorimName() == "EC02P1__") hadron.ECAL2 += clus.E();
         }
       }
 
