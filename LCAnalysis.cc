@@ -1272,6 +1272,24 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
         //--- get likelihoods
         for(int i=0; i<6; ++i) hadron.LH[i] = fPid->GetLike(i,track);
 
+        //--- check if track falls into EM calorimeter acceptance
+        PaTPar tParECAL;
+        double xc,yc;
+
+        track.vTPar(0).Extrapolate(ZECAL0, tParECAL, false);  // ECAL0
+        hadron.inECALacc = fEMCal1->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+
+        if( !hadron.inECALacc )
+        {
+          track.vTPar(0).Extrapolate(ZECAL1, tParECAL, false);  // ECAL1
+          hadron.inECALacc = fEMCal1->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+
+          if( !hadron.inECALacc ){
+    	      track.vTPar(0).Extrapolate(ZECAL2, tParECAL, false);  // ECAL2
+    	      hadron.inECALacc = fEMCal2->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+          }
+        }
+
         //--- check if track falls into hadronic calorimeter acceptance
         PaTPar tParHCAL;
         double xc,yc;
@@ -1283,7 +1301,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
   	      hadron.inHCALacc = fHadrCal2->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
         }
 
-        //--- get hadronic calorimeter signals
+        //--- get EM/hadronic calorimeter signals
         int iC;
         for(int i=0; i<outPart.NCalorim(); ++i)
         {
@@ -1291,9 +1309,18 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
         	const PaCaloClus & clus = ev.vCaloClus(iC);
 
           if( clus.CalorimName()[0] == 'H' ) // only HCALs
-        	 hadron.HCAL += clus.E();
-        }
+          {
+            if( clus.CalorimName() == "HC01P1__") hadron.HCAL1 = clus.E();
+            else if( clus.CalorimName() == "HC02P1__") hadron.HCAL2 = clus.E();
+          }
 
+          if( clus.CalorimName()[0] == 'E' ) // only HCALs
+          {
+            if( clus.CalorimName() == "EC00P1__") hadron.ECAL0 = clus.E();
+            else if( clus.CalorimName() == "EC01P1__") hadron.ECAL1 = clus.E();
+            else if( clus.CalorimName() == "EC02P1__") hadron.ECAL2 = clus.E();
+          }
+        }
 
         //--- calculate track extrapolations
         PaTPar tParH;
