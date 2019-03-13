@@ -1115,7 +1115,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
       //--- check if track falls into hadronic calorimeter acceptance
       PaTPar tParHCAL;
-      double xc,yc;
+      
       track.vTPar(0).Extrapolate(ZHCAL1, tParHCAL, false);  // HCAL1
       hadron.inHCALacc = fHadrCal1->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
 
