@@ -54,9 +54,9 @@ static const float  Zrich= 615.6; //entrance of the RICH 580.0
 
 static const float ZHCAL1 = 1263.0;
 static const float ZHCAL2 = 3566.0;
-static const float ECAL0 = 75.0;
-static const float ECAL1 = 1107.0;
-static const float ECAL2 = 3325.0;
+static const float ZECAL0 = 75.0;
+static const float ZECAL1 = 1107.0;
+static const float ZECAL2 = 3325.0;
 
 void RescaleMom(PaEvent & e, bool faster_mode);
 
@@ -1292,7 +1292,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
 
         //--- check if track falls into hadronic calorimeter acceptance
         PaTPar tParHCAL;
-        double xc,yc;
+
         track.vTPar(0).Extrapolate(ZHCAL1, tParHCAL, false);  // HCAL1
         hadron.inHCALacc = fHadrCal1->iCell(tParHCAL(1),tParHCAL(2),xc,yc) != -1;
 
