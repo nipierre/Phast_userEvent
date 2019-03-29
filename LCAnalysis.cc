@@ -1217,7 +1217,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
         TLorentzVector LzPhoton = fkMu0 - fkMu1;
         TVector3 v3q = LzPhoton.Vect();
 
-        const PaTPar& param = track.vTPar(0);
+        const PaTPar& param = pext;
         TVector3 v3h = param.Mom3();
 
         TVector3 had_pl = v3q.Cross(v3h);
