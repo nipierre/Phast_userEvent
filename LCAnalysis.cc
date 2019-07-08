@@ -1100,7 +1100,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
       double xc,yc;
 
       track.vTPar(0).Extrapolate(ZECAL0, tParECAL, false);  // ECAL0
-      hadron.inECALacc = fEMCal1->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
+      hadron.inECALacc = fEMCal0->iCell(tParECAL(1),tParECAL(2),xc,yc) != -1;
 
       if( !hadron.inECALacc )
       {
