@@ -933,8 +933,8 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
     fDISMCEvt->MC_p1y =  kmu1.Y();
     fDISMCEvt->MC_p1z =  kmu1.Z();
 
-    fInTargetMC = fInTarget;
-    fCellsCrossedMC = fCellsCrossed;
+    fInTargetMC = PaAlgo::InTarget(ParamMu0,'O',ev.RunNum(),1.9,1.2,-325,-71,1.9);;
+    fCellsCrossedMC = PaAlgo::CrossCells(ParamMu0,ev.RunNum(),1.9,1.2,-325,-71,1.9);
 
     fDISMCEvt->recons = fReconsEvent;
 
@@ -1217,7 +1217,7 @@ void LCAnalysis::FindHadrons(PaEvent& ev)
         TLorentzVector LzPhoton = fkMu0 - fkMu1;
         TVector3 v3q = LzPhoton.Vect();
 
-        const PaTPar& param = track.vTPar(0);
+        const PaTPar& param = pext;
         TVector3 v3h = param.Mom3();
 
         TVector3 had_pl = v3q.Cross(v3h);
